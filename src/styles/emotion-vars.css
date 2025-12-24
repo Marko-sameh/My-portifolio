@@ -1,0 +1,36 @@
+/* Emotion-based CSS Variables */
+:root {
+  /* Default emotion colors (Calmness) */
+  --emotion-primary: #6ECFF6;
+  --emotion-secondary: #9FF0E9;
+  --emotion-accent: #C6FFF9;
+  --emotion-background: #3AA7C5;
+  --emotion-gradient: linear-gradient(135deg, #6ECFF6, #9FF0E9);
+  
+  /* RGB versions for rgba() usage */
+  --emotion-primary-rgb: 110, 207, 246;
+  --emotion-secondary-rgb: 159, 240, 233;
+  --emotion-accent-rgb: 198, 255, 249;
+  --emotion-background-rgb: 58, 167, 197;
+}
+
+/* Utility classes for emotion colors */
+.emotion-primary { color: var(--emotion-primary); }
+.emotion-secondary { color: var(--emotion-secondary); }
+.emotion-accent { color: var(--emotion-accent); }
+.emotion-bg { background-color: var(--emotion-background); }
+.emotion-gradient { background: var(--emotion-gradient); }
+
+.emotion-border { border-color: var(--emotion-primary); }
+.emotion-shadow { box-shadow: 0 4px 20px var(--emotion-primary)33; }
+
+/* Hover effects with emotion colors */
+.emotion-hover:hover { 
+  color: var(--emotion-primary);
+  transition: color 0.3s ease;
+}
+
+.emotion-bg-hover:hover { 
+  background-color: var(--emotion-primary);
+  transition: background-color 0.3s ease;
+}

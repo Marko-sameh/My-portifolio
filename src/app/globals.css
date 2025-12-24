@@ -1,26 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap");
+@import "../styles/cinematic.css";
+@import "../styles/themes.css";
+@import "./nav-styles.css";
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* AI Emotion-Driven Color System */
+  --primary: var(--emotion-primary, #6ecff6);
+  --secondary: var(--emotion-secondary, #9ff0e9);
+  --accent: var(--emotion-accent, #c6fff9);
+  --background: var(--emotion-background, #3aa7c5);
+  --accent-40: color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-50: color-mix(in srgb, var(--accent) 70%, transparent);
+  /* Smooth transitions for emotion changes */
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  scroll-behavior: auto;
+  /* background: linear-gradient(135deg, black, var(--secondary)); */
+  background: linear-gradient(
+    to bottom,
+    #000000,
+    rgba(46, 16, 101, 0.2),
+    #000000
+  );
+
+  color: var(--primary);
+  transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+.background-static {
+  background: linear-gradient(135deg, black, var(--secondary));
+}
+
+/* Emotion-aware component styling */
+.emotion-aware {
+  /* background: linear-gradient(var(--background), var(--accent)); */
+  color: var(--primary);
+  border-color: var(--accent);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.emotion-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.emotion-secondary {
+  background: var(--secondary);
+  color: var(--primary);
+}
+
+.emotion-accent {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+/* Legacy theme support */
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-foreground: var(--primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Emotion detection is active - no need for dark mode overrides */
+
+/* Curved line — STATIC */
+.cinematic-curve-in {
+  height: 7vh;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    black,
+    color-mix(in srgb, var(--accent) 40%, transparent),
+    color-mix(in srgb, var(--background) 90%, transparent),
+    color-mix(in srgb, var(--accent) 40%, transparent),
+    black
+  );
+  position: relative;
+  top: 0%;
+  filter: drop-shadow(0 0 5px var(--primary));
+  z-index: 3;
+  border: solid 0.2rem transparent;
+  border-top-left-radius: 50% 100%;
+  border-top-right-radius: 50% 100%;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Backlight below the curve */
+.cinematic-curve-out {
+  z-index: 4;
+  height: 90%;
+  width: 100%;
+  background: radial-gradient(
+      50% 500% at 50% -420%,
+      color-mix(in srgb, var(--accent) 40%, transparent) 80%,
+      rgba(0, 0, 0, 0.1) 100%
+    ),
+    black;
+  position: absolute;
+  top: 10%;
+  border-top-left-radius: 45%;
+  border-top-right-radius: 45%;
+}
+
+/* Wrapper for both curves */
+.cinematic-curve-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10vh;
+  overflow: hidden;
+  z-index: 10;
 }

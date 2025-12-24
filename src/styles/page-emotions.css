@@ -1,0 +1,95 @@
+/* Updated CSS with emotion variables for all pages */
+
+/* Builds page emotion updates */
+.builds-title {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.builds-divider {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+}
+
+.builds-glow {
+  background: linear-gradient(135deg, var(--emotion-primary), var(--emotion-secondary));
+}
+
+.builds-icon {
+  color: var(--emotion-primary);
+}
+
+.builds-tag {
+  background-color: rgba(var(--emotion-primary-rgb), 0.2);
+  border-color: rgba(var(--emotion-primary-rgb), 0.3);
+  color: var(--emotion-primary);
+}
+
+/* Core page emotion updates */
+.core-title {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.core-divider {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+}
+
+.core-accent {
+  color: var(--emotion-primary);
+}
+
+.core-icon {
+  color: var(--emotion-primary);
+}
+
+/* Beyond page emotion updates */
+.beyond-title {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.beyond-divider {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+}
+
+.beyond-glow {
+  background: linear-gradient(135deg, var(--emotion-primary), var(--emotion-secondary));
+}
+
+.beyond-icon {
+  color: var(--emotion-primary);
+}
+
+.beyond-accent {
+  color: var(--emotion-primary);
+}
+
+/* Signal page emotion updates */
+.signal-title {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.signal-divider {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+}
+
+.signal-button {
+  background: linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary));
+}
+
+.signal-glow {
+  background: linear-gradient(135deg, var(--emotion-primary), var(--emotion-secondary));
+}
+
+.signal-icon {
+  color: var(--emotion-primary);
+}
+
+.signal-accent {
+  color: var(--emotion-primary);
+}
