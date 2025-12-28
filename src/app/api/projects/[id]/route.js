@@ -50,10 +50,16 @@ export async function PUT(request, { params }) {
     ...projects[index],
     title: body.title || projects[index].title,
     desc: body.desc || projects[index].desc,
+    fullDescription: body.fullDescription !== undefined ? body.fullDescription : projects[index].fullDescription || '',
+    features: body.features !== undefined ? body.features : projects[index].features || [],
+    challenges: body.challenges !== undefined ? body.challenges : projects[index].challenges || [],
+    results: body.results !== undefined ? body.results : projects[index].results || '',
     img: body.img !== undefined ? body.img : projects[index].img,
     images: body.images || projects[index].images,
     tag: body.tag || projects[index].tag,
     tech: body.tech ? (Array.isArray(body.tech) ? body.tech : body.tech.split(',').map(t => t.trim())) : projects[index].tech,
+    links: body.links !== undefined ? body.links : projects[index].links || [],
+    showOnHome: body.showOnHome !== undefined ? body.showOnHome : projects[index].showOnHome,
     updatedAt: new Date().toISOString()
   };
   

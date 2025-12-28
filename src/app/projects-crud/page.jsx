@@ -1,134 +1,89 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useProjects } from '../../hooks/useProjects';
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState([]);
-  const [form, setForm] = useState({ title: '', desc: '', img: '', tag: '', tech: '' });
-  const [editing, setEditing] = useState(null);
-  const [images, setImages] = useState([]);
-  const [uploading, setUploading] = useState(false);
   const [adminKey, setAdminKey] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authToken, setAuthToken] = useState('');
+  const {
+    projects,
+    form,
+    setForm,
+    editing,
+    images,
+    links,
+    setLinks,
+    features,
+    setFeatures,
+    challenges,
+    setChallenges,
+    uploading,
+    isAuthenticated,
+    handleLogin,
+    handleFileUpload,
+    handleMainImageUpload,
+    handleSubmit,
+    handleEdit,
+    handleDelete,
+    removeImage,
+    resetForm,
+    logout
+  } = useProjects();
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
-  const fetchProjects = async () => {
-    const res = await fetch('/api/projects', {
-      headers: {
-        'X-API-Key': 'api_key_xyz789abc123def456ghi789jkl012mno345pqr678stu901vwx234yza567bcd890'
-      }
-    });
-    const data = await res.json();
-    setProjects(data);
+  const addLink = () => {
+    setLinks([...links, { label: '', url: '' }]);
   };
 
-  const handleLogin = async () => {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: adminKey })
-    });
+  const updateLink = (index, field, value) => {
+    const newLinks = [...links];
+    newLinks[index][field] = value;
+    setLinks(newLinks);
+  };
 
-    const data = await res.json();
-    if (data.success) {
-      setAuthToken(data.token);
-      setIsAuthenticated(true);
-    } else {
+  const removeLink = (index) => {
+    setLinks(links.filter((_, i) => i !== index));
+  };
+
+  const addFeature = () => {
+    setFeatures([...features, '']);
+  };
+
+  const updateFeature = (index, value) => {
+    const newFeatures = [...features];
+    newFeatures[index] = value;
+    setFeatures(newFeatures);
+  };
+
+  const removeFeature = (index) => {
+    setFeatures(features.filter((_, i) => i !== index));
+  };
+
+  const addChallenge = () => {
+    setChallenges([...challenges, '']);
+  };
+
+  const updateChallenge = (index, value) => {
+    const newChallenges = [...challenges];
+    newChallenges[index] = value;
+    setChallenges(newChallenges);
+  };
+
+  const removeChallenge = (index) => {
+    setChallenges(challenges.filter((_, i) => i !== index));
+  };
+
+  const onLogin = async () => {
+    const success = await handleLogin(adminKey);
+    if (!success) {
       alert('Invalid password');
     }
   };
 
-  const handleFileUpload = async (e) => {
-    const files = e.target.files;
-    if (!files.length) return;
-
-    setUploading(true);
-    const formData = new FormData();
-    Array.from(files).forEach(file => formData.append('files', file));
-
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      headers: {
-        'X-API-Key': 'api_key_xyz789abc123def456ghi789jkl012mno345pqr678stu901vwx234yza567bcd890'
-      },
-      body: formData
-    });
-
-    const data = await res.json();
-    setImages(prev => [...prev, ...data.files]);
-    setUploading(false);
+  const onFileUpload = (e) => {
+    handleFileUpload(e.target.files);
   };
 
-  const handleMainImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setUploading(true);
-    const formData = new FormData();
-    formData.append('files', file);
-
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      headers: {
-        'X-API-Key': 'api_key_xyz789abc123def456ghi789jkl012mno345pqr678stu901vwx234yza567bcd890'
-      },
-      body: formData
-    });
-
-    const data = await res.json();
-    setForm({ ...form, img: data.files[0] });
-    setUploading(false);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const url = editing ? `/api/projects/${editing}` : '/api/projects';
-    const method = editing ? 'PUT' : 'POST';
-
-    await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-        'X-API-Key': 'api_key_xyz789abc123def456ghi789jkl012mno345pqr678stu901vwx234yza567bcd890'
-      },
-      body: JSON.stringify({ ...form, images, tech: form.tech.split(',').map(t => t.trim()) })
-    });
-
-    setForm({ title: '', desc: '', img: '', tag: '', tech: '' });
-    setImages([]);
-    setEditing(null);
-    fetchProjects();
-  };
-
-  const handleEdit = (project) => {
-    setForm({
-      title: project.title,
-      desc: project.desc,
-      img: project.img,
-      tag: project.tag,
-      tech: Array.isArray(project.tech) ? project.tech.join(', ') : project.tech
-    });
-    setImages(project.images || []);
-    setEditing(project.id);
-  };
-
-  const handleDelete = async (id) => {
-    await fetch(`/api/projects/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${authToken}`,
-        'X-API-Key': 'api_key_xyz789abc123def456ghi789jkl012mno345pqr678stu901vwx234yza567bcd890'
-      }
-    });
-    fetchProjects();
-  };
-
-  const removeImage = (index) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
+  const onMainImageUpload = (e) => {
+    handleMainImageUpload(e.target.files[0]);
   };
 
   if (!isAuthenticated) {
@@ -143,7 +98,7 @@ export default function ProjectsPage() {
             onChange={(e) => setAdminKey(e.target.value)}
             className="w-full p-2 border rounded"
           />
-          <button onClick={handleLogin} className="w-full bg-blue-500 text-white p-2 rounded">
+          <button onClick={onLogin} className="w-full bg-blue-500 text-white p-2 rounded">
             Login
           </button>
         </div>
@@ -155,7 +110,7 @@ export default function ProjectsPage() {
     <div className="p-8 max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Projects CRUD</h1>
-        <button onClick={() => setIsAuthenticated(false)} className="bg-red-500 text-white px-4 py-2 rounded">
+        <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded">
           Logout
         </button>
       </div>
@@ -177,6 +132,20 @@ export default function ProjectsPage() {
             className="p-2 border rounded"
             required
           />
+          <textarea
+            placeholder="Full Description (detailed project overview)"
+            value={form.fullDescription}
+            onChange={(e) => setForm({ ...form, fullDescription: e.target.value })}
+            className="p-2 border rounded h-32"
+            rows={6}
+          />
+          <textarea
+            placeholder="Results & Impact (what was achieved)"
+            value={form.results}
+            onChange={(e) => setForm({ ...form, results: e.target.value })}
+            className="p-2 border rounded h-24"
+            rows={4}
+          />
 
           <div>
             <label className="block text-sm font-medium mb-2">Main Image:</label>
@@ -190,7 +159,7 @@ export default function ProjectsPage() {
             <input
               type="file"
               accept="image/*"
-              onChange={handleMainImageUpload}
+              onChange={onMainImageUpload}
               className="p-2 border rounded w-full"
             />
             {form.img && <img src={form.img} alt="Main" className="w-20 h-20 object-cover rounded mt-2" />}
@@ -211,13 +180,99 @@ export default function ProjectsPage() {
             className="p-2 border rounded"
           />
 
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={form.showOnHome}
+              onChange={(e) => setForm({ ...form, showOnHome: e.target.checked })}
+              className="w-4 h-4"
+            />
+            <span>Show on Home Page</span>
+          </label>
+
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium">Project Links:</label>
+              <button type="button" onClick={addLink} className="bg-green-500 text-white px-3 py-1 rounded text-sm">
+                Add Link
+              </button>
+            </div>
+            {links.map((link, index) => (
+              <div key={index} className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="Link Label (e.g., Live Demo, GitHub)"
+                  value={link.label}
+                  onChange={(e) => updateLink(index, 'label', e.target.value)}
+                  className="flex-1 p-2 border rounded"
+                />
+                <input
+                  type="url"
+                  placeholder="URL"
+                  value={link.url}
+                  onChange={(e) => updateLink(index, 'url', e.target.value)}
+                  className="flex-1 p-2 border rounded"
+                />
+                <button type="button" onClick={() => removeLink(index)} className="bg-red-500 text-white px-2 py-1 rounded text-sm">
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium">Key Features:</label>
+              <button type="button" onClick={addFeature} className="bg-green-500 text-white px-3 py-1 rounded text-sm">
+                Add Feature
+              </button>
+            </div>
+            {features.map((feature, index) => (
+              <div key={index} className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="Feature description"
+                  value={feature}
+                  onChange={(e) => updateFeature(index, e.target.value)}
+                  className="flex-1 p-2 border rounded"
+                />
+                <button type="button" onClick={() => removeFeature(index)} className="bg-red-500 text-white px-2 py-1 rounded text-sm">
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-sm font-medium">Challenges & Solutions:</label>
+              <button type="button" onClick={addChallenge} className="bg-green-500 text-white px-3 py-1 rounded text-sm">
+                Add Challenge
+              </button>
+            </div>
+            {challenges.map((challenge, index) => (
+              <div key={index} className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="Challenge and how it was solved"
+                  value={challenge}
+                  onChange={(e) => updateChallenge(index, e.target.value)}
+                  className="flex-1 p-2 border rounded"
+                />
+                <button type="button" onClick={() => removeChallenge(index)} className="bg-red-500 text-white px-2 py-1 rounded text-sm">
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
           <div>
             <label className="block text-sm font-medium mb-2">Upload Additional Images:</label>
             <input
               type="file"
               multiple
               accept="image/*"
-              onChange={handleFileUpload}
+              onChange={onFileUpload}
               className="p-2 border rounded w-full"
             />
             {uploading && <p className="text-blue-500 mt-2">Uploading...</p>}
@@ -247,7 +302,7 @@ export default function ProjectsPage() {
             {editing ? 'Update' : 'Add'} Project
           </button>
           {editing && (
-            <button type="button" onClick={() => { setEditing(null); setForm({ title: '', desc: '', img: '', tag: '', tech: '' }); setImages([]); }} className="bg-gray-500 text-white p-2 rounded">
+            <button type="button" onClick={resetForm} className="bg-gray-500 text-white p-2 rounded">
               Cancel
             </button>
           )}
@@ -270,6 +325,22 @@ export default function ProjectsPage() {
                     <span key={i} className="bg-gray-100 px-2 py-1 rounded text-xs">{tech}</span>
                   )) : <span className="bg-gray-100 px-2 py-1 rounded text-xs">{project.tech}</span>}
                 </div>
+                {project.showOnHome && (
+                  <span className="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm mt-2">📍 Home Page</span>
+                )}
+                {project.links && project.links.length > 0 && (
+                  <div className="mt-2">
+                    <p className="text-sm font-medium mb-1">Links:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.links.map((link, i) => (
+                        <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" 
+                           className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs hover:bg-blue-200">
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

@@ -19,10 +19,29 @@ export default function AIEmotionSystem() {
 
   const [textInput, setTextInput] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(true);
 
   useEffect(() => {
     startDetection();
   }, [startDetection]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTooltip(false);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (showTooltip) {
+        setShowTooltip(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showTooltip]);
 
   const handleAnalyze = async () => {
     if (textInput.trim()) {
@@ -35,15 +54,27 @@ export default function AIEmotionSystem() {
 
   if (!isExpanded) {
     return (
-      <div
-        className="fixed bottom-[20px] right-[20px] w-[60px] h-[60px] rounded-full flex items-center justify-center
-    text-[24px] cursor-pointer z-[1000] shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-transform duration-200 ease-in-out
-    hover:scale-110"
-        onClick={() => setIsExpanded(true)}
-        style={{ backgroundColor: palette[0] }}
-      >
-        <BotMessageSquare size={50} color='black' />
+      <div className="relative">
+        <div
+          className="fixed bottom-[20px] right-[20px] w-[60px] h-[60px] rounded-full flex items-center justify-center
+      text-[24px] cursor-pointer z-[1000] shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-transform duration-200 ease-in-out
+      hover:scale-110 ring-4 ring-white/30 ring-opacity-75 animate-pulse"
+          onClick={() => setIsExpanded(true)}
+          style={{ backgroundColor: palette[0] }}
+        >
+          <BotMessageSquare size={40} color='black' />
+        </div>
 
+        {/* Tooltip */}
+        {showTooltip && (
+          <>
+            <div className="fixed inset-0 bg-black/20 z-[998]" />
+            <div className="fixed bottom-[90px] right-[20px] sm:right-[50px] z-[999] bg-black/90 backdrop-blur-sm text-[var(--primary)] px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm border border-white/20 animate-pulse shadow-2xl max-w-[280px] sm:max-w-none">
+              Try it — the system analyzes emotional tone and changes the website's colors accordingly
+              <div className="absolute top-full right-[15px] w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black/90"></div>
+            </div>
+          </>
+        )}
       </div>
     );
   }
@@ -51,7 +82,7 @@ export default function AIEmotionSystem() {
   return (
     <div className="ai-emotion-system">
       <div className="system-header">
-        <h3><BotMessageSquare /> AI Emotion Detection</h3>
+        <h3 className='flex gap-2'><BotMessageSquare /> AI Emotion Detection</h3>
         <button
           className="close-btn"
           onClick={() => setIsExpanded(false)}
@@ -67,9 +98,7 @@ export default function AIEmotionSystem() {
         >
           {currentEmotion}
         </div>
-        {/* <div className="confidence">
-          {Math.round(confidence * 100)}% confidence
-        </div> */}
+        <p>No data will be saved. Just perception</p>
       </div>
 
       <div className="text-analysis">
@@ -81,7 +110,7 @@ export default function AIEmotionSystem() {
           rows={3}
         />
         <button onClick={handleAnalyze} className="analyze-btn w-full">
-          Analyze with AI
+          Analyze
         </button>
       </div>
 
@@ -115,12 +144,22 @@ export default function AIEmotionSystem() {
           backdrop-filter: blur(15px);
           border-radius: 12px;
           padding: 1.5rem;
-          width: 350px;
+          width: 90vw;
+          max-width: 350px;
           max-height: 500px;
           overflow-y: auto;
           border: 1px solid rgba(255, 255, 255, 0.1);
           color: white;
           animation: slideUp 0.3s ease;
+        }
+
+        @media (max-width: 640px) {
+          .ai-emotion-system {
+            width: calc(100vw - 40px);
+            right: 20px;
+            left: 20px;
+            padding: 1rem;
+          }
         }
 
         @keyframes slideUp {
@@ -143,7 +182,13 @@ export default function AIEmotionSystem() {
 
         .system-header h3 {
           margin: 0;
-          font-size: 1.1rem;
+          font-size: 1rem;
+        }
+
+        @media (min-width: 640px) {
+          .system-header h3 {
+            font-size: 1.1rem;
+          }
         }
 
         .close-btn {
@@ -172,16 +217,19 @@ export default function AIEmotionSystem() {
 
         .emotion-badge {
           display: inline-block;
-          padding: 0.75rem 1.5rem;
+          padding: 0.5rem 1rem;
           border-radius: 25px;
           color: white;
           font-weight: 700;
           margin-bottom: 0.5rem;
+          font-size: 0.9rem;
         }
 
-        .confidence {
-          font-size: 0.9rem;
-          opacity: 0.8;
+        @media (min-width: 640px) {
+          .emotion-badge {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+          }
         }
 
         .text-analysis {
@@ -193,11 +241,18 @@ export default function AIEmotionSystem() {
           background: rgba(255, 255, 255, 0.1);
           border: 1px solid rgba(255, 255, 255, 0.2);
           border-radius: 8px;
-          padding: 0.75rem;
+          padding: 0.5rem;
           color: white;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
           resize: vertical;
           margin-bottom: 0.5rem;
+        }
+
+        @media (min-width: 640px) {
+          .ai-input {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+          }
         }
 
         .ai-input:focus {
@@ -213,17 +268,36 @@ export default function AIEmotionSystem() {
           border-radius: 6px;
           cursor: pointer;
           font-weight: 500;
+          font-size: 0.8rem;
+        }
+
+        @media (min-width: 640px) {
+          .analyze-btn {
+            font-size: 0.9rem;
+          }
         }
 
         .quick-tests h4 {
-          font-size: 0.9rem;
+          font-size: 0.8rem;
           margin-bottom: 0.5rem;
+        }
+
+        @media (min-width: 640px) {
+          .quick-tests h4 {
+            font-size: 0.9rem;
+          }
         }
 
         .test-buttons {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1fr;
           gap: 0.5rem;
+        }
+
+        @media (min-width: 640px) {
+          .test-buttons {
+            grid-template-columns: 1fr 1fr;
+          }
         }
 
         .test-btn {
@@ -233,7 +307,13 @@ export default function AIEmotionSystem() {
           color: white;
           padding: 0.5rem;
           cursor: pointer;
-          font-size: 0.8rem;
+          font-size: 0.7rem;
+        }
+
+        @media (min-width: 640px) {
+          .test-btn {
+            font-size: 0.8rem;
+          }
         }
 
         .test-btn:hover {

@@ -11,7 +11,7 @@ export default function ProjectCard({ project, index }) {
             transition={{ delay: index * 0.1 }}
             whileHover={{ y: -10 }}
         >
-            <div className={`absolute -inset-4 bg-gradient-to-br ${project.gradient} rounded-3xl opacity-20 group-hover:opacity-40 blur-2xl transition-opacity`} />
+            <div className={`absolute -inset-4 bg-gradient-to-br from-[var(--background)] to-[var(--accent)] rounded-3xl opacity-20 group-hover:opacity-40 blur-2xl transition-opacity`} />
             <div className="relative rounded-2xl overflow-hidden border border-white/10 group-hover:border-white/20 transition-all bg-black/40 backdrop-blur-sm">
                 <div className="relative h-64 overflow-hidden">
                     <motion.img
@@ -41,20 +41,22 @@ export default function ProjectCard({ project, index }) {
                         ))}
                     </div>
                     <div className="flex gap-3">
-                        <motion.button
-                            className="flex-1 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg text-sm font-medium"
+                        <motion.a
+                            href={`/Builds/${project.id}`}
+                            className="flex-1 px-4 py-2 bg-gradient-to-r from-[var(--background)] to-[var(--accent)] rounded-lg text-sm font-medium text-center"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
                             View Project
-                        </motion.button>
-                        <motion.button
+                        </motion.a>
+                        <motion.a
+                            href={project.githubUrl || "#"}
                             className="px-4 py-2 border border-white/20 rounded-lg text-sm flex items-center gap-2"
                             whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.4)" }}
                             whileTap={{ scale: 0.95 }}
                         >
                             <ExternalLink size={16} />
-                        </motion.button>
+                        </motion.a>
                     </div>
                 </div>
             </div>

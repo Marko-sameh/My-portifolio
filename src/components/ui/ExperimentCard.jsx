@@ -11,8 +11,8 @@ export default function ExperimentCard({ title, desc, img, icon: Icon, index }) 
             transition={{ delay: index * 0.15 }}
             whileHover={{ y: -8 }}
         >
-            <div className="absolute -inset-2 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity" />
-            <div className="relative rounded-xl overflow-hidden border border-white/10 group-hover:border-purple-500/30 transition-all bg-black/40 backdrop-blur-sm">
+            <div className="absolute -inset-2 bg-gradient-to-br from-[var(--background)] to-[var(--accent)] rounded-2xl opacity-0 group-hover:opacity-20 blur-xl transition-opacity" />
+            <div className="relative rounded-xl overflow-hidden border border-white/10 group-hover:border-[var(--primary)] transition-all bg-black/40 backdrop-blur-sm">
                 <div className="h-48 overflow-hidden relative">
                     <motion.img
                         src={img}
@@ -24,7 +24,7 @@ export default function ExperimentCard({ title, desc, img, icon: Icon, index }) 
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                     <div className="absolute top-4 left-4">
                         <div className="p-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                            <Icon size={20} className="text-purple-400" />
+                            <Icon size={20} className="text-[var(--primary)]" />
                         </div>
                     </div>
                 </div>

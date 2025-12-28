@@ -37,7 +37,6 @@ import "../styles/page-emotions.css";
 import Nav from "../components/ui/Nav";
 import AIEmotionSystem from "../components/ui/AIEmotionSystem";
 import Footer from "@/components/ui/Footer";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -51,11 +50,21 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "AI-Powered Portfolio | Real Emotion Detection",
   description: "Portfolio with real AI emotion detection using transformers",
+  icons: {
+    icon: [{ url: '/icon_wbg.png', sizes: '32x32', type: 'image/png' }],
+    shortcut: '/icon_wbg.png',
+    apple: [{ url: '/icon_wbg.png', sizes: '180x180', type: 'image/png' }],
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" type="image/png" sizes="32x32" href="/icon_wbg.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icon_wbg.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon_wbg.png" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased emotion-aware`}
       >

@@ -37,10 +37,16 @@ export async function POST(request) {
     id: Date.now(),
     title: body.title,
     desc: body.desc,
+    fullDescription: body.fullDescription || '',
+    features: body.features || [],
+    challenges: body.challenges || [],
+    results: body.results || '',
     img: body.img || '',
     images: body.images || [],
     tag: body.tag,
     tech: Array.isArray(body.tech) ? body.tech : body.tech?.split(',').map(t => t.trim()) || [],
+    links: body.links || [],
+    showOnHome: body.showOnHome || false,
     createdAt: new Date().toISOString()
   };
   

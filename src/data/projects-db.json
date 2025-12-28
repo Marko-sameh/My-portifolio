@@ -1,72 +1,164 @@
 [
   {
-    "id": "1766526652970",
-    "title": "gfrdsefr",
-    "description": "trfdesefrg",
-    "tech": "tredwer",
-    "createdAt": "2025-12-23T21:50:52.970Z"
-  },
-  {
-    "id": "1766526658121",
-    "title": "trfdefrt",
-    "description": "tredrt",
-    "tech": "tredwr",
-    "createdAt": "2025-12-23T21:50:58.121Z"
-  },
-  {
-    "id": "1766526664195",
-    "title": "trfdert",
-    "description": "tredr",
-    "tech": "tredwr",
-    "createdAt": "2025-12-23T21:51:04.195Z"
-  },
-  {
-    "id": "1766526691717",
-    "title": "gggggggggggggggggg",
-    "description": "gggggggggggggggggggggggg",
-    "tech": "ggggggggggggggggggggggggg",
-    "createdAt": "2025-12-23T21:51:31.717Z"
-  },
-  {
-    "id": 1766532146839,
-    "title": "ugbuhjuhyGUYGYUG",
-    "desc": "UG",
-    "img": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80",
-    "images": [
-      "/uploads/1766532119070-Hero.jpg"
+    "id": 1766866627001,
+    "title": "Veneficus — Luxury eCommerce Platform",
+    "desc": "Luxury fashion eCommerce with immersive 3D product experience.",
+    "fullDescription": "A premium eCommerce platform built for a luxury fashion brand, focusing on cinematic UI, performance, and immersive 3D product visualization.",
+    "features": [
+      "Full eCommerce flow (products, categories, checkout)",
+      "Real-time 3D product viewer",
+      "Multilingual support (English / Italian)",
+      "Smooth motion-driven UI"
     ],
-    "tag": "GUY",
-    "tech": [
-      "HG"
+    "challenges": [
+      "Optimizing 3D models for web performance",
+      "Maintaining SEO with heavy visuals",
+      "Consistent luxury branding across pages"
     ],
-    "createdAt": "2025-12-23T23:22:26.839Z"
-  },
-  {
-    "id": 1766532324112,
-    "title": "UGTVYHGVYHGVHGV",
-    "desc": "HGVHGVHGVHG",
-    "img": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+    "results": "Improved user engagement and purchase confidence through realistic product previews and smooth UX.",
+    "img": "",
     "images": [],
-    "tag": "VHGVHGVHGVHG",
+    "tag": "Frontend",
     "tech": [
-      "VHGVHGVHG"
+      "Next.js",
+      "React",
+      "React Three Fiber",
+      "Three.js",
+      "Framer Motion",
+      "Tailwind CSS",
+      "i18next"
     ],
-    "createdAt": "2025-12-23T23:25:24.112Z"
+    "links": [],
+    "showOnHome": true,
+    "createdAt": "2025-12-27T20:17:06.969Z"
   },
   {
-    "id": 1766532341771,
-    "title": "KJNKJNJH",
-    "desc": "BJHBJHBHJ",
-    "img": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-    "images": [
-      "/uploads/1766532324142-fds.png",
-      "/uploads/1766532324158-Gemini_Generated_Image_qy5108qy5108qy51.png",
-      "/uploads/1766532324163-Hero.jpg"
+    "id": 1766866627002,
+    "title": "SpaceTechs — 3D Portfolio Platform",
+    "desc": "Interactive 3D portfolio focused on storytelling and motion.",
+    "fullDescription": "A modern portfolio platform showcasing projects through immersive 3D scenes and animated transitions.",
+    "features": [
+      "3D interactive scenes",
+      "Reusable animated components",
+      "Dynamic project loading via API",
+      "SEO-friendly pages"
     ],
-    "tag": "BJH",
+    "challenges": [
+      "Balancing visuals with performance",
+      "Reducing Three.js bundle size",
+      "Ensuring accessibility with 3D content"
+    ],
+    "results": "Created a visually distinctive portfolio with fast load times and smooth interactions.",
+    "img": "",
+    "images": [],
+    "tag": "Frontend",
     "tech": [
-      "BJHBHJB"
+      "React",
+      "Three.js",
+      "React Three Fiber",
+      "Tailwind CSS",
+      "Node.js"
     ],
-    "createdAt": "2025-12-23T23:25:41.771Z"
+    "links": [],
+    "showOnHome": true,
+    "createdAt": "2025-12-27T20:17:06.969Z"
+  },
+  {
+    "id": 1766866627003,
+    "title": "Coffee Brain — Café Management System",
+    "desc": "Full café management system with AI-powered barista.",
+    "fullDescription": "A complete system for managing café operations including inventory, sales, reports, and AI-driven drink recommendations.",
+    "features": [
+      "Inventory and raw material tracking",
+      "Sales and reporting dashboards",
+      "AI barista recommendations",
+      "Admin management system"
+    ],
+    "challenges": [
+      "Designing scalable data structure",
+      "Integrating AI logic smoothly",
+      "Reducing manual operational errors"
+    ],
+    "results": "Reduced manual tracking errors by 30% and improved operational efficiency.",
+    "img": "",
+    "images": [],
+    "tag": "Fullstack",
+    "tech": ["React", "Django", "AI", "PostgreSQL"],
+    "links": [],
+    "showOnHome": true,
+    "createdAt": "2025-12-27T20:17:06.969Z"
+  },
+  {
+    "id": 1766866627004,
+    "title": "Coffee Brain — Brand Website",
+    "desc": "Marketing website for Coffee Brain brand.",
+    "fullDescription": "A visually strong marketing website designed to reflect the Coffee Brain identity with motion and SEO optimization.",
+    "features": [
+      "Strong hero section branding",
+      "Responsive layouts",
+      "Smooth UI animations",
+      "SEO optimization"
+    ],
+    "challenges": [
+      "Balancing visuals with loading speed",
+      "Maintaining brand consistency",
+      "SEO optimization with animations"
+    ],
+    "results": "Improved brand presence and search visibility.",
+    "img": "",
+    "images": [],
+    "tag": "Frontend",
+    "tech": ["React", "Tailwind CSS", "SEO"],
+    "links": [],
+    "showOnHome": false,
+    "createdAt": "2025-12-27T20:17:06.969Z"
+  },
+  {
+    "id": 1766866627005,
+    "title": "SpaceTechs — Analytics Dashboard",
+    "desc": "Analytics dashboard for data visualization.",
+    "fullDescription": "A modular dashboard designed to visualize performance and user metrics clearly.",
+    "features": [
+      "Dynamic charts",
+      "Reusable dashboard components",
+      "Mobile responsive layout"
+    ],
+    "challenges": [
+      "Optimizing chart rendering",
+      "Handling dynamic datasets",
+      "Responsive dashboard layout"
+    ],
+    "results": "Clear data insights with smooth rendering across devices.",
+    "img": "",
+    "images": [],
+    "tag": "Dashboard",
+    "tech": ["React", "Chart.js", "Tailwind CSS"],
+    "links": [],
+    "showOnHome": false,
+    "createdAt": "2025-12-27T20:17:06.969Z"
+  },
+  {
+    "id": 1766866627006,
+    "title": "Flutter To-Do App",
+    "desc": "Cross-platform productivity app.",
+    "fullDescription": "A Flutter-based mobile app with real-time synchronization and customizable UI.",
+    "features": [
+      "Real-time sync with Firebase",
+      "Recurring reminders",
+      "Dark mode support"
+    ],
+    "challenges": [
+      "State management across platforms",
+      "Offline-first handling",
+      "UI consistency"
+    ],
+    "results": "Increased user engagement by 25% and retention by 15%.",
+    "img": "",
+    "images": [],
+    "tag": "Mobile",
+    "tech": ["Flutter", "Firebase"],
+    "links": [],
+    "showOnHome": true,
+    "createdAt": "2025-12-27T20:17:06.969Z"
   }
 ]
