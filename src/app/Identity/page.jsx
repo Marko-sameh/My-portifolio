@@ -58,6 +58,10 @@ export default function IdentityPage() {
                 <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
                   What began as experimentation slowly evolved into building complete frontend products.
                 </p>
+                <div className="bg-white/5 rounded-lg p-4 mt-4 border border-white/10">
+                  <p className="text-sm text-gray-400 font-medium mb-2">What this means for you:</p>
+                  <p className="text-gray-300">I don't just follow trends. I understand the "why" behind every design decision, which means your website will be built on solid principles, not guesswork.</p>
+                </div>
               </div>
               
               <div>
@@ -71,6 +75,10 @@ export default function IdentityPage() {
                   <li>• Interfaces communicate decisions</li>
                   <li>• Structure and clarity matter more than complexity</li>
                 </ul>
+                <div className="bg-white/5 rounded-lg p-4 mt-4 border border-white/10">
+                  <p className="text-sm text-gray-400 font-medium mb-2">What this means for you:</p>
+                  <p className="text-gray-300">Your project gets a developer who thinks like a business owner. I focus on what actually moves your business forward, not just what looks impressive.</p>
+                </div>
               </div>
             </div>
             
@@ -96,6 +104,10 @@ export default function IdentityPage() {
               <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
                 I'm also exploring how intelligent systems and AI can subtly enhance user experience — without adding noise or confusion.
               </p>
+              <div className="bg-white/5 rounded-lg p-4 mt-4 border border-white/10">
+                <p className="text-sm text-gray-400 font-medium mb-2">What this means for you:</p>
+                <p className="text-gray-300">You get websites built with proven, industry-standard tools that won't become outdated next year. Plus, smart features that actually help your users, not distract them.</p>
+              </div>
             </div>
             
             <div>
@@ -117,6 +129,29 @@ export default function IdentityPage() {
                     <p className="text-gray-300">{principle}</p>
                   </motion.div>
                 ))}
+              </div>
+              <div className="bg-white/5 rounded-lg p-4 mt-4 border border-white/10">
+                <p className="text-sm text-gray-400 font-medium mb-2">What this means for you:</p>
+                <p className="text-gray-300">No confusing interfaces or slow websites. Every decision is made with your users and business goals in mind, resulting in websites that actually work for your business.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* How This Experience Helps You Section */}
+          <div className="bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-2xl p-6 sm:p-8 border border-white/10 mb-16 sm:mb-20">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">How This Experience Helps You</h2>
+            <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Reliable Delivery</h3>
+                <p className="text-gray-300">Years of learning from mistakes means I anticipate problems before they happen. Your project stays on schedule and on budget.</p>
+              </div>
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Clear Communication</h3>
+                <p className="text-gray-300">I've learned to explain technical decisions in business terms. You'll always understand what's happening and why it matters to your goals.</p>
+              </div>
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Future-Proof Solutions</h3>
+                <p className="text-gray-300">My focus on fundamentals over trends means your website will remain effective and maintainable as your business grows.</p>
               </div>
             </div>
           </div>

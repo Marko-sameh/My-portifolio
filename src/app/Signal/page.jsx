@@ -85,42 +85,70 @@ export default function SignalPage() {
               </div>
             </div>
 
+            {/* Why This Matters When Choosing a Developer */}
             <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-              <h2 className="text-2xl font-bold mb-6">Get In Touch</h2>
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    className="px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all"
-                  />
+              <h2 className="text-2xl font-bold mb-6">Why This Matters When Choosing a Developer</h2>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--accent)' }}>Transparent Track Record</h3>
+                  <p className="text-gray-300 text-sm mb-2">You can see my actual work, not just promises. Every project showcases real problems solved for real businesses.</p>
+                  <p className="text-xs text-gray-400">No hidden failures or cherry-picked examples</p>
                 </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--accent)' }}>Consistent Quality</h3>
+                  <p className="text-gray-300 text-sm mb-2">11+ successful projects demonstrate reliable delivery and satisfied clients, not just technical skill.</p>
+                  <p className="text-xs text-gray-400">Pattern of success you can count on</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--accent)' }}>Professional Presence</h3>
+                  <p className="text-gray-300 text-sm mb-2">Active online presence and detailed project documentation show commitment to the craft and client communication.</p>
+                  <p className="text-xs text-gray-400">You're working with a professional, not a hobbyist</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-3" style={{ color: 'var(--accent)' }}>Long-term Thinking</h3>
+                  <p className="text-gray-300 text-sm mb-2">Investment in learning and experimentation means your project benefits from current best practices and future-ready solutions.</p>
+                  <p className="text-xs text-gray-400">Your website won't become outdated quickly</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form Section */}
+          <div className="bg-white/5 rounded-2xl p-8 border border-white/10 mb-20">
+            <h2 className="text-2xl font-bold mb-6 text-center">Get In Touch</h2>
+            <form className="space-y-6 max-w-2xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-4">
                 <input
                   type="text"
-                  placeholder="Subject"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all"
+                  placeholder="Your name"
+                  className="px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all"
                 />
-                <textarea
-                  placeholder="Your message..."
-                  rows={6}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all resize-none"
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all"
                 />
-                <motion.button
-                  type="submit"
-                  className="w-full px-6 py-3 bg-gradient-to-r from-[var(--background)] to-[var(--accent)] rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Send Signal
-                  <Send size={18} />
-                </motion.button>
-              </form>
-            </div>
+              </div>
+              <input
+                type="text"
+                placeholder="Subject"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all"
+              />
+              <textarea
+                placeholder="Your message..."
+                rows={6}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all resize-none"
+              />
+              <motion.button
+                type="submit"
+                className="w-full px-6 py-3 bg-gradient-to-r from-[var(--background)] to-[var(--accent)] rounded-lg font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Send Signal
+                <Send size={18} />
+              </motion.button>
+            </form>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 mb-20">
@@ -134,18 +162,12 @@ export default function SignalPage() {
                     <p className="text-gray-400">markosameh75@gmail.com</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg border border-white/10">
-                  <Phone className="w-6 h-6" style={{ color: 'var(--accent)' }} />
-                  <div>
-                    <p className="font-semibold">Phone</p>
-                    <p className="text-gray-400">+201203113955</p>
-                  </div>
-                </div>
+
                 <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg border border-white/10">
                   <MapPin className="w-6 h-6" style={{ color: 'var(--accent)' }} />
                   <div>
                     <p className="font-semibold">Location</p>
-                    <p className="text-gray-400">Mokattam, Cairo, Egypt</p>
+                    <p className="text-gray-400"> Cairo, Egypt</p>
                   </div>
                 </div>
               </div>
@@ -171,18 +193,19 @@ export default function SignalPage() {
               </div>
 
               <div className="mt-8 p-6 bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-lg border border-white/10">
-                <h3 className="font-semibold mb-2">Response Time</h3>
-                <p className="text-gray-300 text-sm">I typically respond within 24 hours. For urgent projects, please mention it in your message.</p>
+                <h3 className="font-semibold mb-2">What This Visibility Means</h3>
+                <p className="text-gray-300 text-sm mb-2">My active presence on professional platforms demonstrates accountability and ongoing commitment to quality work.</p>
+                <p className="text-xs text-gray-400">You can verify my experience and see feedback from other clients</p>
               </div>
             </div>
           </div>
 
-          {/* <CTASection 
+          <CTASection
             headline="Ready to start?"
             description="The best projects begin with a simple conversation about your goals and vision."
             buttonText="Send a message"
             href="#contact-form"
-          /> */}
+          />
         </motion.div>
       </div>
     </div>
