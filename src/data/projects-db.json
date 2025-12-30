@@ -59,9 +59,15 @@
       "Tailwind CSS",
       "Node.js"
     ],
-    "links": [],
+    "links": [
+      {
+        "label": "Live demo",
+        "url": "https://spacetechs.markosameh.com/"
+      }
+    ],
     "showOnHome": true,
-    "createdAt": "2025-12-27T20:17:06.969Z"
+    "createdAt": "2025-12-27T20:17:06.969Z",
+    "updatedAt": "2025-12-29T22:28:57.646Z"
   },
   {
     "id": 1766866627003,
@@ -83,10 +89,21 @@
     "img": "",
     "images": [],
     "tag": "Fullstack",
-    "tech": ["React", "Django", "AI", "PostgreSQL"],
-    "links": [],
+    "tech": [
+      "React",
+      "Django",
+      "AI",
+      "PostgreSQL"
+    ],
+    "links": [
+      {
+        "label": "Youtube",
+        "url": "https://youtu.be/YQhEgBhYcdo?si=Mlh9ek4oLdLRlAqL"
+      }
+    ],
     "showOnHome": true,
-    "createdAt": "2025-12-27T20:17:06.969Z"
+    "createdAt": "2025-12-27T20:17:06.969Z",
+    "updatedAt": "2025-12-29T22:31:56.365Z"
   },
   {
     "id": 1766866627004,
@@ -108,10 +125,20 @@
     "img": "",
     "images": [],
     "tag": "Frontend",
-    "tech": ["React", "Tailwind CSS", "SEO"],
-    "links": [],
+    "tech": [
+      "React",
+      "Tailwind CSS",
+      "SEO"
+    ],
+    "links": [
+      {
+        "label": "youtube",
+        "url": "https://youtu.be/YQhEgBhYcdo?si=Mlh9ek4oLdLRlAqL"
+      }
+    ],
     "showOnHome": false,
-    "createdAt": "2025-12-27T20:17:06.969Z"
+    "createdAt": "2025-12-27T20:17:06.969Z",
+    "updatedAt": "2025-12-29T22:32:15.484Z"
   },
   {
     "id": 1766866627005,
@@ -132,7 +159,11 @@
     "img": "",
     "images": [],
     "tag": "Dashboard",
-    "tech": ["React", "Chart.js", "Tailwind CSS"],
+    "tech": [
+      "React",
+      "Chart.js",
+      "Tailwind CSS"
+    ],
     "links": [],
     "showOnHome": false,
     "createdAt": "2025-12-27T20:17:06.969Z"
@@ -156,7 +187,10 @@
     "img": "",
     "images": [],
     "tag": "Mobile",
-    "tech": ["Flutter", "Firebase"],
+    "tech": [
+      "Flutter",
+      "Firebase"
+    ],
     "links": [],
     "showOnHome": true,
     "createdAt": "2025-12-27T20:17:06.969Z"

@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
-import logo from "../../../public/logo-removebg-preview.png"
+import logo from "@/../public/logo-removebg-preview.png"
+import { useRecruiterMode } from '@/contexts/RecruiterModeContext';
+import RecruiterNav from './RecruiterNav';
 
 const NAV_ITEMS = [
   { path: "/", label: "Home" },
@@ -21,7 +23,17 @@ export default function Nav() {
   const pathname = usePathname();
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [bannerVisible, setBannerVisible] = useState(true);
   const lastScrollY = useRef(0);
+  const { isRecruiterMode } = useRecruiterMode();
+
+  useEffect(() => {
+    const handleBannerChange = (e) => setBannerVisible(e.detail);
+    window.addEventListener('bannerVisibilityChange', handleBannerChange);
+    setBannerVisible(window.bannerVisible ?? true);
+    return () => window.removeEventListener('bannerVisibilityChange', handleBannerChange);
+  }, []);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,10 +46,15 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  if (isRecruiterMode) {
+    return <RecruiterNav></RecruiterNav>
+  }
+
   return (
     <>
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 ${isNavVisible ? "translate-y-0" : "-translate-y-full"}`}
+        className={`fixed left-0 right-0 z-30 transition-all duration-300 ${isNavVisible ? "translate-y-0" : "-translate-y-full"}`}
+        style={{ top: bannerVisible ? '64px' : '0px' }}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.7 }}

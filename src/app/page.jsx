@@ -5,6 +5,7 @@ import HeroBanner from "@/components/ui/HeroBanner";
 import MasterySection from "@/components/ui/MasterySection";
 import BeyondSection from "@/components/ui/BeyondSection";
 import SignalSection from "@/components/ui/SignalSection";
+import RecruiterBanner from "@/components/ui/RecruiterBanner";
 
 
 
@@ -25,6 +26,7 @@ export default function Page() {
 
   return (
     <div className="relative bg-black text-white overflow-x-hidden ">
+      <RecruiterBanner />
       <HeroBanner></HeroBanner>
       <IdentitySection></IdentitySection>
       <MasterySection></MasterySection>

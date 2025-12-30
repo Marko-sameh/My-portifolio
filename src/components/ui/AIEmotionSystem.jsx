@@ -68,9 +68,9 @@ export default function AIEmotionSystem() {
         {/* Tooltip */}
         {showTooltip && (
           <>
-            <div className="fixed inset-0 bg-black/20 z-[998]" />
+            {/* <div className="fixed inset-0 bg-black/20 z-[998]" /> */}
             <div className="fixed bottom-[90px] right-[20px] sm:right-[50px] z-[999] bg-black/90 backdrop-blur-sm text-[var(--primary)] px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm border border-white/20 animate-pulse shadow-2xl max-w-[280px] sm:max-w-none">
-              Try it — the system analyzes emotional tone and changes the website's colors accordingly
+              Try it — the system analyzes emotional tone and changes the {"website's"} colors accordingly
               <div className="absolute top-full right-[15px] w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black/90"></div>
             </div>
           </>

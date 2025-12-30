@@ -1,21 +1,17 @@
 "use client";
-
 import { motion } from "framer-motion";
-import { ArrowLeft, BookOpen, Film, Play } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-// import Nav from "@/components/ui/Nav";
+import Image from "next/image";
+import CTASection from "@/components/ui/CTASection";
 
-export default function Prologue() {
+export default function IdentityPage() {
   return (
-    <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
-      {/* <Nav /> */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-950/20 via-black to-black" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-40">
+    <div className="min-h-screen bg-black text-white py-10 sm:py-16 lg:py-20 px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto">
         <Link href="/">
           <motion.button
-            className="mb-12 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+            className="mb-8 sm:mb-12 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
             whileHover={{ x: -5 }}
           >
             <ArrowLeft size={20} />
@@ -27,91 +23,131 @@ export default function Prologue() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
         >
-          <h1 className="text-5xl md:text-7xl font-bold mb-6" style={{background: 'linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
-            Where the Developer Was Born
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-center bg-gradient-to-r from-white to-[var(--accent)] bg-clip-text text-transparent">
+            Identity
           </h1>
-          <div className="h-1 w-32 mx-auto rounded-full mb-8" style={{background: 'linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary))'}} />
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            A developer driven by passion for React, Next.js, Node, and AI — building smart systems that matter
-          </p>
-        </motion.div>
+          <p className="text-lg sm:text-xl text-center text-gray-400 mb-12 sm:mb-16">Where It Started</p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="max-w-4xl mx-auto mb-20 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-10"
-        >
-          <h2 className="text-3xl font-bold mb-6" style={{color: 'var(--emotion-primary)'}}>Origin Story</h2>
-          <p className="text-gray-300 leading-relaxed mb-4">
-            My journey into development began with curiosity — a fascination with how digital experiences shape our world. What started as tinkering with code evolved into a passion for crafting intelligent, user-centric applications.
-          </p>
-          <p className="text-gray-300 leading-relaxed">
-            Today, I specialize in React, Next.js, Node.js, and AI integration — building systems that are not just functional, but transformative.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mb-20"
-        >
-          <h2 className="text-3xl font-bold mb-10 text-center">The Timeline</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: BookOpen, title: "First Line of Code", desc: "The spark that ignited everything" },
-              { icon: Film, title: "First Big Project", desc: "Turning vision into reality" },
-              { icon: Play, title: "Today — Building Smart Systems", desc: "AI-powered, scalable solutions" }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + i * 0.2 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-4 rounded-3xl opacity-20 group-hover:opacity-30 blur-2xl transition-opacity" style={{background: 'linear-gradient(135deg, var(--emotion-primary), var(--emotion-secondary))'}} />
-                <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 hover:border-white/30 transition-all" style={{'--hover-border': 'var(--emotion-primary)'}}>
-                  <item.icon className="w-12 h-12 mb-6" style={{color: 'var(--emotion-primary)'}} />
-                  <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                  <p className="text-gray-400">{item.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+          {/* Marketing Section for Non-Technical Clients */}
+          <div className="bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-2xl p-6 sm:p-8 border border-white/10 mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">Why Business Owners Choose Me</h2>
+            <div className="grid md:grid-cols-3 gap-6 sm:gap-8 text-center">
+              <div>
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>I Understand Your Business</h3>
+                <p className="text-gray-300">You need a website that brings customers and grows revenue. I focus on what matters to your bottom line, not just pretty designs.</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Clear Communication</h3>
+                <p className="text-gray-300">No confusing tech talk. I explain everything in plain English and keep you updated every step of the way.</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Proven Results</h3>
+                <p className="text-gray-300">My websites help businesses get found online, convert visitors into customers, and grow faster than their competition.</p>
+              </div>
+            </div>
           </div>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3 }}
-        >
-          <h2 className="text-3xl font-bold mb-10 text-center">Key Powers</h2>
-          <div className="grid md:grid-cols-5 gap-6">
-            {[
-              { label: "Vision", skill: "UI/UX", color: "from-blue-500 to-cyan-500" },
-              { label: "Control", skill: "React Mastery", color: "from-cyan-500 to-teal-500" },
-              { label: "Speed", skill: "Next.js", color: "from-teal-500 to-green-500" },
-              { label: "Power", skill: "Node & Express", color: "from-green-500 to-blue-500" },
-              { label: "Future", skill: "AI & ML", color: "from-blue-500 to-purple-500" }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.5 + i * 0.1 }}
-                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 text-center hover:border-blue-500/30 transition-all"
-              >
-                <div className={`text-2xl font-bold mb-2 bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
-                  {item.label}
-                </div>
-                <div className="text-sm text-gray-400">{item.skill}</div>
-              </motion.div>
-            ))}
+          <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 mb-16 sm:mb-20">
+            <div className="space-y-6 sm:space-y-8">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--accent)' }}>Where It Started</h2>
+                <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-4 sm:mb-6">
+                  My journey into development started with curiosity — a desire to understand how interfaces work and how users experience digital systems.
+                </p>
+                <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+                  What began as experimentation slowly evolved into building complete frontend products.
+                </p>
+              </div>
+              
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--accent)' }}>How It Evolved</h2>
+                <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-4">
+                  Over time, I moved from writing code to designing solutions.
+                </p>
+                <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-4">I learned that:</p>
+                <ul className="space-y-2 text-gray-300 ml-6">
+                  <li>• Code is a tool, not the goal</li>
+                  <li>• Interfaces communicate decisions</li>
+                  <li>• Structure and clarity matter more than complexity</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl opacity-20 blur-2xl" />
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 h-64 sm:h-80 lg:h-96">
+                <Image
+                  src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=900&q=80"
+                  alt="Developer workspace"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
           </div>
+          
+          <div className="grid md:grid-cols-2 gap-12 sm:gap-16 mb-16 sm:mb-20">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--accent)' }}>Today</h2>
+              <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-4 sm:mb-6">
+                Today, I work mainly with React and Next.js, building interfaces that balance aesthetics, performance, and maintainability.
+              </p>
+              <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+                I'm also exploring how intelligent systems and AI can subtly enhance user experience — without adding noise or confusion.
+              </p>
+            </div>
+            
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--accent)' }}>Principles I Work By</h2>
+              <div className="space-y-4">
+                {[
+                  "Clarity over cleverness",
+                  "Performance is not optional", 
+                  "Design must serve purpose",
+                  "Good interfaces feel effortless"
+                ].map((principle, i) => (
+                  <motion.div
+                    key={i}
+                    className="p-4 bg-white/5 rounded-lg border border-white/10"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <p className="text-gray-300">{principle}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">Professional Background</h2>
+            <div className="grid md:grid-cols-3 gap-6 sm:gap-8 text-center">
+              <div>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--accent)' }}>Education</h3>
+                <p className="text-gray-300">Dual Degree Program</p>
+                <p className="text-sm text-gray-400">Future University in Egypt & University of Cincinnati</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--accent)' }}>Experience</h3>
+                <p className="text-gray-300">Frontend Developer</p>
+                <p className="text-sm text-gray-400">11+ Projects Delivered</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--accent)' }}>Location</h3>
+                <p className="text-gray-300">Cairo, Egypt</p>
+                <p className="text-sm text-gray-400">Working Globally</p>
+              </div>
+            </div>
+          </div>
+
+          <CTASection 
+            headline="Want to know how I work?"
+            description="Every project starts with understanding your goals and building the right solution together."
+            buttonText="Start a conversation"
+            href="/Signal"
+          />
         </motion.div>
       </div>
     </div>

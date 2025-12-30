@@ -37,6 +37,8 @@ import "../styles/page-emotions.css";
 import Nav from "../components/ui/Nav";
 import AIEmotionSystem from "../components/ui/AIEmotionSystem";
 import Footer from "@/components/ui/Footer";
+import ModeToggle from "@/components/ui/ModeToggle";
+import { RecruiterModeProvider } from "@/contexts/RecruiterModeContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -68,10 +70,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased emotion-aware`}
       >
-        <Nav />
-        <AIEmotionSystem />
-        {children}
-        <Footer />
+        <RecruiterModeProvider>
+          <Nav />
+          <AIEmotionSystem />
+          <ModeToggle />
+          {children}
+          <Footer />
+        </RecruiterModeProvider>
       </body>
     </html>
   );

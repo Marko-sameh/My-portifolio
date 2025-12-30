@@ -1,19 +1,37 @@
 "use client";
-
 import { motion } from "framer-motion";
-import { ArrowLeft, Rocket, Sparkles, Globe } from "lucide-react";
+import { ArrowLeft, Sparkles, Brain, Rocket, Eye, Lightbulb } from "lucide-react";
 import Link from "next/link";
+import CTASection from "@/components/ui/CTASection";
 
-export default function Beyond() {
+export default function BeyondPage() {
+  const experiments = [
+    {
+      icon: Sparkles,
+      title: "Emotion-Adaptive Interfaces",
+      desc: "Exploring how interfaces can subtly respond to user emotional states, creating more empathetic digital experiences without being intrusive.",
+      impact: "Deeper user engagement through intelligent adaptation"
+    },
+    {
+      icon: Brain,
+      title: "Intelligent UI Behavior",
+      desc: "Developing interfaces that learn from user patterns and optimize themselves for better usability and efficiency over time.",
+      impact: "Self-improving systems that enhance productivity"
+    },
+    {
+      icon: Eye,
+      title: "Subtle AI-Driven Personalization",
+      desc: "Creating personalized experiences that feel natural and helpful, not algorithmic or overwhelming.",
+      impact: "Personalization that enhances rather than distracts"
+    }
+  ];
+
   return (
-    <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/20 via-black to-black" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-40">
+    <div className="min-h-screen bg-black text-white py-10 sm:py-16 lg:py-20 px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto">
         <Link href="/">
           <motion.button
-            className="mb-12 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+            className="mb-8 sm:mb-12 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
             whileHover={{ x: -5 }}
           >
             <ArrowLeft size={20} />
@@ -25,91 +43,96 @@ export default function Beyond() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
         >
-          <h1 className="text-5xl md:text-7xl font-bold mb-6" style={{background: 'linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-center bg-gradient-to-r from-white to-[var(--accent)] bg-clip-text text-transparent">
             Beyond
           </h1>
-          <div className="h-1 w-32 mx-auto rounded-full mb-8" style={{background: 'linear-gradient(to right, var(--emotion-primary), var(--emotion-secondary))'}} />
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            The Future — Transcending Boundaries
-          </p>
-        </motion.div>
+          <p className="text-lg sm:text-xl text-center text-gray-400 mb-12 sm:mb-16">Exploration & Experimentation</p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="max-w-4xl mx-auto mb-20 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-10"
-        >
-          <h2 className="text-3xl font-bold mb-6" style={{color: 'var(--emotion-primary)'}}>🌌 Where I'm Going</h2>
-          <ul className="space-y-3 text-lg text-gray-300">
-            <li>• AI-integrated web apps</li>
-            <li>• Advanced ML implementations</li>
-            <li>• 3D Web experiences</li>
-            <li>• Full SaaS platforms</li>
-          </ul>
-        </motion.div>
+          {/* Marketing Section for Non-Technical Clients */}
+          <div className="bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-2xl p-8 border border-white/10 mb-16">
+            <h2 className="text-3xl font-bold mb-6 text-center">Staying Ahead for Your Business</h2>
+            <div className="text-center max-w-4xl mx-auto">
+              <p className="text-xl text-gray-300 mb-6">
+                While others stick to what they know, I'm constantly exploring what's next. This means your website won't become outdated in two years.
+              </p>
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Future-Proof Solutions</h3>
+                  <p className="text-gray-300">I build websites that adapt and grow with new technologies, keeping you competitive without constant rebuilds.</p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Smart Innovation</h3>
+                  <p className="text-gray-300">I only use new technologies when they solve real business problems, not just because they're trendy.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mb-20"
-        >
-          <h2 className="text-3xl font-bold mb-10 text-center">📡 Roadmap</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { time: "6 months", goal: "Senior Frontend Skills", desc: "Master advanced React patterns & Next.js" },
-              { time: "12 months", goal: "AI Product Builder", desc: "Ship production ML-powered apps" },
-              { time: "2 years", goal: "Remote Full-Stack Developer", desc: "Build & scale global products" }
-            ].map((item, i) => (
+          <div className="mb-20">
+            <p className="text-2xl text-center text-gray-300 leading-relaxed max-w-4xl mx-auto mb-12">
+              Beyond client work, I experiment with ideas that push my thinking and explore the future of user interfaces.
+            </p>
+          </div>
+          
+          <div className="space-y-12 mb-20">
+            {experiments.map((experiment, index) => (
               <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + i * 0.2 }}
-                className="relative group"
+                key={index}
+                className="grid lg:grid-cols-3 gap-8 items-center"
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.2 }}
               >
-                <div className="absolute -inset-4 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-3xl opacity-20 group-hover:opacity-30 blur-2xl transition-opacity" />
-                <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 hover:border-indigo-500/30 transition-all">
-                  <div className="font-bold mb-2" style={{color: 'var(--emotion-primary)'}}>{item.time}</div>
-                  <h3 className="text-2xl font-bold mb-4">{item.goal}</h3>
-                  <p className="text-gray-400">{item.desc}</p>
+                <div className="bg-white/5 rounded-2xl p-8 border border-white/10 hover:border-[var(--accent)]/30 transition-all">
+                  <experiment.icon className="w-16 h-16 mb-6" style={{ color: 'var(--accent)' }} />
+                  <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--accent)' }}>{experiment.title}</h2>
+                </div>
+                
+                <div className="lg:col-span-2 space-y-4">
+                  <p className="text-lg text-gray-300 leading-relaxed">{experiment.desc}</p>
+                  <div className="bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-lg p-4 border border-white/10">
+                    <h3 className="font-semibold mb-2" style={{ color: 'var(--accent)' }}>Impact</h3>
+                    <p className="text-gray-300">{experiment.impact}</p>
+                  </div>
                 </div>
               </motion.div>
             ))}
           </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3 }}
-        >
-          <h2 className="text-3xl font-bold mb-10 text-center">🌠 Future Projects — Coming Soon</h2>
-          <div className="grid md:grid-cols-3 gap-10">
-            {[
-              { icon: Sparkles, title: "AI Mood Color Engine", desc: "Emotion-driven design system" },
-              { icon: Rocket, title: "Smart Agency SaaS", desc: "AI-powered project management" },
-              { icon: Globe, title: "CoffeeBrain v2", desc: "Next-gen recommendation engine" }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.5 + i * 0.15 }}
-                className="relative group"
-              >
-                <div className="absolute -inset-4 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-3xl opacity-20 group-hover:opacity-30 blur-2xl transition-opacity" />
-                <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 hover:border-indigo-500/30 transition-all">
-                  <item.icon className="w-12 h-12 mb-6" style={{color: 'var(--emotion-primary)'}} />
-                  <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                  <p className="text-gray-400">{item.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+          
+          <div className="bg-white/5 rounded-2xl p-8 border border-white/10 mb-20">
+            <Lightbulb className="w-12 h-12 mb-6 mx-auto" style={{ color: 'var(--accent)' }} />
+            <h2 className="text-3xl font-bold mb-6 text-center">Why It Matters</h2>
+            <div className="grid md:grid-cols-3 gap-8 text-center">
+              <div>
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Refine Approach</h3>
+                <p className="text-gray-300">These experiments help me continuously improve my development methodology and problem-solving skills.</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Stay Ahead</h3>
+                <p className="text-gray-300">By exploring emerging technologies, I can anticipate trends and prepare for future client needs.</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-3" style={{ color: 'var(--accent)' }}>Deeper Thinking</h3>
+                <p className="text-gray-300">Experimental work brings innovative perspectives and solutions into production projects.</p>
+              </div>
+            </div>
           </div>
+          
+          <div className="text-center bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-2xl p-8 border border-white/10">
+            <Rocket className="w-16 h-16 mb-6 mx-auto" style={{ color: 'var(--accent)' }} />
+            <h2 className="text-2xl font-bold mb-4">This is where curiosity turns into capability.</h2>
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              Every experiment, every exploration, every "what if" question contributes to building better, more thoughtful digital experiences.
+            </p>
+          </div>
+
+          <CTASection 
+            headline="Curious about what's possible?"
+            description="Innovation isn't about using the latest technology—it's about solving tomorrow's problems today."
+            buttonText="Discover more"
+            href="/Signal"
+          />
         </motion.div>
       </div>
     </div>

@@ -3,9 +3,18 @@ import { motion } from "framer-motion";
 import { links } from "./SignalSection";
 import logo from "@/../public/logo-removebg-preview.png"
 import Image from "next/image";
+import { useRecruiterMode } from "@/contexts/RecruiterModeContext";
+import RecruiterFooter from "./RecruiterFooter";
 const SECTIONS = ["Home", "Identity", "Mastery", "Builds", "Core", "Beyond", "Signal"];
 
 function Footer({ }) {
+
+    const { isRecruiterMode } = useRecruiterMode();
+
+    if (isRecruiterMode) {
+        return <RecruiterFooter />
+    }
+
     return <footer className="relative pb-4 sm:pb-6 pt-6 sm:pt-6 px-4 sm:px-6 border-t border-white/10 bg-gradient-to-b from-black via-green-950/10 to-black">
         <div className="max-w-7xl mx-auto">
             <motion.div
