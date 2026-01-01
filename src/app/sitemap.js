@@ -1,8 +1,11 @@
 import { seoData } from '@/data/seo';
 
-export default function sitemap() {
+import { getProjectsSEO } from '@/lib/dynamicSEO';
+
+export default async function sitemap() {
   const baseUrl = seoData.site.url;
   const currentDate = new Date().toISOString();
+  const projectsSEO = await getProjectsSEO();
 
   const routes = [
     {
@@ -53,6 +56,12 @@ export default function sitemap() {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    ...projectsSEO.map(project => ({
+      url: `${baseUrl}/Builds/${project.id}`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    }))
   ];
 
   return routes;

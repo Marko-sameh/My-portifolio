@@ -22,7 +22,7 @@ export const seoData = {
 
   pages: {
     home: {
-      title: "Marko Sameh - Frontend Developer & Web Solutions Architect",
+      title: "Frontend Developer Portfolio | Marko Sameh",
       description:
         "Transform your digital presence with expert frontend development. Specializing in React, Next.js, and performance-optimized web applications that drive business results.",
       keywords: [
@@ -89,8 +89,7 @@ export const seoData = {
     },
 
     identity: {
-      title:
-        "About Marko Sameh - Frontend Developer Journey & Professional Background",
+      title: "About Frontend Developer | Marko Sameh",
       description:
         "Discover the journey of a passionate frontend developer. From challenges to expertise, learn how Marko Sameh transforms complex problems into elegant web solutions.",
       keywords: [
@@ -124,7 +123,7 @@ export const seoData = {
     },
 
     mastery: {
-      title: "Technical Skills & Frontend Development Expertise - Marko Sameh",
+      title: "Frontend Technical Skills | Marko Sameh",
       description:
         "Comprehensive overview of frontend development skills: React, Next.js, TypeScript, performance optimization, and modern web technologies. Proven expertise in delivering results.",
       keywords: [
@@ -178,7 +177,7 @@ export const seoData = {
     },
 
     builds: {
-      title: "Web Development Projects & Portfolio - Marko Sameh",
+      title: "Frontend Projects Portfolio | Marko Sameh",
       description:
         "Explore real-world web development projects showcasing React, Next.js, and modern frontend solutions. See how technical expertise translates to business results.",
       keywords: [
@@ -212,7 +211,7 @@ export const seoData = {
     },
 
     core: {
-      title: "Development Philosophy & Approach - Marko Sameh",
+      title: "Frontend Development Philosophy | Marko Sameh",
       description:
         "Understand the core principles driving exceptional web development: user-first design, performance optimization, clean code, and business-focused solutions.",
       keywords: [
@@ -246,7 +245,7 @@ export const seoData = {
     },
 
     beyond: {
-      title: "Innovation & Future Vision - Advanced Web Development",
+      title: "Future of Frontend Development | Marko Sameh",
       description:
         "Exploring the future of web development: AI integration, performance innovations, and cutting-edge technologies that shape tomorrow's digital experiences.",
       keywords: [
@@ -280,7 +279,7 @@ export const seoData = {
     },
 
     signal: {
-      title: "Contact Marko Sameh - Frontend Developer for Hire",
+      title: "Hire Frontend Developer | Marko Sameh",
       description:
         "Ready to transform your web presence? Contact frontend developer Marko Sameh for React, Next.js, and modern web development projects. Let's build something amazing.",
       keywords: [
