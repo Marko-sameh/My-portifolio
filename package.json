@@ -2,11 +2,27 @@
   "name": "myportfolio",
   "version": "0.1.0",
   "private": true,
+  "description": "Expert frontend developer portfolio showcasing React, Next.js, and modern web development expertise",
+  "keywords": ["frontend", "react", "nextjs", "portfolio", "web-development", "javascript", "typescript"],
+  "author": {
+    "name": "Marko Sameh",
+    "email": "markosameh75@gmail.com",
+    "url": "https://markosameh.dev"
+  },
+  "homepage": "https://markosameh.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Marko-sameh/myportfolio.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "analyze": "ANALYZE=true npm run build",
+    "sitemap": "next-sitemap",
+    "seo:audit": "lighthouse --only-categories=seo --chrome-flags=\"--headless\" --output=html --output-path=./seo-audit.html http://localhost:3000"
   },
   "dependencies": {
     "@huggingface/inference": "^4.13.5",
@@ -18,10 +34,17 @@
     "react-dom": "19.2.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.1.3",
     "@tailwindcss/postcss": "^4",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
+    "lighthouse": "^12.2.1",
+    "next-sitemap": "^4.2.3",
     "tailwindcss": "^4"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }

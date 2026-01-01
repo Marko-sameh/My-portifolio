@@ -67,6 +67,7 @@ function Footer({ }) {
                                 className={`p-2 sm:p-3 bg-white/5 rounded-full border border-white/10 hover:border-white/30 transition-all ${social.color}`}
                                 whileHover={{ scale: 1.1, rotate: 5 }}
                                 whileTap={{ scale: 0.9 }}
+                                target="_blank"
                             >
                                 <social.icon size={18} className="sm:w-5 sm:h-5" />
                             </motion.a>

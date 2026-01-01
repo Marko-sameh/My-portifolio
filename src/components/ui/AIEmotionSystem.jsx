@@ -20,6 +20,7 @@ export default function AIEmotionSystem() {
   const [textInput, setTextInput] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     startDetection();
@@ -45,8 +46,10 @@ export default function AIEmotionSystem() {
 
   const handleAnalyze = async () => {
     if (textInput.trim()) {
+      setIsAnalyzing(true);
       await analyzeText(textInput);
       setTextInput('');
+      setIsAnalyzing(false);
     }
   };
 
@@ -92,12 +95,18 @@ export default function AIEmotionSystem() {
       </div>
 
       <div className="emotion-display">
-        <div
-          className="emotion-badge"
-          style={{ backgroundColor: palette[0] }}
-        >
-          {currentEmotion}
-        </div>
+        {isModelLoading ? (
+          <div className="loading-badge">
+            Loading AI Model...
+          </div>
+        ) : (
+          <div
+            className="emotion-badge"
+            style={{ backgroundColor: palette[0] }}
+          >
+            {currentEmotion}
+          </div>
+        )}
         <p>No data will be saved. Just perception</p>
       </div>
 
@@ -109,8 +118,12 @@ export default function AIEmotionSystem() {
           className="ai-input"
           rows={3}
         />
-        <button onClick={handleAnalyze} className="analyze-btn w-full">
-          Analyze
+        <button 
+          onClick={handleAnalyze} 
+          className="analyze-btn w-full"
+          disabled={isAnalyzing || isModelLoading}
+        >
+          {isAnalyzing ? 'Analyzing...' : 'Analyze'}
         </button>
       </div>
 
@@ -125,8 +138,13 @@ export default function AIEmotionSystem() {
           ].map((test, i) => (
             <button
               key={i}
-              onClick={() => analyzeText(test.text)}
+              onClick={async () => {
+                setIsAnalyzing(true);
+                await analyzeText(test.text);
+                setIsAnalyzing(false);
+              }}
               className="test-btn"
+              disabled={isAnalyzing || isModelLoading}
             >
               Test {test.emotion}
             </button>
@@ -225,6 +243,18 @@ export default function AIEmotionSystem() {
           font-size: 0.9rem;
         }
 
+        .loading-badge {
+          display: inline-block;
+          padding: 0.5rem 1rem;
+          border-radius: 25px;
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          font-weight: 700;
+          margin-bottom: 0.5rem;
+          font-size: 0.9rem;
+          animation: pulse 1.5s ease-in-out infinite;
+        }
+
         @media (min-width: 640px) {
           .emotion-badge {
             padding: 0.75rem 1.5rem;
@@ -269,6 +299,12 @@ export default function AIEmotionSystem() {
           cursor: pointer;
           font-weight: 500;
           font-size: 0.8rem;
+          transition: opacity 0.2s;
+        }
+
+        .analyze-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
         }
 
         @media (min-width: 640px) {
@@ -318,6 +354,20 @@ export default function AIEmotionSystem() {
 
         .test-btn:hover {
           background: rgba(255, 255, 255, 0.2);
+        }
+
+        .test-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
         }
       `}</style>
     </div>

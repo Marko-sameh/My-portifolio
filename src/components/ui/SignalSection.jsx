@@ -3,10 +3,9 @@ import SectionTitle from "./SectionTitle"
 import { Github, Linkedin, Twitter, Mail, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 export const links = [
-    { icon: Github, link: "#", color: "hover:text-[var(--accent)]" },
-    { icon: Linkedin, link: "#", color: "hover:text-[var(--accent)]" },
-    { icon: Twitter, link: "#", color: "hover:text-[var(--accent)]" },
-    { icon: Mail, link: "mailto:marko@example.com", color: "hover:text-[var(--accent)]" },
+    { icon: Github, link: "https://github.com/Marko-sameh", color: "hover:text-[var(--accent)]" },
+    { icon: Linkedin, link: "https://www.linkedin.com/in/marko-sameh-9971b6244", color: "hover:text-[var(--accent)]" },
+    { icon: Mail, link: "mailto:markosameh75@gmail.com", color: "hover:text-[var(--accent)]" },
 ]
 function SignalSection({ }) {
     return <section id="signal" className="relative min-h-screen py-20 sm:py-32 md:py-40 px-4 sm:px-6">
@@ -69,6 +68,7 @@ function SignalSection({ }) {
                                     className={`p-3 sm:p-4 bg-white/5 rounded-full border border-white/10 hover:border-white/30 transition-all ${social.color}`}
                                     whileHover={{ scale: 1.1, rotate: 5 }}
                                     whileTap={{ scale: 0.9 }}
+                                    target="_blank"
                                 >
                                     <social.icon size={20} className="sm:w-6 sm:h-6" />
                                 </motion.a>

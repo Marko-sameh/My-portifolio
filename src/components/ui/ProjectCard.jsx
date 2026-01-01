@@ -42,7 +42,7 @@ export default function ProjectCard({ project, index }) {
                     </div>
                     <div className="flex gap-3">
                         <motion.a
-                            href={`/Builds/${project.id}`}
+                            href={`/Builds/${encodeURIComponent(project.title.toLowerCase().replace(/\s+/g, '-'))}`}
                             className="flex-1 px-4 py-2 bg-gradient-to-r from-[var(--background)] to-[var(--accent)] rounded-lg text-sm font-medium text-center"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
