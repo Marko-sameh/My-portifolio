@@ -4,31 +4,30 @@ export const seoData = {
     name: "Marko Sameh - Frontend Developer",
     url: "https://markosameh.com",
     description:
-      "Expert frontend developer specializing in React, Next.js, and modern web applications. Delivering high-performance, user-focused solutions for businesses worldwide.",
+      "Frontend developer specializing in React, Next.js, and modern web applications. Delivering high-performance, user-focused solutions for businesses worldwide.",
     author: "Marko Sameh",
     keywords: [
       "frontend developer",
       "React developer",
-      "Next.js expert",
+      "Next.js developer",
       "web development",
       "JavaScript",
       "TypeScript",
       "UI/UX",
       "performance optimization",
     ],
-    image: "/og-image.jpg",
+    image: "/icon.png",
     twitterHandle: "@markosameh",
   },
 
   pages: {
     home: {
-      title:
-        "Marko Sameh - Expert Frontend Developer & Web Solutions Architect",
+      title: "Marko Sameh - Frontend Developer & Web Solutions Architect",
       description:
         "Transform your digital presence with expert frontend development. Specializing in React, Next.js, and performance-optimized web applications that drive business results.",
       keywords: [
         "frontend developer",
-        "React expert",
+        "React developer",
         "Next.js developer",
         "web development services",
         "JavaScript specialist",
@@ -36,7 +35,7 @@ export const seoData = {
         "performance optimization",
         "business web solutions",
       ],
-      ogTitle: "Expert Frontend Developer - Marko Sameh",
+      ogTitle: "Frontend Developer - Marko Sameh",
       ogDescription:
         "Professional frontend development services. React, Next.js, and modern web solutions that deliver exceptional user experiences and business growth.",
       structuredData: [
@@ -48,7 +47,7 @@ export const seoData = {
             name: "Marko Sameh",
             jobTitle: "Frontend Developer",
             description:
-              "Expert frontend developer specializing in React, Next.js, and modern web applications",
+              "frontend developer specializing in React, Next.js, and modern web applications",
             url: "https://markosameh.com",
             sameAs: [
               "https://linkedin.com/in/marko-sameh-9971b6244",
@@ -104,7 +103,7 @@ export const seoData = {
       ],
       ogTitle: "About Marko Sameh - Frontend Developer Journey",
       ogDescription:
-        "The story behind the code. Discover how passion, persistence, and continuous learning shaped a frontend development expert.",
+        "The story behind the code. Discover how passion, persistence, and continuous learning shaped a frontend development.",
       structuredData: [
         {
           type: "AboutPage",
@@ -283,7 +282,7 @@ export const seoData = {
     signal: {
       title: "Contact Marko Sameh - Frontend Developer for Hire",
       description:
-        "Ready to transform your web presence? Contact expert frontend developer Marko Sameh for React, Next.js, and modern web development projects. Let's build something amazing.",
+        "Ready to transform your web presence? Contact frontend developer Marko Sameh for React, Next.js, and modern web development projects. Let's build something amazing.",
       keywords: [
         "hire frontend developer",
         "React developer contact",
@@ -294,7 +293,7 @@ export const seoData = {
       ],
       ogTitle: "Contact Frontend Developer - Marko Sameh",
       ogDescription:
-        "Ready to start your next web project? Get in touch with expert frontend developer Marko Sameh for professional web development services.",
+        "Ready to start your next web project? Get in touch with frontend developer Marko Sameh for professional web development services.",
       structuredData: [
         {
           type: "ContactPage",

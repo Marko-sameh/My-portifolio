@@ -80,11 +80,11 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon_wbg.png', sizes: '32x32', type: 'image/png' },
-      { url: '/icon_wbg.png', sizes: '16x16', type: 'image/png' }
+      { url: '/icon.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon.png', sizes: '16x16', type: 'image/png' }
     ],
-    shortcut: '/icon_wbg.png',
-    apple: [{ url: '/icon_wbg.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: '/icon.png',
+    apple: [{ url: '/icon.png', sizes: '180x180', type: 'image/png' }],
   },
   manifest: '/manifest.json',
   alternates: {
@@ -121,6 +121,22 @@ export default function RootLayout({ children }) {
         {seoData.pages.home.structuredData.map((schema, index) => (
           <StructuredData key={index} data={schema.data} />
         ))}
+        <StructuredData data={{
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          "name": "Marko Sameh - Frontend Developer",
+          "description": "Frontend development services in React, Next.js, and modern web applications",
+          "url": "https://markosameh.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Marko Sameh",
+            "jobTitle": "Frontend Developer",
+            "email": "markosameh75@gmail.com",
+            "telephone": "+201203113955"
+          },
+          "serviceType": "Web Development",
+          "areaServed": "Worldwide"
+        }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased emotion-aware`}

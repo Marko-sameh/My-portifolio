@@ -5,6 +5,6 @@ export default function robots() {
       allow: '/',
       disallow: ['/api/', '/projects-crud/', '/emotion-demo/'],
     },
-    sitemap: 'https://markosameh.dev/sitemap.xml',
+    sitemap: 'https://markosameh.com/sitemap.xml',
   };
 }
