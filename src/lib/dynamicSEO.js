@@ -32,9 +32,13 @@ export async function getProjectsSEO() {
 
 export async function generateProjectMetadata(id) {
   try {
-    const response = await fetch('/api/projects');
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/projects`);
     const projects = await response.json();
-    const project = projects.find(p => p.id == id);
+    const project = projects.find(p => 
+      p.id.toString() === id.toString() || 
+      p.title.toLowerCase().replace(/\s+/g, '-') === id.toLowerCase() ||
+      encodeURIComponent(p.title.toLowerCase().replace(/\s+/g, '-')) === id
+    );
     
     if (!project) {
       return {
@@ -44,7 +48,7 @@ export async function generateProjectMetadata(id) {
     }
     
     return {
-      title: `${project.title} - ${project.tag}`,
+      title: `${project.title} - ${project.tag || 'Project'}`,
       description: project.desc || project.description,
       keywords: project.tech,
       openGraph: {
@@ -57,8 +61,12 @@ export async function generateProjectMetadata(id) {
         description: project.description,
         images: [project.img],
       },
+      alternates: {
+        canonical: `/Builds/${id}`,
+      },
     };
   } catch (error) {
+    console.error('SEO fetch error:', error);
     return {
       title: 'Project Not Found',
       description: 'The requested project could not be found.',

@@ -2,7 +2,8 @@ import { generateProjectMetadata } from '@/lib/dynamicSEO';
 import SingleProjectClient from "./SingleProjectClient";
 
 export async function generateMetadata({ params }) {
-  return await generateProjectMetadata(params.id);
+  const { id } = await params;
+  return await generateProjectMetadata(id);
 }
 
 export default function ProjectPage({ params }) {

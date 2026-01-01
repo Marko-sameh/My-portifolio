@@ -3,13 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "description": "Expert frontend developer portfolio showcasing React, Next.js, and modern web development expertise",
-  "keywords": ["frontend", "react", "nextjs", "portfolio", "web-development", "javascript", "typescript"],
+  "keywords": [
+    "frontend",
+    "react",
+    "nextjs",
+    "portfolio",
+    "web-development",
+    "javascript",
+    "typescript"
+  ],
   "author": {
     "name": "Marko Sameh",
     "email": "markosameh75@gmail.com",
-    "url": "https://markosameh.dev"
+    "url": "https://markosameh.com"
   },
-  "homepage": "https://markosameh.dev",
+  "homepage": "https://markosameh.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/Marko-sameh/myportfolio.git"
