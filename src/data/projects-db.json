@@ -89,12 +89,7 @@
     "img": "",
     "images": [],
     "tag": "Fullstack",
-    "tech": [
-      "React",
-      "Django",
-      "AI",
-      "PostgreSQL"
-    ],
+    "tech": ["React", "Django", "AI", "PostgreSQL"],
     "links": [
       {
         "label": "Youtube",
@@ -125,11 +120,7 @@
     "img": "",
     "images": [],
     "tag": "Frontend",
-    "tech": [
-      "React",
-      "Tailwind CSS",
-      "SEO"
-    ],
+    "tech": ["React", "Tailwind CSS", "SEO"],
     "links": [
       {
         "label": "youtube",
@@ -159,11 +150,7 @@
     "img": "",
     "images": [],
     "tag": "Dashboard",
-    "tech": [
-      "React",
-      "Chart.js",
-      "Tailwind CSS"
-    ],
+    "tech": ["React", "Chart.js", "Tailwind CSS"],
     "links": [],
     "showOnHome": false,
     "createdAt": "2025-12-27T20:17:06.969Z"
@@ -187,9 +174,37 @@
     "img": "",
     "images": [],
     "tag": "Mobile",
+    "tech": ["Flutter", "Firebase"],
+    "links": [],
+    "showOnHome": true,
+    "createdAt": "2025-12-27T20:17:06.969Z"
+  },
+  {
+    "id": 1766866627007,
+    "title": "Neizk Landing Page — 2025",
+    "desc": "High-conversion, responsive landing page with minimal load times.",
+    "fullDescription": "A modern landing page designed for high conversions, optimized for speed, and featuring advanced SEO strategies and Pixel tracking for analytics monitoring.",
+    "features": [
+      "Fully responsive layout across devices",
+      "Optimized for minimal load times",
+      "Advanced SEO implementation",
+      "Pixel tracking integration for analytics"
+    ],
+    "challenges": [
+      "Balancing fast load times with rich visual design",
+      "Implementing SEO without compromising UX",
+      "Tracking user interactions accurately across analytics platforms"
+    ],
+    "results": "Improved search visibility, higher user engagement, and more precise analytics insights for conversion optimization.",
+    "img": "",
+    "images": [],
+    "tag": "Frontend",
     "tech": [
-      "Flutter",
-      "Firebase"
+      "Next.js",
+      "React",
+      "Tailwind CSS",
+      "SEO",
+      "Analytics / Pixel tracking"
     ],
     "links": [],
     "showOnHome": true,

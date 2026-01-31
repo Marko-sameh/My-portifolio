@@ -101,7 +101,7 @@ export default function SingleProjectClient({ param }) {
                                     <img
                                         src={project.img}
                                         alt={project.title}
-                                        className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover"
+                                        className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-fill"
                                     />
                                 ) : (
                                     <div className="w-full h-[250px] sm:h-[300px] lg:h-[400px] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">

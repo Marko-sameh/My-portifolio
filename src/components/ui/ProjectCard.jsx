@@ -17,8 +17,8 @@ export default function ProjectCard({ project, index }) {
                     <motion.img
                         src={project.img}
                         alt={project.title}
-                        className="w-full h-full object-cover"
-                        whileHover={{ scale: 1.1 }}
+                        className="w-full h-full object-fill"
+                        whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.6 }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
