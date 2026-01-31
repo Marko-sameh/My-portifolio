@@ -46,11 +46,12 @@ export default function SingleProjectClient({ param }) {
                         </motion.button>
                     </Link>
 
-                    <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+                    <div className="grid lg:grid-cols-5 gap-8 sm:gap-12 items-center">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8 }}
+                            className="lg:col-span-2"
                         >
                             <div className="flex items-center gap-3 mb-4">
                                 <Tag size={20} style={{ color: 'var(--accent)' }} />
@@ -93,7 +94,7 @@ export default function SingleProjectClient({ param }) {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="relative"
+                            className="relative lg:col-span-3"
                         >
                             <div className="absolute -inset-4 rounded-3xl blur-2xl" style={{ background: `linear-gradient(to right, var(--accent), var(--background))`, opacity: 0.2 }} />
                             <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm">
@@ -101,7 +102,7 @@ export default function SingleProjectClient({ param }) {
                                     <img
                                         src={project.img}
                                         alt={project.title}
-                                        className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-fill"
+                                        className="w-full h-[350px] sm:h-[450px] lg:h-[450px] object-fill"
                                     />
                                 ) : (
                                     <div className="w-full h-[250px] sm:h-[300px] lg:h-[400px] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">

@@ -89,7 +89,12 @@
     "img": "",
     "images": [],
     "tag": "Fullstack",
-    "tech": ["React", "Django", "AI", "PostgreSQL"],
+    "tech": [
+      "React",
+      "Django",
+      "AI",
+      "PostgreSQL"
+    ],
     "links": [
       {
         "label": "Youtube",
@@ -120,7 +125,11 @@
     "img": "",
     "images": [],
     "tag": "Frontend",
-    "tech": ["React", "Tailwind CSS", "SEO"],
+    "tech": [
+      "React",
+      "Tailwind CSS",
+      "SEO"
+    ],
     "links": [
       {
         "label": "youtube",
@@ -150,7 +159,11 @@
     "img": "",
     "images": [],
     "tag": "Dashboard",
-    "tech": ["React", "Chart.js", "Tailwind CSS"],
+    "tech": [
+      "React",
+      "Chart.js",
+      "Tailwind CSS"
+    ],
     "links": [],
     "showOnHome": false,
     "createdAt": "2025-12-27T20:17:06.969Z"
@@ -174,7 +187,10 @@
     "img": "",
     "images": [],
     "tag": "Mobile",
-    "tech": ["Flutter", "Firebase"],
+    "tech": [
+      "Flutter",
+      "Firebase"
+    ],
     "links": [],
     "showOnHome": true,
     "createdAt": "2025-12-27T20:17:06.969Z"
@@ -196,7 +212,7 @@
       "Tracking user interactions accurately across analytics platforms"
     ],
     "results": "Improved search visibility, higher user engagement, and more precise analytics insights for conversion optimization.",
-    "img": "",
+    "img": "/api/uploads/1769881674803-all-devices-black.png",
     "images": [],
     "tag": "Frontend",
     "tech": [
@@ -208,6 +224,7 @@
     ],
     "links": [],
     "showOnHome": true,
-    "createdAt": "2025-12-27T20:17:06.969Z"
+    "createdAt": "2025-12-27T20:17:06.969Z",
+    "updatedAt": "2026-01-31T17:47:57.922Z"
   }
 ]
