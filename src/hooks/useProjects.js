@@ -61,7 +61,10 @@ export const useProjects = () => {
 
     const res = await fetch("/api/upload", {
       method: "POST",
-      headers: { "X-API-Key": API_KEY },
+      headers: { 
+        "X-API-Key": API_KEY,
+        "Authorization": `Bearer ${authToken}`
+      },
       body: formData,
     });
 
@@ -79,7 +82,10 @@ export const useProjects = () => {
 
     const res = await fetch("/api/upload", {
       method: "POST",
-      headers: { "X-API-Key": API_KEY },
+      headers: { 
+        "X-API-Key": API_KEY,
+        "Authorization": `Bearer ${authToken}`
+      },
       body: formData,
     });
 
