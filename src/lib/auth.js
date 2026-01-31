@@ -5,7 +5,7 @@ export function checkAuth(request) {
   const apiKey = request.headers.get('x-api-key');
   
   // Check API key first
-  if (apiKey === process.env.API_KEY) {
+  if (apiKey === process.env.NEXT_PUBLIC_API_KEY) {
     return true;
   }
   

@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import { checkAuth } from '@/lib/auth';
 
 export async function POST(request) {
+  if (!checkAuth(request)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const data = await request.formData();
   const files = data.getAll('files');
   
