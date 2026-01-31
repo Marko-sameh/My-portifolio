@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, ExternalLink, Calendar, Tag, Zap } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useProjects } from "../../../hooks/useProjects";
 import { use } from "react";
 
@@ -99,9 +100,11 @@ export default function SingleProjectClient({ param }) {
                             <div className="absolute -inset-4 rounded-3xl blur-2xl" style={{ background: `linear-gradient(to right, var(--accent), var(--background))`, opacity: 0.2 }} />
                             <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm">
                                 {project.img ? (
-                                    <img
+                                    <Image
                                         src={project.img}
                                         alt={project.title}
+                                        width={800}
+                                        height={450}
                                         className="w-full h-[350px] sm:h-[450px] lg:h-[450px] object-fill"
                                     />
                                 ) : (

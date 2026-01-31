@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 export default function ProjectCard({ project, index }) {
+    console.log(project);
     return (
         <motion.article
             className="relative group cursor-pointer"
@@ -49,14 +50,18 @@ export default function ProjectCard({ project, index }) {
                         >
                             View Project
                         </motion.a>
-                        <motion.a
-                            href={project.githubUrl || "#"}
-                            className="px-4 py-2 border border-white/20 rounded-lg text-sm flex items-center gap-2"
-                            whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.4)" }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <ExternalLink size={16} />
-                        </motion.a>
+                        {project.links && project.links[0] && (
+                            <motion.a
+                                href={project.links[0].url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-2 border border-white/20 rounded-lg text-sm flex items-center gap-2"
+                                whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.4)" }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <ExternalLink size={16} />
+                            </motion.a>
+                        )}
                     </div>
                 </div>
             </div>
