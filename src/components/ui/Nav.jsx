@@ -79,7 +79,7 @@ export default function Nav() {
     <>
       <motion.nav
         className={`fixed left-0 right-0 z-30 transition-all duration-300 ${isNavVisible ? "translate-y-0" : "-translate-y-full"}`}
-        style={{ top: bannerVisible ? '64px' : '0px' }}
+        style={{ top: bannerVisible ? '50px' : '0px' }}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.7 }}
@@ -89,7 +89,7 @@ export default function Nav() {
         <div className="absolute inset-0 bg-black/80 backdrop-blur-2xl border-b border-white/5" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16 sm:h-20">
-            <Link href="/" aria-label="Go to homepage">
+            <Link href="/" aria-label="Go to homepage - Marko Sameh Portfolio">
               <motion.div
                 className="relative cursor-pointer"
                 whileHover={{ scale: 1.06 }}
@@ -104,7 +104,7 @@ export default function Nav() {
                   aria-hidden="true"
                 />
                 <Image
-                  alt="Marko Sameh Logo"
+                  alt="Marko Sameh - Frontend Developer Logo"
                   src={logo}
                   width={60}
                   height={60}
@@ -121,11 +121,12 @@ export default function Nav() {
                 <li key={item.path} role="none">
                   <Link href={item.path} aria-label={item.ariaLabel}>
                     <motion.button
-                      className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-white/50 ${pathname === item.path ? "text-white" : "text-white/60 hover:text-white/90"}`}
+                      className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black ${pathname === item.path ? "text-white" : "text-white/60 hover:text-white/90"}`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       role="menuitem"
                       aria-current={pathname === item.path ? 'page' : undefined}
+                      type="button"
                     >
                       {pathname === item.path && (
                         <motion.div
@@ -145,13 +146,14 @@ export default function Nav() {
 
             {/* Mobile Menu Button */}
             <motion.button
-              className="lg:hidden p-2 rounded-full bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+              className="lg:hidden p-2 rounded-full bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black"
               onClick={toggleMobileMenu}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
+              type="button"
             >
               {isMobileMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
             </motion.button>

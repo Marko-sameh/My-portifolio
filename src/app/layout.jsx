@@ -1,9 +1,6 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import "./globals.css";
-import "../styles/emotion-vars.css";
-import "../styles/page-emotions.css";
 import Nav from "../components/ui/Nav";
-import AIEmotionSystem from "../components/ui/AIEmotionSystem";
 import Footer from "@/components/ui/Footer";
 import ModeToggle from "@/components/ui/ModeToggle";
 import { RecruiterModeProvider } from "@/contexts/RecruiterModeContext";
@@ -11,19 +8,17 @@ import RecruiterBanner from "@/components/ui/RecruiterBanner";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import WebVitals from "@/components/ui/WebVitals";
 import { seoData } from "@/data/seo";
+import dynamic from "next/dynamic";
+
+// Dynamic import for non-critical AI system
+const AIEmotionSystem = dynamic(() => import("../components/ui/AIEmotionSystem"));
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
   preload: true,
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
+  fallback: ['system-ui', 'arial']
 });
 
 const inter = Inter({
@@ -31,6 +26,7 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   preload: true,
+  fallback: ['system-ui', 'arial']
 });
 
 export const metadata = {
@@ -93,7 +89,9 @@ export const metadata = {
   other: {
     'X-Frame-Options': 'DENY',
     'X-Content-Type-Options': 'nosniff',
-    'Referrer-Policy': 'origin-when-cross-origin',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Cross-Origin-Opener-Policy': 'same-origin',
+    'Cross-Origin-Embedder-Policy': 'require-corp',
   },
 };
 
@@ -112,7 +110,9 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://assets.nflxext.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://assets.nflxext.com" />
         <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
         <meta name="format-detection" content="telephone=no" />
@@ -139,7 +139,7 @@ export default function RootLayout({ children }) {
         }} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased emotion-aware`}
+        className={`${geistSans.variable} ${inter.variable} antialiased emotion-aware`}
       >
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <WebVitals />

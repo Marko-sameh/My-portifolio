@@ -1,1 +1,41 @@
-// Performance optimization utilities\n\n// Intersection Observer for lazy loading\nexport const createIntersectionObserver = (callback, options = {}) => {\n  const defaultOptions = {\n    root: null,\n    rootMargin: '50px',\n    threshold: 0.1,\n    ...options\n  };\n\n  if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {\n    return new IntersectionObserver(callback, defaultOptions);\n  }\n  return null;\n};\n\n// Debounce function for performance\nexport const debounce = (func, wait) => {\n  let timeout;\n  return function executedFunction(...args) {\n    const later = () => {\n      clearTimeout(timeout);\n      func(...args);\n    };\n    clearTimeout(timeout);\n    timeout = setTimeout(later, wait);\n  };\n};\n\n// Throttle function for scroll events\nexport const throttle = (func, limit) => {\n  let inThrottle;\n  return function() {\n    const args = arguments;\n    const context = this;\n    if (!inThrottle) {\n      func.apply(context, args);\n      inThrottle = true;\n      setTimeout(() => inThrottle = false, limit);\n    }\n  };\n};\n\n// Preload critical resources\nexport const preloadResource = (href, as, type = null) => {\n  if (typeof window === 'undefined') return;\n  \n  const link = document.createElement('link');\n  link.rel = 'preload';\n  link.href = href;\n  link.as = as;\n  if (type) link.type = type;\n  \n  document.head.appendChild(link);\n};\n\n// Lazy load images with intersection observer\nexport const lazyLoadImage = (img) => {\n  const imageObserver = createIntersectionObserver((entries) => {\n    entries.forEach(entry => {\n      if (entry.isIntersecting) {\n        const image = entry.target;\n        image.src = image.dataset.src;\n        image.classList.remove('lazy');\n        imageObserver.unobserve(image);\n      }\n    });\n  });\n\n  if (imageObserver) {\n    imageObserver.observe(img);\n  }\n};\n\n// Measure Core Web Vitals\nexport const measureWebVitals = () => {\n  if (typeof window === 'undefined') return;\n\n  // Measure FCP (First Contentful Paint)\n  const observer = new PerformanceObserver((list) => {\n    for (const entry of list.getEntries()) {\n      if (entry.name === 'first-contentful-paint') {\n        console.log('FCP:', entry.startTime);\n      }\n    }\n  });\n  \n  try {\n    observer.observe({ entryTypes: ['paint'] });\n  } catch (e) {\n    // Fallback for browsers that don't support this\n  }\n};\n\n// Optimize animations for performance\nexport const getReducedMotionPreference = () => {\n  if (typeof window === 'undefined') return false;\n  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;\n};\n\n// Memory cleanup utility\nexport const cleanupResources = (resources) => {\n  resources.forEach(resource => {\n    if (resource && typeof resource.disconnect === 'function') {\n      resource.disconnect();\n    }\n    if (resource && typeof resource.abort === 'function') {\n      resource.abort();\n    }\n  });\n};
+// Performance monitoring for Core Web Vitals
+export function reportWebVitals(metric) {
+  // Log to console in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log(metric);
+  }
+  
+  // Send to analytics in production
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', metric.name, {
+      event_category: 'Web Vitals',
+      event_label: metric.id,
+      value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+      non_interaction: true,
+    });
+  }
+}
+
+// Preload critical resources
+export function preloadCriticalResources() {
+  if (typeof window !== 'undefined') {
+    // Preload hero image
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = 'https://assets.nflxext.com/ffe/siteui/vlv3/4ffe3d37-1fc1-4d93-b61a-1fa58c11ccff/web/EG-en-20251124-TRIFECTA-perspective_8e567342-c60f-4ebb-a1e4-c591bb3f8fac_large.jpg';
+    link.fetchPriority = 'high';
+    document.head.appendChild(link);
+  }
+}
+
+// Optimize images for different screen sizes
+export function getOptimizedImageSrc(src, width) {
+  if (src.includes('assets.nflxext.com')) {
+    // Use appropriate size based on screen width
+    if (width <= 640) return src.replace('_large', '_small');
+    if (width <= 1200) return src.replace('_large', '_medium');
+    return src;
+  }
+  return src;
+}

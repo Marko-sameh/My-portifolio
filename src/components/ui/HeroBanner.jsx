@@ -3,15 +3,17 @@ import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import CVModal from './CVModal';
 import { useState, useMemo, useCallback } from "react";
+import Image from "next/image";
 
 function HeroBanner() {
+    // Reduce particles for better performance
     const particles = useMemo(() =>
-        Array.from({ length: 20 }, (_, i) => ({
+        Array.from({ length: 8 }, (_, i) => ({
             id: i,
             left: Math.random() * 100,
             top: Math.random() * 100,
-            duration: Math.random() * 5 + 3,
-            delay: Math.random() * 5
+            duration: Math.random() * 3 + 2,
+            delay: Math.random() * 3
         }))
     , []);
     
@@ -30,46 +32,54 @@ function HeroBanner() {
     return (
         <section 
             id="home" 
-            className="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20"
+            className="hero-section relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20"
             aria-labelledby="hero-heading"
         >
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-black via-[var(--accent-40)] to-black z-10" />
                 <motion.div
                     className="absolute inset-0 opacity-30"
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ 
-                        willChange: "transform",
-                        backgroundImage: "url(https://assets.nflxext.com/ffe/siteui/vlv3/4ffe3d37-1fc1-4d93-b61a-1fa58c11ccff/web/EG-en-20251124-TRIFECTA-perspective_8e567342-c60f-4ebb-a1e4-c591bb3f8fac_large.jpg)",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center"
-                    }}
-                />
-
-                {particles.map((particle) => (
-                    <motion.div
-                        key={particle.id}
-                        className="absolute w-1 h-1 bg-white rounded-full"
-                        style={{
-                            left: `${particle.left}%`,
-                            top: `${particle.top}%`,
-                            willChange: "transform, opacity"
-                        }}
-                        animate={{
-                            y: [0, -100, 0],
-                            opacity: [0, 1, 0],
-                            scale: [0, 1, 0],
-                        }}
-                        transition={{
-                            duration: particle.duration,
-                            repeat: Infinity,
-                            delay: particle.delay,
-                            ease: "easeInOut"
-                        }}
-                        aria-hidden="true"
+                    animate={{ scale: [1, 1.02, 1] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                    style={{ willChange: "transform" }}
+                >
+                    <Image
+                        src="https://assets.nflxext.com/ffe/siteui/vlv3/4ffe3d37-1fc1-4d93-b61a-1fa58c11ccff/web/EG-en-20251124-TRIFECTA-perspective_8e567342-c60f-4ebb-a1e4-c591bb3f8fac_large.jpg"
+                        alt="Cinematic background showcasing modern web development"
+                        fill
+                        className="object-cover"
+                        priority
+                        fetchPriority="high"
+                        sizes="100vw"
+                        quality={75}
                     />
-                ))}
+                </motion.div>
+
+                <div className="hero-particles">
+                    {particles.map((particle) => (
+                        <motion.div
+                            key={particle.id}
+                            className="absolute w-1 h-1 bg-white rounded-full"
+                            style={{
+                                left: `${particle.left}%`,
+                                top: `${particle.top}%`,
+                                willChange: "transform, opacity"
+                            }}
+                            animate={{
+                                y: [0, -50, 0],
+                                opacity: [0, 0.8, 0],
+                                scale: [0, 1, 0],
+                            }}
+                            transition={{
+                                duration: particle.duration,
+                                repeat: Infinity,
+                                delay: particle.delay,
+                                ease: "easeInOut"
+                            }}
+                            aria-hidden="true"
+                        />
+                    ))}
+                </div>
             </div>
 
             <div className="relative z-20 text-center px-4 sm:px-6 max-w-5xl py-8 sm:py-12 mt-[-60px] sm:mt-[-100px]">
@@ -120,23 +130,25 @@ function HeroBanner() {
                     >
                         <motion.button
                             onClick={scrollToProjects}
-                            className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[var(--accent)] to-[var(--background)] rounded-full font-semibold text-base sm:text-lg shadow-lg shadow-[var(--background)] flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-white/50"
+                            className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[var(--accent)] to-[var(--background)] rounded-full font-semibold text-base sm:text-lg shadow-lg shadow-[var(--background)] flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black"
                             whileHover={{ scale: 1.05, boxShadow: "0 5px 10px var(--background)" }}
                             whileTap={{ scale: 0.95 }}
-                            aria-label="Scroll to projects section"
+                            aria-label="Scroll to projects section to view my work"
+                            type="button"
                         >
                             <Play size={18} className="group-hover:scale-110 transition-transform" aria-hidden="true" />
-                            Watch Projects
+                            <span>Watch Projects</span>
                         </motion.button>
 
                         <motion.button
                             onClick={openCVModal}
-                            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/20 rounded-full font-medium text-base sm:text-lg backdrop-blur-sm hover:bg-white/5 transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50"
+                            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/20 rounded-full font-medium text-base sm:text-lg backdrop-blur-sm hover:bg-white/5 transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black"
                             whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.4)" }}
                             whileTap={{ scale: 0.95 }}
-                            aria-label="Open CV modal"
+                            aria-label="Open CV modal to view my resume"
+                            type="button"
                         >
-                            My CV
+                            <span>My CV</span>
                         </motion.button>
                     </motion.div>
                 </motion.div>

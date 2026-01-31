@@ -1,6 +1,7 @@
-
 @import "../styles/cinematic.css";
 @import "../styles/themes.css";
+@import "../styles/emotion-vars.css";
+@import "../styles/page-emotions.css";
 @import "./nav-styles.css";
 @import "tailwindcss";
 
@@ -26,6 +27,8 @@ html {
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  font-feature-settings: 'kern' 1;
+  text-rendering: optimizeLegibility;
 }
 
 html,
@@ -39,10 +42,22 @@ body {
 }
 
 body {
-  font-family: var(--font-inter), "Inter", sans-serif;
+  font-family: var(--font-inter), "Inter", system-ui, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-display: swap;
+}
+
+/* Critical CSS inlined for above-the-fold content */
+.hero-section {
+  min-height: 100vh;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
 /* Reduce motion for users who prefer it */
@@ -54,6 +69,10 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  
+  .hero-particles {
+    display: none;
   }
 }
 
@@ -194,6 +213,10 @@ body {
     --accent: #ffffff;
     --background: #000000;
   }
+  
+  .emotion-aware {
+    border-width: 2px;
+  }
 }
 
 /* Print styles */
@@ -213,5 +236,28 @@ body {
   
   a[href]:after {
     content: " (" attr(href) ")";
+  }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+  .hero-particles {
+    display: none;
+  }
+  
+  .cinematic-curve-in,
+  .cinematic-curve-out {
+    will-change: auto;
+  }
+}
+
+/* Optimize for slow connections */
+@media (prefers-reduced-data: reduce) {
+  .hero-particles {
+    display: none;
+  }
+  
+  .background-static {
+    background: black;
   }
 }

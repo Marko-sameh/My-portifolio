@@ -18,8 +18,9 @@ const RecruiterBanner = dynamic(() => import("@/components/ui/RecruiterBanner"),
 // Loading component for suspense boundaries
 function SectionLoading() {
   return (
-    <div className="min-h-[200px] flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" aria-label="Loading section" />
+    <div className="min-h-[200px] flex items-center justify-center" role="status" aria-label="Loading section">
+      <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin" aria-hidden="true" />
+      <span className="sr-only">Loading section content...</span>
     </div>
   );
 }

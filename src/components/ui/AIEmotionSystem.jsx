@@ -93,6 +93,7 @@ export default function AIEmotionSystem() {
           ×
         </button>
       </div>
+      {/* <p className='text-sm'>The system analyzes emotional tone and changes the {"website's"} colors accordingly</p> */}
 
       <div className="emotion-display">
         {isModelLoading ? (
@@ -107,19 +108,19 @@ export default function AIEmotionSystem() {
             {currentEmotion}
           </div>
         )}
-        <p>No data will be saved. Just perception</p>
+        <p className='text-xs'>No data will be saved. Just perception</p>
       </div>
 
       <div className="text-analysis">
         <textarea
           value={textInput}
           onChange={(e) => setTextInput(e.target.value)}
-          placeholder="Enter text for AI emotion analysis..."
+          placeholder="The system analyzes emotional tone and changes the website's colors accordingly, Enter text for AI emotion analysis..."
           className="ai-input"
-          rows={3}
+          rows={4}
         />
-        <button 
-          onClick={handleAnalyze} 
+        <button
+          onClick={handleAnalyze}
           className="analyze-btn w-full"
           disabled={isAnalyzing || isModelLoading}
         >

@@ -1,1 +1,14 @@
-User-agent: *\nAllow: /\n\n# Disallow admin and API routes\nDisallow: /api/\nDisallow: /admin/\nDisallow: /_next/\nDisallow: /uploads/\n\n# Allow important files\nAllow: /api/sitemap\nAllow: /api/robots\n\n# Sitemap location\nSitemap: https://markosameh.com/sitemap.xml\n\n# Crawl delay (optional)\nCrawl-delay: 1
+User-agent: *
+Allow: /
+
+# Optimize crawling
+Crawl-delay: 1
+
+# Block unnecessary paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://markosameh.com/sitemap.xml
