@@ -22,13 +22,13 @@ function MasterySection() {
                     {
                         title: "Frontend Development",
                         desc: "Building component-driven interfaces using React/Next,with clean state management and predictable behavior.",
-                        img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
+                        img: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                         gradient: "from-[var(--background)] to-[var(--accent)]",
                     },
                     {
                         title: "Adaptive Experiences",
                         desc: "I build interfaces that adapt across devices —from mobile-first layouts to complex desktop systems —with performance and clarity as a priority.",
-                        img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+                        img: "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                         gradient: "from-[var(--background)] to-[var(--accent)]",
                     },
                     {

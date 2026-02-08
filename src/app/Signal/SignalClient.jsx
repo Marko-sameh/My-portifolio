@@ -191,13 +191,13 @@ export default function SignalClient() {
                                     </div>
                                 </a>
                             </div>
-
-                            <div className="mt-8 p-6 bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-lg border border-white/10">
-                                <h3 className="font-semibold mb-2">What This Visibility Means</h3>
-                                <p className="text-gray-300 text-sm mb-2">My active presence on professional platforms demonstrates accountability and ongoing commitment to quality work.</p>
-                                <p className="text-xs text-gray-400">You can verify my experience and see feedback from other clients</p>
-                            </div>
                         </div>
+                    </div>
+
+                    <div className="p-6 bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-lg border border-white/10 text-center max-w-2xl mx-auto mb-20">
+                        <h3 className="font-semibold mb-2">What This Visibility Means</h3>
+                        <p className="text-gray-300 text-sm mb-2">My active presence on professional platforms demonstrates accountability and ongoing commitment to quality work.</p>
+                        <p className="text-xs text-gray-400">You can verify my experience and see feedback from other clients</p>
                     </div>
 
                     <CTASection

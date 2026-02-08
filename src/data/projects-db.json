@@ -61,13 +61,13 @@
     ],
     "links": [
       {
-        "label": "Live demo",
+        "label": "Live",
         "url": "https://spacetechs.markosameh.com/"
       }
     ],
     "showOnHome": true,
     "createdAt": "2025-12-27T20:17:06.969Z",
-    "updatedAt": "2026-01-31T15:29:22.725Z"
+    "updatedAt": "2026-02-08T16:24:06.326Z"
   },
   {
     "id": 1766866627003,
@@ -86,7 +86,7 @@
       "Reducing manual operational errors"
     ],
     "results": "Reduced manual tracking errors by 30% and improved operational efficiency.",
-    "img": "",
+    "img": "/api/uploads/1770511873089-Screenshot_2025-06-28_200531.png",
     "images": [],
     "tag": "Fullstack",
     "tech": [
@@ -103,7 +103,7 @@
     ],
     "showOnHome": true,
     "createdAt": "2025-12-27T20:17:06.969Z",
-    "updatedAt": "2025-12-29T22:31:56.365Z"
+    "updatedAt": "2026-02-08T00:51:17.279Z"
   },
   {
     "id": 1766866627004,
@@ -122,7 +122,7 @@
       "SEO optimization with animations"
     ],
     "results": "Improved brand presence and search visibility.",
-    "img": "",
+    "img": "/api/uploads/1770563284200-Screenshot_2025-06-28_201003.png",
     "images": [],
     "tag": "Frontend",
     "tech": [
@@ -132,13 +132,13 @@
     ],
     "links": [
       {
-        "label": "youtube",
+        "label": "Youtube",
         "url": "https://youtu.be/YQhEgBhYcdo?si=Mlh9ek4oLdLRlAqL"
       }
     ],
     "showOnHome": false,
     "createdAt": "2025-12-27T20:17:06.969Z",
-    "updatedAt": "2025-12-29T22:32:15.484Z"
+    "updatedAt": "2026-02-08T16:23:49.488Z"
   },
   {
     "id": 1766866627005,
@@ -156,8 +156,24 @@
       "Responsive dashboard layout"
     ],
     "results": "Clear data insights with smooth rendering across devices.",
-    "img": "",
-    "images": [],
+    "img": "/api/uploads/1770567443657-Screenshot_2026-02-08_180510.png",
+    "images": [
+      "/api/uploads/1770567456995-Screenshot_2026-02-08_180403.png",
+      "/api/uploads/1770567456999-Screenshot_2026-02-08_180416.png",
+      "/api/uploads/1770567457006-Screenshot_2026-02-08_180427.png",
+      "/api/uploads/1770567457032-Screenshot_2026-02-08_180436.png",
+      "/api/uploads/1770567457054-Screenshot_2026-02-08_180446.png",
+      "/api/uploads/1770567457057-Screenshot_2026-02-08_180510.png",
+      "/api/uploads/1770567457061-Screenshot_2026-02-08_180518.png",
+      "/api/uploads/1770567457067-Screenshot_2026-02-08_180526.png",
+      "/api/uploads/1770567457071-Screenshot_2026-02-08_180535.png",
+      "/api/uploads/1770567457076-Screenshot_2026-02-08_180550.png",
+      "/api/uploads/1770567457082-Screenshot_2026-02-08_180613.png",
+      "/api/uploads/1770567457088-Screenshot_2026-02-08_180727.png",
+      "/api/uploads/1770567457093-Screenshot_2026-02-08_180743.png",
+      "/api/uploads/1770567457097-Screenshot_2026-02-08_181403.png",
+      "/api/uploads/1770567457101-Screenshot_2026-02-08_181411.png"
+    ],
     "tag": "Dashboard",
     "tech": [
       "React",
@@ -166,7 +182,8 @@
     ],
     "links": [],
     "showOnHome": false,
-    "createdAt": "2025-12-27T20:17:06.969Z"
+    "createdAt": "2025-12-27T20:17:06.969Z",
+    "updatedAt": "2026-02-08T16:17:42.020Z"
   },
   {
     "id": 1766866627006,
@@ -222,9 +239,14 @@
       "SEO",
       "Analytics / Pixel tracking"
     ],
-    "links": [],
+    "links": [
+      {
+        "label": "Live",
+        "url": "https://nayzakest.com/"
+      }
+    ],
     "showOnHome": true,
     "createdAt": "2025-12-27T20:17:06.969Z",
-    "updatedAt": "2026-01-31T17:47:57.922Z"
+    "updatedAt": "2026-02-08T16:23:17.453Z"
   }
 ]

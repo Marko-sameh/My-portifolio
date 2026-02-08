@@ -69,7 +69,9 @@ export const useProjects = () => {
     });
 
     const data = await res.json();
-    setImages((prev) => [...prev, ...data.files]);
+    if (res.ok && data.files) {
+      setImages((prev) => [...prev, ...data.files]);
+    }
     setUploading(false);
   };
 
@@ -90,7 +92,9 @@ export const useProjects = () => {
     });
 
     const data = await res.json();
-    setForm((prev) => ({ ...prev, img: data.files[0] }));
+    if (res.ok && data.files?.[0]) {
+      setForm((prev) => ({ ...prev, img: data.files[0] }));
+    }
     setUploading(false);
   };
 

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { addToken } from '@/lib/auth';
 
 export async function POST(request) {
   const { password } = await request.json();
@@ -9,6 +10,7 @@ export async function POST(request) {
       .update(`${password}-${Date.now()}`)
       .digest('hex');
     
+    addToken(token);
     return NextResponse.json({ success: true, token });
   }
   

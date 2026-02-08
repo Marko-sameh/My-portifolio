@@ -4,7 +4,7 @@ import { Play } from "lucide-react";
 import CVModal from './CVModal';
 import { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
-
+import marko_img from "../../../public/MixCollage.jpg"
 function HeroBanner() {
     // Reduce particles for better performance
     const particles = useMemo(() =>
@@ -15,23 +15,23 @@ function HeroBanner() {
             duration: Math.random() * 3 + 2,
             delay: Math.random() * 3
         }))
-    , []);
-    
+        , []);
+
     const [showCVModal, setShowCVModal] = useState(false);
-    
+
     const scrollToProjects = useCallback(() => {
         const el = document.getElementById("builds");
         if (el) {
             el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     }, []);
-    
+
     const openCVModal = useCallback(() => setShowCVModal(true), []);
     const closeCVModal = useCallback(() => setShowCVModal(false), []);
 
     return (
-        <section 
-            id="home" 
+        <section
+            id="home"
             className="hero-section relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20"
             aria-labelledby="hero-heading"
         >
@@ -44,10 +44,10 @@ function HeroBanner() {
                     style={{ willChange: "transform" }}
                 >
                     <Image
-                        src="https://assets.nflxext.com/ffe/siteui/vlv3/4ffe3d37-1fc1-4d93-b61a-1fa58c11ccff/web/EG-en-20251124-TRIFECTA-perspective_8e567342-c60f-4ebb-a1e4-c591bb3f8fac_large.jpg"
+                        src={marko_img}
                         alt="Cinematic background showcasing modern web development"
                         fill
-                        className="object-cover"
+                        className="object-contain"
                         priority
                         fetchPriority="high"
                         sizes="100vw"
@@ -97,7 +97,7 @@ function HeroBanner() {
                             Marko Sameh
                         </span>
                     </motion.h1>
-                    
+
                     <motion.h2
                         className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 leading-tight"
                         style={{ textShadow: "0 0 40px rgba(0,0,0,0.5)" }}

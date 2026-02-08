@@ -1,14 +1,15 @@
 "use client";
 import { motion } from "framer-motion";
-import { ArrowLeft, ExternalLink, Calendar, Tag, Zap } from "lucide-react";
+import { ArrowLeft, ExternalLink, Calendar, Tag, Zap, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useProjects } from "../../../hooks/useProjects";
-import { use } from "react";
+import { use, useState } from "react";
 
 export default function SingleProjectClient({ param }) {
     const { projects } = useProjects();
     const resolvedParams = use(param);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     // Find project by slug (title converted to URL format)
     const slug = resolvedParams.id;
@@ -232,7 +233,50 @@ export default function SingleProjectClient({ param }) {
                         </p>
                     </motion.div>
                 )}
+
+                {/* Additional Images */}
+                {(project.images || []).length > 0 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="mt-12 sm:mt-16"
+                    >
+                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Project Gallery</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            {project.images.map((img, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.1 }}
+                                    className="relative rounded-xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm hover:border-white/20 transition-colors cursor-pointer"
+                                    onClick={() => setSelectedImage(img)}
+                                >
+                                    <Image
+                                        src={img}
+                                        alt={`${project.title} screenshot ${i + 1}`}
+                                        width={400}
+                                        height={300}
+                                        className="w-full h-64 object-cover"
+                                    />
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
             </div>
+
+            {/* Image Modal */}
+            {selectedImage && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={() => setSelectedImage(null)}>
+                    <button className="absolute top-4 right-4 text-white hover:text-gray-300" onClick={() => setSelectedImage(null)}>
+                        <X size={32} />
+                    </button>
+                    <Image src={selectedImage} alt="Full size" width={1200} height={800} className="max-w-full max-h-full object-contain" />
+                </div>
+            )}
         </div>
     );
 }

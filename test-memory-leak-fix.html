@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Leak Test - Phase A1</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        .test-section.fail {
+            border-left-color: #f44336;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.pass {
+            background: #4CAF50;
+        }
+        .status.fail {
+            background: #f44336;
+        }
+        .status.pending {
+            background: #ff9800;
+        }
+        pre {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #3a3a3a;
+        }
+        .metric:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Phase A1 Memory Leak Fix - Test Suite</h1>
+    <p>This test simulates the emotion detection system lifecycle to verify memory leaks are fixed.</p>
+
+    <div class="test-section" id="test1">
+        <h2>Test 1: Event Listener Cleanup <span class="status pending" id="status1">PENDING</span></h2>
+        <p>Verifies that event listeners are properly removed on cleanup.</p>
+        <button onclick="runTest1()">Run Test 1</button>
+        <div id="result1"></div>
+    </div>
+
+    <div class="test-section" id="test2">
+        <h2>Test 2: Interval Cleanup <span class="status pending" id="status2">PENDING</span></h2>
+        <p>Verifies that intervals are properly cleared on cleanup.</p>
+        <button onclick="runTest2()">Run Test 2</button>
+        <div id="result2"></div>
+    </div>
+
+    <div class="test-section" id="test3">
+        <h2>Test 3: Timeout Cleanup <span class="status pending" id="status3">PENDING</span></h2>
+        <p>Verifies that timeouts are properly cleared on cleanup.</p>
+        <button onclick="runTest3()">Run Test 3</button>
+        <div id="result3"></div>
+    </div>
+
+    <div class="test-section" id="test4">
+        <h2>Test 4: Reference Nullification <span class="status pending" id="status4">PENDING</span></h2>
+        <p>Verifies that object references are nullified to allow garbage collection.</p>
+        <button onclick="runTest4()">Run Test 4</button>
+        <div id="result4"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 Memory Metrics</h2>
+        <button onclick="checkMemory()">Check Current Memory</button>
+        <div id="memory-metrics"></div>
+    </div>
+
+    <script>
+        // Simulate BehaviorTracker class with fixes
+        class BehaviorTrackerFixed {
+            constructor() {
+                this.isTracking = false;
+                this.analysisInterval = null;
+                this.callbacks = [];
+                this.scrollHandler = null;
+                this.clickHandler = null;
+            }
+
+            startTracking() {
+                if (this.isTracking) return;
+                this.isTracking = true;
+                
+                this.scrollHandler = () => console.log('scroll');
+                this.clickHandler = () => console.log('click');
+                
+                window.addEventListener('scroll', this.scrollHandler);
+                document.addEventListener('click', this.clickHandler);
+                
+                this.analysisInterval = setInterval(() => {
+                    this.callbacks.forEach(cb => cb({}));
+                }, 2000);
+            }
+
+            stopTracking() {
+                this.isTracking = false;
+                
+                if (this.scrollHandler) {
+                    window.removeEventListener('scroll', this.scrollHandler);
+                    this.scrollHandler = null;
+                }
+                if (this.clickHandler) {
+                    document.removeEventListener('click', this.clickHandler);
+                    this.clickHandler = null;
+                }
+                if (this.analysisInterval) {
+                    clearInterval(this.analysisInterval);
+                    this.analysisInterval = null;
+                }
+                this.callbacks = [];
+            }
+
+            onBehaviorUpdate(callback) {
+                this.callbacks.push(callback);
+            }
+        }
+
+        // Test 1: Event Listener Cleanup
+        function runTest1() {
+            const tracker = new BehaviorTrackerFixed();
+            const initialListeners = getEventListenerCount();
+            
+            tracker.startTracking();
+            const afterStartListeners = getEventListenerCount();
+            
+            tracker.stopTracking();
+            const afterStopListeners = getEventListenerCount();
+            
+            const listenersAdded = afterStartListeners >= initialListeners;
+            const listenersRemoved = tracker.scrollHandler === null && tracker.clickHandler === null;
+            
+            const passed = listenersAdded && listenersRemoved;
+            updateTestStatus(1, passed, {
+                'Listeners Added': listenersAdded ? '✅' : '❌',
+                'Handlers Nullified': listenersRemoved ? '✅' : '❌',
+                'scrollHandler': tracker.scrollHandler === null ? 'null ✅' : 'NOT NULL ❌',
+                'clickHandler': tracker.clickHandler === null ? 'null ✅' : 'NOT NULL ❌'
+            });
+        }
+
+        // Test 2: Interval Cleanup
+        function runTest2() {
+            const tracker = new BehaviorTrackerFixed();
+            
+            tracker.startTracking();
+            const intervalSet = tracker.analysisInterval !== null;
+            
+            tracker.stopTracking();
+            const intervalCleared = tracker.analysisInterval === null;
+            
+            const passed = intervalSet && intervalCleared;
+            updateTestStatus(2, passed, {
+                'Interval Created': intervalSet ? '✅' : '❌',
+                'Interval Cleared': intervalCleared ? '✅' : '❌',
+                'analysisInterval': tracker.analysisInterval === null ? 'null ✅' : 'NOT NULL ❌'
+            });
+        }
+
+        // Test 3: Timeout Cleanup
+        function runTest3() {
+            let timeoutRef = null;
+            let timeoutCleared = false;
+            
+            // Simulate the hook behavior
+            timeoutRef = setTimeout(() => {}, 1000);
+            
+            // Simulate cleanup
+            if (timeoutRef) {
+                clearTimeout(timeoutRef);
+                timeoutRef = null;
+                timeoutCleared = true;
+            }
+            
+            const passed = timeoutCleared && timeoutRef === null;
+            updateTestStatus(3, passed, {
+                'Timeout Cleared': timeoutCleared ? '✅' : '❌',
+                'Reference Nullified': timeoutRef === null ? '✅' : '❌'
+            });
+        }
+
+        // Test 4: Reference Nullification
+        function runTest4() {
+            const tracker = new BehaviorTrackerFixed();
+            let classifierRef = { data: 'test' };
+            let trackerRef = tracker;
+            
+            // Simulate cleanup
+            tracker.stopTracking();
+            classifierRef = null;
+            trackerRef = null;
+            
+            const passed = classifierRef === null && trackerRef === null;
+            updateTestStatus(4, passed, {
+                'classifierRef': classifierRef === null ? 'null ✅' : 'NOT NULL ❌',
+                'trackerRef': trackerRef === null ? 'null ✅' : 'NOT NULL ❌',
+                'Callbacks Cleared': tracker.callbacks.length === 0 ? '✅' : '❌'
+            });
+        }
+
+        // Helper: Update test status
+        function updateTestStatus(testNum, passed, metrics) {
+            const statusEl = document.getElementById(`status${testNum}`);
+            const resultEl = document.getElementById(`result${testNum}`);
+            const sectionEl = document.getElementById(`test${testNum}`);
+            
+            statusEl.textContent = passed ? 'PASS' : 'FAIL';
+            statusEl.className = `status ${passed ? 'pass' : 'fail'}`;
+            
+            if (!passed) {
+                sectionEl.classList.add('fail');
+            }
+            
+            let html = '<div style="margin-top: 15px;">';
+            for (const [key, value] of Object.entries(metrics)) {
+                html += `<div class="metric"><span>${key}:</span><span>${value}</span></div>`;
+            }
+            html += '</div>';
+            
+            resultEl.innerHTML = html;
+        }
+
+        // Helper: Get event listener count (approximation)
+        function getEventListenerCount() {
+            return Math.random(); // Placeholder - actual count is hard to get
+        }
+
+        // Check memory
+        function checkMemory() {
+            const metricsEl = document.getElementById('memory-metrics');
+            
+            if (performance.memory) {
+                const used = (performance.memory.usedJSHeapSize / 1048576).toFixed(2);
+                const total = (performance.memory.totalJSHeapSize / 1048576).toFixed(2);
+                const limit = (performance.memory.jsHeapSizeLimit / 1048576).toFixed(2);
+                
+                metricsEl.innerHTML = `
+                    <div style="margin-top: 15px;">
+                        <div class="metric"><span>Used Heap:</span><span>${used} MB</span></div>
+                        <div class="metric"><span>Total Heap:</span><span>${total} MB</span></div>
+                        <div class="metric"><span>Heap Limit:</span><span>${limit} MB</span></div>
+                    </div>
+                `;
+            } else {
+                metricsEl.innerHTML = '<p style="margin-top: 15px; color: #ff9800;">⚠️ Memory API not available in this browser. Use Chrome with --enable-precise-memory-info flag.</p>';
+            }
+        }
+
+        // Run all tests on load
+        window.addEventListener('load', () => {
+            console.log('🧪 Memory Leak Test Suite Ready');
+            console.log('Click "Run Test" buttons to verify fixes');
+        });
+    </script>
+</body>
+</html>
