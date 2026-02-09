@@ -1,0 +1,50 @@
+/* Performance-optimized animation styles */
+
+/* Force GPU acceleration for animated elements */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize will-change usage */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Remove will-change after animation */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-on-hover:hover {
+    will-change: transform;
+  }
+  
+  .animate-on-hover:not(:hover) {
+    will-change: auto;
+  }
+}
+
+/* Disable animations for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Optimize particle animations */
+.hero-particles > * {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Optimize image rendering */
+img {
+  content-visibility: auto;
+}

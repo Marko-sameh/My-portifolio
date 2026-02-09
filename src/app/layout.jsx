@@ -4,11 +4,13 @@ import Nav from "../components/ui/Nav";
 import Footer from "@/components/ui/Footer";
 import ModeToggle from "@/components/ui/ModeToggle";
 import { RecruiterModeProvider } from "@/contexts/RecruiterModeContext";
+import { ProjectsProvider } from "@/contexts/ProjectsContext";
 import RecruiterBanner from "@/components/ui/RecruiterBanner";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import WebVitals from "@/components/ui/WebVitals";
 import { seoData } from "@/data/seo";
 import dynamic from "next/dynamic";
+import StructuredData from "@/components/ui/StructuredData";
 
 // Dynamic import for non-critical AI system
 const AIEmotionSystem = dynamic(() => import("../components/ui/AIEmotionSystem"));
@@ -18,7 +20,8 @@ const geistSans = Geist({
   subsets: ["latin"],
   display: "swap",
   preload: true,
-  fallback: ['system-ui', 'arial']
+  fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true
 });
 
 const inter = Inter({
@@ -26,7 +29,8 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   preload: true,
-  fallback: ['system-ui', 'arial']
+  fallback: ['system-ui', 'arial'],
+  adjustFontFallback: true
 });
 
 export const metadata = {
@@ -95,15 +99,6 @@ export const metadata = {
   },
 };
 
-function StructuredData({ data }) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
-  );
-}
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr">
@@ -145,14 +140,16 @@ export default function RootLayout({ children }) {
         <WebVitals />
         <ErrorBoundary>
           <RecruiterModeProvider>
-            <RecruiterBanner />
-            <Nav />
-            <AIEmotionSystem />
-            <ModeToggle />
-            <main role="main" id="main-content" tabIndex="-1">
-              {children}
-            </main>
-            <Footer />
+            <ProjectsProvider>
+              <RecruiterBanner />
+              <Nav />
+              <AIEmotionSystem />
+              <ModeToggle />
+              <main role="main" id="main-content" tabIndex="-1">
+                {children}
+              </main>
+              <Footer />
+            </ProjectsProvider>
           </RecruiterModeProvider>
         </ErrorBoundary>
       </body>

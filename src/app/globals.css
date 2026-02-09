@@ -2,6 +2,7 @@
 @import "../styles/themes.css";
 @import "../styles/emotion-vars.css";
 @import "../styles/page-emotions.css";
+@import "../styles/performance.css";
 @import "./nav-styles.css";
 @import "tailwindcss";
 

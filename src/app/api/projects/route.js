@@ -1,26 +1,26 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 import { checkAuth } from '@/lib/auth';
 
 const DB_PATH = path.join(process.cwd(), 'src/data/projects-db.json');
 
-function readProjects() {
+async function readProjects() {
   try {
-    const data = fs.readFileSync(DB_PATH, 'utf8');
+    const data = await fs.readFile(DB_PATH, 'utf8');
     return JSON.parse(data);
   } catch {
     return [];
   }
 }
 
-function writeProjects(projects) {
-  fs.writeFileSync(DB_PATH, JSON.stringify(projects, null, 2));
+async function writeProjects(projects) {
+  await fs.writeFile(DB_PATH, JSON.stringify(projects, null, 2));
 }
 
 // GET - Read all projects
 export async function GET() {
-  const projects = readProjects();
+  const projects = await readProjects();
   return NextResponse.json(projects);
 }
 
@@ -31,7 +31,7 @@ export async function POST(request) {
   }
   
   const body = await request.json();
-  const projects = readProjects();
+  const projects = await readProjects();
   
   const newProject = {
     id: Date.now(),
@@ -51,7 +51,7 @@ export async function POST(request) {
   };
   
   projects.push(newProject);
-  writeProjects(projects);
+  await writeProjects(projects);
   
   return NextResponse.json(newProject, { status: 201 });
 }

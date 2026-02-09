@@ -1,21 +1,20 @@
 "use client";
-import { motion } from "framer-motion";
-import { ArrowLeft, ExternalLink, Calendar, Tag, Zap, X } from "lucide-react";
+import { ArrowLeft, ExternalLink, Tag, Zap, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useProjects } from "../../../hooks/useProjects";
-import { use, useState } from "react";
+import { use, useState, useMemo } from "react";
 
 export default function SingleProjectClient({ param }) {
     const { projects } = useProjects();
     const resolvedParams = use(param);
     const [selectedImage, setSelectedImage] = useState(null);
 
-    // Find project by slug (title converted to URL format)
     const slug = resolvedParams.id;
-    const project = projects.find(p =>
-        p.title.toLowerCase().replace(/\s+/g, '-') === decodeURIComponent(slug)
-    ) || null;
+    const project = useMemo(() => 
+        projects.find(p => p.title.toLowerCase().replace(/\s+/g, '-') === decodeURIComponent(slug)) || null,
+        [projects, slug]
+    );
 
     if (!project) {
         return (
@@ -32,29 +31,18 @@ export default function SingleProjectClient({ param }) {
 
     return (
         <div className="min-h-screen bg-black text-white pt-10">
-            {/* Hero Section */}
             <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
                     <Link href="/Builds">
-                        <motion.button
-                            className="flex items-center gap-2 mb-8 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            whileHover={{ x: -5 }}
-                        >
+                        <button className="flex items-center gap-2 mb-8 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-all">
                             <ArrowLeft size={20} />
                             Back to Projects
-                        </motion.button>
+                        </button>
                     </Link>
 
                     <div className="grid lg:grid-cols-5 gap-8 sm:gap-12 items-center">
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="lg:col-span-2"
-                        >
+                        <div className="lg:col-span-2">
                             <div className="flex items-center gap-3 mb-4">
                                 <Tag size={20} style={{ color: 'var(--accent)' }} />
                                 <span className="px-3 py-1 text-sm font-medium rounded-full bg-white/10" style={{ color: 'var(--accent)' }}>
@@ -72,32 +60,22 @@ export default function SingleProjectClient({ param }) {
 
                             <div className="flex flex-wrap gap-3 sm:gap-4">
                                 {(project.links || []).map((link, i) => (
-                                    <motion.a
+                                    <a
                                         key={i}
                                         href={link.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium flex items-center gap-2 hover:opacity-90 transition-opacity text-sm sm:text-base"
                                         style={{ background: `linear-gradient(to right, var(--accent), var(--background))` }}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.3 + i * 0.1 }}
                                     >
                                         <ExternalLink size={16} className="sm:w-[18px] sm:h-[18px]" />
                                         {link.label}
-                                    </motion.a>
+                                    </a>
                                 ))}
                             </div>
-                        </motion.div>
+                        </div>
 
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            className="relative lg:col-span-3"
-                        >
+                        <div className="relative lg:col-span-3">
                             <div className="absolute -inset-4 rounded-3xl blur-2xl" style={{ background: `linear-gradient(to right, var(--accent), var(--background))`, opacity: 0.2 }} />
                             <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm">
                                 {project.img ? (
@@ -106,7 +84,8 @@ export default function SingleProjectClient({ param }) {
                                         alt={project.title}
                                         width={800}
                                         height={450}
-                                        className="w-full h-[350px] sm:h-[450px] lg:h-[450px] object-fill"
+                                        className="w-full h-[350px] sm:h-[450px] lg:h-[450px] object-cover"
+                                        priority
                                     />
                                 ) : (
                                     <div className="w-full h-[250px] sm:h-[300px] lg:h-[400px] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
@@ -114,21 +93,14 @@ export default function SingleProjectClient({ param }) {
                                     </div>
                                 )}
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Content Sections */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12">
-                    {/* Technologies */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10"
-                    >
+                    <div className="bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10">
                         <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-3">
                             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center" style={{ background: `linear-gradient(to right, var(--accent), var(--background))` }}>
                                 <Zap size={14} className="sm:w-[18px] sm:h-[18px]" />
@@ -137,29 +109,15 @@ export default function SingleProjectClient({ param }) {
                         </h3>
                         <div className="flex flex-wrap gap-2 sm:gap-3">
                             {project.tech.map((tech, i) => (
-                                <motion.span
-                                    key={i}
-                                    className="px-3 sm:px-4 py-1 sm:py-2 bg-gradient-to-r from-white/10 to-white/5 rounded-full border border-white/10 text-xs sm:text-sm font-medium"
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: i * 0.1 }}
-                                >
+                                <span key={i} className="px-3 sm:px-4 py-1 sm:py-2 bg-gradient-to-r from-white/10 to-white/5 rounded-full border border-white/10 text-xs sm:text-sm font-medium">
                                     {tech}
-                                </motion.span>
+                                </span>
                             ))}
                         </div>
-                    </motion.div>
+                    </div>
 
-                    {/* Features */}
                     {(project.features || []).length > 0 && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
-                            className="bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10"
-                        >
+                        <div className="bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10">
                             <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-3">
                                 <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center" style={{ background: `linear-gradient(to right, var(--primary), var(--secondary))` }}>
                                     <Zap size={14} className="sm:w-[18px] sm:h-[18px]" />
@@ -168,31 +126,17 @@ export default function SingleProjectClient({ param }) {
                             </h3>
                             <ul className="space-y-3 sm:space-y-4">
                                 {project.features.map((feature, i) => (
-                                    <motion.li
-                                        key={i}
-                                        className="flex items-start gap-3 text-gray-300"
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: i * 0.1 }}
-                                    >
+                                    <li key={i} className="flex items-start gap-3 text-gray-300">
                                         <div className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ background: `linear-gradient(to right, var(--primary), var(--secondary))` }} />
                                         <span className="text-xs sm:text-sm leading-relaxed">{feature}</span>
-                                    </motion.li>
+                                    </li>
                                 ))}
                             </ul>
-                        </motion.div>
+                        </div>
                     )}
 
-                    {/* Challenges */}
                     {(project.challenges || []).length > 0 && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
-                            className="bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10"
-                        >
+                        <div className="bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10">
                             <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-3">
                                 <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center" style={{ background: `linear-gradient(to right, var(--accent), var(--background))` }}>
                                     <Zap size={14} className="sm:w-[18px] sm:h-[18px]" />
@@ -201,56 +145,32 @@ export default function SingleProjectClient({ param }) {
                             </h3>
                             <ul className="space-y-3 sm:space-y-4">
                                 {project.challenges.map((challenge, i) => (
-                                    <motion.li
-                                        key={i}
-                                        className="flex items-start gap-3 text-gray-300"
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: i * 0.1 }}
-                                    >
+                                    <li key={i} className="flex items-start gap-3 text-gray-300">
                                         <div className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ background: `linear-gradient(to right, var(--accent), var(--background))` }} />
                                         <span className="text-xs sm:text-sm leading-relaxed">{challenge}</span>
-                                    </motion.li>
+                                    </li>
                                 ))}
                             </ul>
-                        </motion.div>
+                        </div>
                     )}
                 </div>
 
-                {/* Results Section */}
                 {project.results && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="mt-12 sm:mt-16 rounded-2xl p-6 sm:p-8 border bg-white/5 border-white/10"
-
-                    >
+                    <div className="mt-12 sm:mt-16 rounded-2xl p-6 sm:p-8 border bg-white/5 border-white/10">
                         <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">Results & Impact</h3>
                         <p className="text-base sm:text-lg text-gray-300 leading-relaxed text-center max-w-4xl mx-auto">
                             {project.results}
                         </p>
-                    </motion.div>
+                    </div>
                 )}
 
-                {/* Additional Images */}
                 {(project.images || []).length > 0 && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="mt-12 sm:mt-16"
-                    >
+                    <div className="mt-12 sm:mt-16">
                         <h3 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Project Gallery</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                             {project.images.map((img, i) => (
-                                <motion.div
+                                <div
                                     key={i}
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: i * 0.1 }}
                                     className="relative rounded-xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm hover:border-white/20 transition-colors cursor-pointer"
                                     onClick={() => setSelectedImage(img)}
                                 >
@@ -260,15 +180,15 @@ export default function SingleProjectClient({ param }) {
                                         width={400}
                                         height={300}
                                         className="w-full h-64 object-cover"
+                                        loading="lazy"
                                     />
-                                </motion.div>
+                                </div>
                             ))}
                         </div>
-                    </motion.div>
+                    </div>
                 )}
             </div>
 
-            {/* Image Modal */}
             {selectedImage && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={() => setSelectedImage(null)}>
                     <button className="absolute top-4 right-4 text-white hover:text-gray-300" onClick={() => setSelectedImage(null)}>

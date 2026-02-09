@@ -1,10 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 export const useProjects = () => {
   const [projects, setProjects] = useState([]);
+  const cacheRef = useRef({ data: null, timestamp: 0 });
   const [form, setForm] = useState({
     title: "",
     desc: "",
@@ -25,15 +27,47 @@ export const useProjects = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    fetchProjects();
+    const abortController = new AbortController();
+    
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/projects", {
+          headers: { "X-API-Key": API_KEY },
+          signal: abortController.signal
+        });
+        const data = await res.json();
+        setProjects(data);
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          console.error('Failed to fetch projects:', error);
+        }
+      }
+    };
+    
+    fetchData();
+    
+    return () => abortController.abort();
   }, []);
 
   const fetchProjects = async () => {
-    const res = await fetch("/api/projects", {
-      headers: { "X-API-Key": API_KEY },
-    });
-    const data = await res.json();
-    setProjects(data);
+    // Check cache first
+    const now = Date.now();
+    if (cacheRef.current.data && (now - cacheRef.current.timestamp) < CACHE_DURATION) {
+      setProjects(cacheRef.current.data);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/projects", {
+        headers: { "X-API-Key": API_KEY },
+      });
+      const data = await res.json();
+      setProjects(data);
+      // Update cache
+      cacheRef.current = { data, timestamp: now };
+    } catch (error) {
+      console.error('Failed to fetch projects:', error);
+    }
   };
 
   const handleLogin = async (password) => {
@@ -59,20 +93,27 @@ export const useProjects = () => {
     const formData = new FormData();
     Array.from(files).forEach((file) => formData.append("files", file));
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      headers: { 
-        "X-API-Key": API_KEY,
-        "Authorization": `Bearer ${authToken}`
-      },
-      body: formData,
-    });
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { 
+          "X-API-Key": API_KEY,
+          "Authorization": `Bearer ${authToken}`
+        },
+        body: formData,
+      });
 
-    const data = await res.json();
-    if (res.ok && data.files) {
-      setImages((prev) => [...prev, ...data.files]);
+      const data = await res.json();
+      if (res.ok && data.files) {
+        setImages((prev) => [...prev, ...data.files]);
+      } else {
+        console.error('Upload failed:', data.error || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+    } finally {
+      setUploading(false);
     }
-    setUploading(false);
   };
 
   const handleMainImageUpload = async (file) => {
@@ -82,20 +123,27 @@ export const useProjects = () => {
     const formData = new FormData();
     formData.append("files", file);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      headers: { 
-        "X-API-Key": API_KEY,
-        "Authorization": `Bearer ${authToken}`
-      },
-      body: formData,
-    });
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { 
+          "X-API-Key": API_KEY,
+          "Authorization": `Bearer ${authToken}`
+        },
+        body: formData,
+      });
 
-    const data = await res.json();
-    if (res.ok && data.files?.[0]) {
-      setForm((prev) => ({ ...prev, img: data.files[0] }));
+      const data = await res.json();
+      if (res.ok && data.files?.[0]) {
+        setForm((prev) => ({ ...prev, img: data.files[0] }));
+      } else {
+        console.error('Upload failed:', data.error || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+    } finally {
+      setUploading(false);
     }
-    setUploading(false);
   };
 
   const handleSubmit = async (e) => {

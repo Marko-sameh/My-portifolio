@@ -114,11 +114,21 @@ class BehaviorTracker {
 
   // Remove event listeners
   removeEventListeners() {
-    window.removeEventListener('scroll', this.scrollHandler);
-    document.removeEventListener('click', this.clickHandler);
-    document.removeEventListener('mouseenter', this.mouseEnterHandler, true);
-    document.removeEventListener('mouseleave', this.mouseLeaveHandler, true);
-    window.removeEventListener('popstate', this.navigationHandler);
+    if (this.scrollHandler) {
+      window.removeEventListener('scroll', this.scrollHandler);
+    }
+    if (this.clickHandler) {
+      document.removeEventListener('click', this.clickHandler);
+    }
+    if (this.mouseEnterHandler) {
+      document.removeEventListener('mouseenter', this.mouseEnterHandler, true);
+    }
+    if (this.mouseLeaveHandler) {
+      document.removeEventListener('mouseleave', this.mouseLeaveHandler, true);
+    }
+    if (this.navigationHandler) {
+      window.removeEventListener('popstate', this.navigationHandler);
+    }
   }
 
   // Calculate scroll speed

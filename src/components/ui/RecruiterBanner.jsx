@@ -6,15 +6,20 @@ import { Briefcase, X } from "lucide-react";
 
 export default function RecruiterBanner() {
     const [isVisible, setIsVisible] = useState(true);
+    const [shouldRender, setShouldRender] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsVisible(false);
-        }, 10000);
-
+        const timer = setTimeout(() => setIsVisible(false), 10000);
         return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        if (!isVisible) {
+            const timer = setTimeout(() => setShouldRender(false), 500);
+            return () => clearTimeout(timer);
+        }
+    }, [isVisible]);
 
     // Expose banner visibility to window for Nav component
     useEffect(() => {
@@ -22,10 +27,8 @@ export default function RecruiterBanner() {
         window.dispatchEvent(new CustomEvent('bannerVisibilityChange', { detail: isVisible }));
     }, [isVisible]);
 
-    if (!isVisible) {
-        setTimeout(() => {
-            return null;
-        }, 500);
+    if (!shouldRender) {
+        return null;
     }
 
     return (

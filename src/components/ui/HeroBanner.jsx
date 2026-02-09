@@ -2,20 +2,27 @@
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 import CVModal from './CVModal';
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import marko_img from "../../../public/MixCollage.jpg"
+import { useAnimationPreferences } from '@/hooks/useAnimationPreferences';
+import { fadeIn, slideUp, TRANSITIONS, getHoverAnimation } from '@/utils/animationConfig';
+
 function HeroBanner() {
+    const { reducedMotion, isMobile, isLowEnd } = useAnimationPreferences();
+    const shouldAnimate = !reducedMotion && !isLowEnd;
+
     // Reduce particles for better performance
-    const particles = useMemo(() =>
-        Array.from({ length: 8 }, (_, i) => ({
+    const particles = useMemo(() => {
+        if (isMobile || reducedMotion || isLowEnd) return [];
+        return Array.from({ length: 6 }, (_, i) => ({
             id: i,
             left: Math.random() * 100,
             top: Math.random() * 100,
             duration: Math.random() * 3 + 2,
             delay: Math.random() * 3
-        }))
-        , []);
+        }));
+    }, [isMobile, reducedMotion, isLowEnd]);
 
     const [showCVModal, setShowCVModal] = useState(false);
 
@@ -39,9 +46,9 @@ function HeroBanner() {
                 <div className="absolute inset-0 bg-gradient-to-b from-black via-[var(--accent-40)] to-black z-10" />
                 <motion.div
                     className="absolute inset-0 opacity-30"
-                    animate={{ scale: [1, 1.02, 1] }}
+                    animate={shouldAnimate ? { scale: [1, 1.02, 1] } : {}}
                     transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ willChange: "transform" }}
+                    style={{ willChange: shouldAnimate ? "transform" : "auto" }}
                 >
                     <Image
                         src={marko_img}
@@ -49,7 +56,7 @@ function HeroBanner() {
                         fill
                         className="object-contain"
                         priority
-                        fetchPriority="high"
+                        placeholder="blur"
                         sizes="100vw"
                         quality={75}
                     />
@@ -63,12 +70,10 @@ function HeroBanner() {
                             style={{
                                 left: `${particle.left}%`,
                                 top: `${particle.top}%`,
-                                willChange: "transform, opacity"
                             }}
                             animate={{
                                 y: [0, -50, 0],
                                 opacity: [0, 0.8, 0],
-                                scale: [0, 1, 0],
                             }}
                             transition={{
                                 duration: particle.duration,
@@ -84,9 +89,8 @@ function HeroBanner() {
 
             <div className="relative z-20 text-center px-4 sm:px-6 max-w-5xl py-8 sm:py-12 mt-[-60px] sm:mt-[-100px]">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.3 }}
+                    {...(shouldAnimate ? slideUp : fadeIn)}
+                    transition={{ ...TRANSITIONS.slow, delay: 0.3 }}
                 >
                     <motion.h1
                         id="hero-heading"
@@ -109,9 +113,8 @@ function HeroBanner() {
 
                     <motion.p
                         className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-2"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.6 }}
+                        {...fadeIn}
+                        transition={{ ...TRANSITIONS.normal, delay: 0.6 }}
                     >
                         Building modern interfaces with clarity, structure, and intent.
                         <br className="hidden sm:block" />
@@ -124,15 +127,14 @@ function HeroBanner() {
 
                     <motion.div
                         className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.9 }}
+                        {...(shouldAnimate ? slideUp : fadeIn)}
+                        transition={{ ...TRANSITIONS.normal, delay: 0.9 }}
                     >
                         <motion.button
                             onClick={scrollToProjects}
                             className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[var(--accent)] to-[var(--background)] rounded-full font-semibold text-base sm:text-lg shadow-lg shadow-[var(--background)] flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black"
-                            whileHover={{ scale: 1.05, boxShadow: "0 5px 10px var(--background)" }}
-                            whileTap={{ scale: 0.95 }}
+                            whileHover={getHoverAnimation(1.05)}
+                            whileTap={shouldAnimate ? { scale: 0.95 } : {}}
                             aria-label="Scroll to projects section to view my work"
                             type="button"
                         >
@@ -143,8 +145,8 @@ function HeroBanner() {
                         <motion.button
                             onClick={openCVModal}
                             className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/20 rounded-full font-medium text-base sm:text-lg backdrop-blur-sm hover:bg-white/5 transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black"
-                            whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.4)" }}
-                            whileTap={{ scale: 0.95 }}
+                            whileHover={getHoverAnimation(1.05)}
+                            whileTap={shouldAnimate ? { scale: 0.95 } : {}}
                             aria-label="Open CV modal to view my resume"
                             type="button"
                         >

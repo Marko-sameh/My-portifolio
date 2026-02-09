@@ -1,23 +1,28 @@
 'use client';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import logo from "@/../public/logo-removebg-preview.png"
 import { useRecruiterMode } from '@/contexts/RecruiterModeContext';
 import RecruiterNav from './RecruiterNav';
+import { NAV_ITEMS } from '@/lib/constants';
+import { useAnimationPreferences } from '@/hooks/useAnimationPreferences';
+import { TRANSITIONS, getHoverAnimation } from '@/utils/animationConfig';
 
-const NAV_ITEMS = [
-  { path: "/", label: "Home", ariaLabel: "Navigate to Home page" },
-  { path: "/Identity", label: "Identity", ariaLabel: "Navigate to Identity page" },
-  { path: "/Mastery", label: "Mastery", ariaLabel: "Navigate to Mastery page" },
-  { path: "/Builds", label: "Builds", ariaLabel: "Navigate to Builds page" },
-  { path: "/Core", label: "Core", ariaLabel: "Navigate to Core page" },
-  { path: "/beyond", label: "Beyond", ariaLabel: "Navigate to Beyond page" },
-  { path: "/Signal", label: "Signal", ariaLabel: "Navigate to Signal page" },
-];
+// Throttle utility function (module scope)
+const throttle = (func, limit) => {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+};
 
 export default function Nav() {
   const pathname = usePathname();
@@ -26,6 +31,8 @@ export default function Nav() {
   const [bannerVisible, setBannerVisible] = useState(true);
   const lastScrollY = useRef(0);
   const { isRecruiterMode } = useRecruiterMode();
+  const { reducedMotion } = useAnimationPreferences();
+  const shouldAnimate = !reducedMotion;
 
   const handleBannerChange = useCallback((e) => setBannerVisible(e.detail), []);
   const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
@@ -37,18 +44,17 @@ export default function Nav() {
     return () => window.removeEventListener('bannerVisibilityChange', handleBannerChange);
   }, [handleBannerChange]);
 
+  const throttledScroll = useMemo(() => throttle(() => {
+    const currentScrollY = window.scrollY;
+    setIsNavVisible(currentScrollY < lastScrollY.current || currentScrollY < 50);
+    lastScrollY.current = currentScrollY;
+  }, 16), []);
+
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsNavVisible(currentScrollY < lastScrollY.current || currentScrollY < 50);
-      lastScrollY.current = currentScrollY;
-    };
-    
-    const throttledScroll = throttle(handleScroll, 16); // ~60fps
-    handleScroll();
+    throttledScroll();
     window.addEventListener("scroll", throttledScroll, { passive: true });
     return () => window.removeEventListener("scroll", throttledScroll);
-  }, []);
+  }, [throttledScroll]);
 
   // Close mobile menu on escape key
   useEffect(() => {
@@ -92,9 +98,9 @@ export default function Nav() {
             <Link href="/" aria-label="Go to homepage - Marko Sameh Portfolio">
               <motion.div
                 className="relative cursor-pointer"
-                whileHover={{ scale: 1.06 }}
-                whileTap={{ scale: 0.96 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                whileHover={getHoverAnimation(1.06)}
+                whileTap={shouldAnimate ? { scale: 0.96 } : {}}
+                transition={TRANSITIONS.spring}
               >
                 <span
                   className="absolute inset-0 rounded-full blur-xl opacity-70"
@@ -122,8 +128,8 @@ export default function Nav() {
                   <Link href={item.path} aria-label={item.ariaLabel}>
                     <motion.button
                       className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black ${pathname === item.path ? "text-white" : "text-white/60 hover:text-white/90"}`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={getHoverAnimation(1.05)}
+                      whileTap={shouldAnimate ? { scale: 0.95 } : {}}
                       role="menuitem"
                       aria-current={pathname === item.path ? 'page' : undefined}
                       type="button"
@@ -133,7 +139,7 @@ export default function Nav() {
                           layoutId="nav-pill"
                           className="absolute inset-0 rounded-full border"
                           style={{ background: 'color-mix(in srgb, var(--emotion-primary) 20%, transparent)', borderColor: 'rgba(var(--emotion-primary-rgb), 0.3)' }}
-                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                          transition={TRANSITIONS.springBouncy}
                           aria-hidden="true"
                         />
                       )}
@@ -148,8 +154,8 @@ export default function Nav() {
             <motion.button
               className="lg:hidden p-2 rounded-full bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black"
               onClick={toggleMobileMenu}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={getHoverAnimation(1.05)}
+              whileTap={shouldAnimate ? { scale: 0.95 } : {}}
               aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
@@ -186,8 +192,8 @@ export default function Nav() {
                 <motion.button
                   className="p-3 rounded-full bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
                   onClick={closeMobileMenu}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={getHoverAnimation(1.05)}
+                  whileTap={shouldAnimate ? { scale: 0.95 } : {}}
                   aria-label="Close mobile menu"
                 >
                   <X size={24} aria-hidden="true" />
@@ -208,8 +214,8 @@ export default function Nav() {
                           ? "text-white bg-gradient-to-r from-[var(--accent)] to-[var(--background)] shadow-lg"
                           : "text-white/70 hover:text-white hover:bg-white/5"
                           }`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={getHoverAnimation(1.05)}
+                        whileTap={shouldAnimate ? { scale: 0.95 } : {}}
                         aria-current={pathname === item.path ? 'page' : undefined}
                       >
                         {item.label}
@@ -224,18 +230,4 @@ export default function Nav() {
       </AnimatePresence>
     </>
   );
-}
-
-// Throttle utility function
-function throttle(func, limit) {
-  let inThrottle;
-  return function() {
-    const args = arguments;
-    const context = this;
-    if (!inThrottle) {
-      func.apply(context, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
 }

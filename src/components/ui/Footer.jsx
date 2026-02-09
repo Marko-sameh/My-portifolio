@@ -5,11 +5,12 @@ import logo from "@/../public/logo-removebg-preview.png"
 import Image from "next/image";
 import { useRecruiterMode } from "@/contexts/RecruiterModeContext";
 import RecruiterFooter from "./RecruiterFooter";
-const SECTIONS = ["Home", "Identity", "Mastery", "Builds", "Core", "Beyond", "Signal"];
+import { useRouter } from "next/navigation";
+import { FOOTER_SECTIONS } from "@/lib/constants";
 
 function Footer({ }) {
-
     const { isRecruiterMode } = useRecruiterMode();
+    const router = useRouter();
 
     if (isRecruiterMode) {
         return <RecruiterFooter />
@@ -45,13 +46,13 @@ function Footer({ }) {
                 <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-[var(--accent)] to-[var(--background)] bg-clip-text text-transparent mb-4">Frontend Developer</p>
                 <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base px-4">Programming calm, scalable interfaces — where performance meets intention</p>
                 <div className="flex justify-center gap-6 sm:gap-10 mb-8 sm:mb-10 flex-wrap">
-                    {SECTIONS.slice(1).map((item) => (
+                    {FOOTER_SECTIONS.slice(1).map((section) => (
                         <button
-                            key={item}
-                            onClick={() => scrollTo(item)}
+                            key={section.name}
+                            onClick={() => router.push(section.path)}
                             className="text-gray-500 hover:text-white transition-colors text-xs sm:text-sm"
                         >
-                            {item}
+                            {section.name}
                         </button>
                     ))}
                 </div>

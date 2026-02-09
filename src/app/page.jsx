@@ -1,19 +1,16 @@
-import { Suspense } from "react";
-import dynamic from "next/dynamic";
-import CoreTimeline from "@/components/ui/CoreTimeline";
-import IdentitySection from "@/components/ui/IdentitySection";
-import BuildsSection from "@/components/ui/BuildsSection";
+import { Suspense, lazy } from "react";
 import HeroBanner from "@/components/ui/HeroBanner";
-import MasterySection from "@/components/ui/MasterySection";
-import BeyondSection from "@/components/ui/BeyondSection";
-import SignalSection from "@/components/ui/SignalSection";
-import BusinessFocusedSection from "@/components/ui/BusinessFocusedSection";
 import { seoData } from "@/data/seo";
+import FeatureErrorBoundary from "@/components/ErrorBoundary/FeatureErrorBoundary";
 
-// Dynamic imports for non-critical components
-const RecruiterBanner = dynamic(() => import("@/components/ui/RecruiterBanner"), {
-  loading: () => null
-});
+// Lazy load below-fold sections
+const CoreTimeline = lazy(() => import("@/components/ui/CoreTimeline"));
+const IdentitySection = lazy(() => import("@/components/ui/IdentitySection"));
+const BuildsSection = lazy(() => import("@/components/ui/BuildsSection"));
+const MasterySection = lazy(() => import("@/components/ui/MasterySection"));
+const BeyondSection = lazy(() => import("@/components/ui/BeyondSection"));
+const SignalSection = lazy(() => import("@/components/ui/SignalSection"));
+const BusinessFocusedSection = lazy(() => import("@/components/ui/BusinessFocusedSection"));
 
 // Loading component for suspense boundaries
 function SectionLoading() {
@@ -56,54 +53,68 @@ export default function Page() {
           <HeroBanner />
         </header>
 
-        <Suspense fallback={<SectionLoading />}>
-          <section aria-labelledby="business-focus-heading" className="business-focus-section">
-            <h2 id="business-focus-heading" className="sr-only">Business Focus</h2>
-            <BusinessFocusedSection />
-          </section>
-        </Suspense>
+        <FeatureErrorBoundary>
+          <Suspense fallback={<SectionLoading />}>
+            <section aria-labelledby="business-focus-heading" className="business-focus-section">
+              <h2 id="business-focus-heading" className="sr-only">Business Focus</h2>
+              <BusinessFocusedSection />
+            </section>
+          </Suspense>
+        </FeatureErrorBoundary>
 
-        <Suspense fallback={<SectionLoading />}>
-          <section aria-labelledby="identity-heading" className="identity-section">
-            <h2 id="identity-heading" className="sr-only">Identity</h2>
-            <IdentitySection />
-          </section>
-        </Suspense>
+        <FeatureErrorBoundary>
+          <Suspense fallback={<SectionLoading />}>
+            <section aria-labelledby="identity-heading" className="identity-section">
+              <h2 id="identity-heading" className="sr-only">Identity</h2>
+              <IdentitySection />
+            </section>
+          </Suspense>
+        </FeatureErrorBoundary>
 
-        <Suspense fallback={<SectionLoading />}>
-          <section aria-labelledby="mastery-heading" className="mastery-section">
-            <h2 id="mastery-heading" className="sr-only">Mastery</h2>
-            <MasterySection />
-          </section>
-        </Suspense>
+        <FeatureErrorBoundary>
+          <Suspense fallback={<SectionLoading />}>
+            <section aria-labelledby="mastery-heading" className="mastery-section">
+              <h2 id="mastery-heading" className="sr-only">Mastery</h2>
+              <MasterySection />
+            </section>
+          </Suspense>
+        </FeatureErrorBoundary>
 
-        <Suspense fallback={<SectionLoading />}>
-          <section aria-labelledby="builds-heading" className="builds-section" id="builds">
-            <h2 id="builds-heading" className="sr-only">Projects</h2>
-            <BuildsSection />
-          </section>
-        </Suspense>
+        <FeatureErrorBoundary>
+          <Suspense fallback={<SectionLoading />}>
+            <section aria-labelledby="builds-heading" className="builds-section" id="builds">
+              <h2 id="builds-heading" className="sr-only">Projects</h2>
+              <BuildsSection />
+            </section>
+          </Suspense>
+        </FeatureErrorBoundary>
 
-        <Suspense fallback={<SectionLoading />}>
-          <section aria-labelledby="core-heading" className="core-section">
-            <h2 id="core-heading" className="sr-only">Core Philosophy</h2>
-            <CoreTimeline />
-          </section>
-        </Suspense>
+        <FeatureErrorBoundary>
+          <Suspense fallback={<SectionLoading />}>
+            <section aria-labelledby="core-heading" className="core-section">
+              <h2 id="core-heading" className="sr-only">Core Philosophy</h2>
+              <CoreTimeline />
+            </section>
+          </Suspense>
+        </FeatureErrorBoundary>
 
-        <Suspense fallback={<SectionLoading />}>
-          <section aria-labelledby="beyond-heading" className="beyond-section">
-            <h2 id="beyond-heading" className="sr-only">Beyond</h2>
-            <BeyondSection />
-          </section>
-        </Suspense>
+        <FeatureErrorBoundary>
+          <Suspense fallback={<SectionLoading />}>
+            <section aria-labelledby="beyond-heading" className="beyond-section">
+              <h2 id="beyond-heading" className="sr-only">Beyond</h2>
+              <BeyondSection />
+            </section>
+          </Suspense>
+        </FeatureErrorBoundary>
 
-        <Suspense fallback={<SectionLoading />}>
-          <section aria-labelledby="signal-heading" className="signal-section">
-            <h2 id="signal-heading" className="sr-only">Contact</h2>
-            <SignalSection />
-          </section>
-        </Suspense>
+        <FeatureErrorBoundary>
+          <Suspense fallback={<SectionLoading />}>
+            <section aria-labelledby="signal-heading" className="signal-section">
+              <h2 id="signal-heading" className="sr-only">Contact</h2>
+              <SignalSection />
+            </section>
+          </Suspense>
+        </FeatureErrorBoundary>
       </div>
     </>
   );

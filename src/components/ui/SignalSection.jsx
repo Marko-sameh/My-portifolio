@@ -2,12 +2,52 @@
 import SectionTitle from "./SectionTitle"
 import { Github, Linkedin, Twitter, Mail, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
+
 export const links = [
-    { icon: Github, link: "https://github.com/Marko-sameh", color: "hover:text-[var(--accent)]" },
-    { icon: Linkedin, link: "https://www.linkedin.com/in/marko-sameh-9971b6244", color: "hover:text-[var(--accent)]" },
-    { icon: Mail, link: "mailto:markosameh75@gmail.com", color: "hover:text-[var(--accent)]" },
+    { icon: Github, link: "https://github.com/Marko-sameh", color: "hover:text-[var(--accent)]", label: "GitHub" },
+    { icon: Linkedin, link: "https://www.linkedin.com/in/marko-sameh-9971b6244", color: "hover:text-[var(--accent)]", label: "LinkedIn" },
+    { icon: Mail, link: "mailto:markosameh75@gmail.com", color: "hover:text-[var(--accent)]", label: "Email" },
 ]
+
 function SignalSection({ }) {
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [errors, setErrors] = useState({});
+    const [status, setStatus] = useState('');
+
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.name.trim()) newErrors.name = 'Name is required';
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Invalid email format';
+        }
+        if (!formData.message.trim()) newErrors.message = 'Message is required';
+        return newErrors;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const newErrors = validateForm();
+        
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setStatus('Please fix the errors above');
+            return;
+        }
+        
+        setErrors({});
+        setStatus('Message sent successfully!');
+        setFormData({ name: '', email: '', message: '' });
+    };
+
+    const handleChange = (field, value) => {
+        setFormData(prev => ({ ...prev, [field]: value }));
+        if (errors[field]) {
+            setErrors(prev => ({ ...prev, [field]: '' }));
+        }
+    };
     return <section id="signal" className="relative min-h-screen py-20 sm:py-32 md:py-40 px-4 sm:px-6">
         <div className="absolute inset-0" />
         <motion.div
@@ -29,24 +69,66 @@ function SignalSection({ }) {
             >
                 <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-r from-[var(--background)] to-[var(--accent)] rounded-3xl opacity-10 blur-3xl" />
                 <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-10 md:p-14">
-                    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                    <form className="space-y-6" onSubmit={handleSubmit} noValidate>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <input
-                                type="text"
-                                placeholder="Your name"
-                                className="px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all"
-                            />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                className="px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all"
-                            />
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Your name"
+                                    value={formData.name}
+                                    onChange={(e) => handleChange('name', e.target.value)}
+                                    className="px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all w-full"
+                                    aria-invalid={!!errors.name}
+                                    aria-describedby={errors.name ? 'name-error' : undefined}
+                                />
+                                {errors.name && (
+                                    <p id="name-error" className="mt-2 text-sm text-red-400" role="alert">
+                                        {errors.name}
+                                    </p>
+                                )}
+                            </div>
+                            <div>
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    value={formData.email}
+                                    onChange={(e) => handleChange('email', e.target.value)}
+                                    className="px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all w-full"
+                                    aria-invalid={!!errors.email}
+                                    aria-describedby={errors.email ? 'email-error' : undefined}
+                                />
+                                {errors.email && (
+                                    <p id="email-error" className="mt-2 text-sm text-red-400" role="alert">
+                                        {errors.email}
+                                    </p>
+                                )}
+                            </div>
                         </div>
-                        <textarea
-                            placeholder="Your message..."
-                            rows={6}
-                            className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all resize-none"
-                        />
+                        <div>
+                            <textarea
+                                placeholder="Your message..."
+                                rows={6}
+                                value={formData.message}
+                                onChange={(e) => handleChange('message', e.target.value)}
+                                className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 outline-none focus:border-[var(--accent)] transition-all resize-none"
+                                aria-invalid={!!errors.message}
+                                aria-describedby={errors.message ? 'message-error' : undefined}
+                            />
+                            {errors.message && (
+                                <p id="message-error" className="mt-2 text-sm text-red-400" role="alert">
+                                    {errors.message}
+                                </p>
+                            )}
+                        </div>
+                        {status && (
+                            <div 
+                                className={`p-4 rounded-xl ${status.includes('success') ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}
+                                role="status"
+                                aria-live="polite"
+                            >
+                                {status}
+                            </div>
+                        )}
                         <motion.button
                             type="submit"
                             className="w-full px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[var(--background)] to-[var(--accent)] rounded-xl font-semibold text-base sm:text-lg shadow-lg shadow-[var(--accent)] flex items-center justify-center gap-2"
@@ -69,8 +151,10 @@ function SignalSection({ }) {
                                     whileHover={{ scale: 1.1, rotate: 5 }}
                                     whileTap={{ scale: 0.9 }}
                                     target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={`Connect on ${social.label}`}
                                 >
-                                    <social.icon size={20} className="sm:w-6 sm:h-6" />
+                                    <social.icon size={20} className="sm:w-6 sm:h-6" aria-hidden="true" />
                                 </motion.a>
                             ))}
                         </div>

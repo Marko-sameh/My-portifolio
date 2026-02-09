@@ -28,7 +28,10 @@ export default function WebVitals() {
         
         observer.observe({ entryTypes: ["paint", "largest-contentful-paint"] });
         
-        return () => observer.disconnect();
+        // Proper cleanup
+        return () => {
+          observer.disconnect();
+        };
       } catch (e) {
         console.warn("Performance observer not supported");
       }

@@ -1,27 +1,27 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 import { checkAuth } from '@/lib/auth';
 
 const DB_PATH = path.join(process.cwd(), 'src/data/projects-db.json');
 
-function readProjects() {
+async function readProjects() {
   try {
-    const data = fs.readFileSync(DB_PATH, 'utf8');
+    const data = await fs.readFile(DB_PATH, 'utf8');
     return JSON.parse(data);
   } catch {
     return [];
   }
 }
 
-function writeProjects(projects) {
-  fs.writeFileSync(DB_PATH, JSON.stringify(projects, null, 2));
+async function writeProjects(projects) {
+  await fs.writeFile(DB_PATH, JSON.stringify(projects, null, 2));
 }
 
 // GET - Read single project
 export async function GET(request, { params }) {
   const { id } = await params;
-  const projects = readProjects();
+  const projects = await readProjects();
   const project = projects.find(p => p.id == id);
   
   if (!project) {
@@ -39,7 +39,7 @@ export async function PUT(request, { params }) {
   
   const { id } = await params;
   const body = await request.json();
-  const projects = readProjects();
+  const projects = await readProjects();
   const index = projects.findIndex(p => p.id == id);
   
   if (index === -1) {
@@ -64,7 +64,7 @@ export async function PUT(request, { params }) {
   };
   
   projects[index] = updatedProject;
-  writeProjects(projects);
+  await writeProjects(projects);
   
   return NextResponse.json(updatedProject);
 }
@@ -76,7 +76,7 @@ export async function DELETE(request, { params }) {
   }
   
   const { id } = await params;
-  const projects = readProjects();
+  const projects = await readProjects();
   const index = projects.findIndex(p => p.id == id);
   
   if (index === -1) {
@@ -84,7 +84,7 @@ export async function DELETE(request, { params }) {
   }
   
   projects.splice(index, 1);
-  writeProjects(projects);
+  await writeProjects(projects);
   
   return NextResponse.json({ message: 'Project deleted' });
 }
