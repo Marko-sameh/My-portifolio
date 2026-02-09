@@ -308,7 +308,7 @@ export default function IdentityClient() {
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
                 What started as experimentation evolved into building complete frontend products,
-                driven by understanding the "why" behind every design decision.
+                driven by understanding the {'"why"'} behind every design decision.
               </p>
             </div>
             <div className="relative h-80 lg:h-96 order-1 lg:order-2">
@@ -398,7 +398,7 @@ export default function IdentityClient() {
               aesthetics, performance, and maintainability.
             </p>
             <p className="text-lg text-gray-300 leading-relaxed">
-              I'm also exploring how AI can subtly enhance user experience —
+              {"I'm"} also exploring how AI can subtly enhance user experience —
               without adding noise or confusion to the interface.
             </p>
           </motion.div>

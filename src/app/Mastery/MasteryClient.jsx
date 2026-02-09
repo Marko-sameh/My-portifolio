@@ -6,46 +6,69 @@ import CTASection from "@/components/ui/CTASection";
 
 export default function MasteryClient() {
     return (
-        <div className="min-h-screen bg-black text-white py-10 sm:py-16 lg:py-20 px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
-                <Link href="/">
-                    <motion.button
-                        className="mb-8 sm:mb-12 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-                        whileHover={{ x: -5 }}
+        <div className="min-h-screen bg-black text-white">
+            {/* Hero */}
+            <div className="relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/10 via-transparent to-transparent" />
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 lg:pt-20 pb-16 sm:pb-24 relative">
+                    <Link href="/">
+                        <motion.button
+                            className="mb-12 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                            whileHover={{ x: -5 }}
+                        >
+                            <ArrowLeft size={20} />
+                            Back to Home
+                        </motion.button>
+                    </Link>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        className="text-center"
                     >
-                        <ArrowLeft size={20} />
-                        Back to Home
-                    </motion.button>
-                </Link>
+                        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-white to-[var(--accent)] bg-clip-text text-transparent">
+                            Mastery
+                        </h1>
+                        <p className="text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto">
+                            Technical skills that deliver business results
+                        </p>
+                    </motion.div>
+                </div>
+            </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                >
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-center bg-gradient-to-r from-white to-[var(--accent)] bg-clip-text text-transparent">
-                        Mastery
-                    </h1>
-                    <p className="text-lg sm:text-xl text-center text-gray-400 mb-12 sm:mb-16">What {"I've"} Learned to Do Well</p>
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
 
-                    {/* Marketing Section for Non-Technical Clients */}
-                    <div className="bg-gradient-to-r from-[var(--background)]/20 to-[var(--accent)]/20 rounded-2xl p-8 border border-white/10 mb-16">
-                        <h2 className="text-3xl font-bold mb-6 text-center">What This Means for Your Business</h2>
-                        <div className="grid md:grid-cols-2 gap-12">
-                            <div>
-                                <h3 className="text-2xl font-semibold mb-4" style={{ color: 'var(--accent)' }}>Your Problem</h3>
-                                <p className="text-lg text-gray-300 mb-4">You need a website that actually works for your business. Most developers build pretty sites that {"don't"} bring customers or generate sales.</p>
-                                <p className="text-gray-300">{"You're"} tired of websites that look good but {"don't"} deliver results.</p>
-                            </div>
-                            <div>
-                                <h3 className="text-2xl font-semibold mb-4" style={{ color: 'var(--accent)' }}>My Solution</h3>
-                                <p className="text-lg text-gray-300 mb-4">I build websites that get found on Google, convert visitors into paying customers, and grow with your business.</p>
-                                <p className="text-gray-300">Fast loading, mobile-friendly, and designed to make you money.</p>
+                    {/* Value Proposition */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="mb-24 sm:mb-32"
+                    >
+                        <div className="relative rounded-3xl overflow-hidden border border-white/10">
+                            <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/20 via-transparent to-transparent" />
+                            <div className="relative p-8 sm:p-12">
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center">What This Means for Your Business</h2>
+                                <div className="grid md:grid-cols-2 gap-12">
+                                    <div className="space-y-4">
+                                        <h3 className="text-2xl font-semibold" style={{ color: 'var(--accent)' }}>Your Problem</h3>
+                                        <p className="text-lg text-gray-300 leading-relaxed">
+                                            You need a website that actually works for your business. Most developers build pretty sites that {"don't"} bring customers or generate sales.
+                                        </p>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <h3 className="text-2xl font-semibold" style={{ color: 'var(--accent)' }}>My Solution</h3>
+                                        <p className="text-lg text-gray-300 leading-relaxed">
+                                            I build websites that get found on Google, convert visitors into paying customers, and grow with your business.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
-                    <div className="grid lg:grid-cols-2 gap-16 mb-20">
+                    <div className="grid lg:grid-cols-2 gap-12 mb-24 sm:mb-32">
                         <div>
                             <h2 className="text-4xl font-bold mb-8" style={{ color: 'var(--accent)' }}>Frontend Engineering</h2>
                             <p className="text-lg text-gray-300 leading-relaxed mb-6">
@@ -98,7 +121,7 @@ export default function MasteryClient() {
                         </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-16 mb-20">
+                    <div className="grid md:grid-cols-2 gap-12 mb-24 sm:mb-32">
                         <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
                             <Layers className="w-12 h-12 mb-6" style={{ color: 'var(--accent)' }} />
                             <h2 className="text-3xl font-bold mb-6" style={{ color: 'var(--accent)' }}>UI & Experience Engineering</h2>
@@ -223,32 +246,39 @@ export default function MasteryClient() {
                         </div>
                     </div>
 
-                    <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-8 border border-white/10">
-                        <h2 className="text-2xl font-bold mb-4 text-center">Proven Track Record</h2>
-                        <p className="text-center text-gray-300 mb-6">These numbers represent real projects and satisfied clients, not just technical achievements</p>
-                        <div className="grid md:grid-cols-4 gap-8 text-center">
-                            <div>
-                                <div className="text-3xl font-bold mb-2" style={{ color: 'var(--accent)' }}>90+</div>
-                                <p className="text-sm text-gray-400 mb-1">Lighthouse Scores</p>
-                                <p className="text-xs text-gray-500">Fast, optimized websites</p>
-                            </div>
-                            <div>
-                                <div className="text-3xl font-bold mb-2" style={{ color: 'var(--accent)' }}>30%</div>
-                                <p className="text-sm text-gray-400 mb-1">Load Time Reduction</p>
-                                <p className="text-xs text-gray-500">Faster than competitors</p>
-                            </div>
-                            <div>
-                                <div className="text-3xl font-bold mb-2" style={{ color: 'var(--accent)' }}>100%</div>
-                                <p className="text-sm text-gray-400 mb-1">Client Satisfaction</p>
-                                <p className="text-xs text-gray-500">Projects delivered successfully</p>
-                            </div>
-                            <div>
-                                <div className="text-3xl font-bold mb-2" style={{ color: 'var(--accent)' }}>11+</div>
-                                <p className="text-sm text-gray-400 mb-1">Projects Delivered</p>
-                                <p className="text-xs text-gray-500">Real businesses helped</p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="mb-24 sm:mb-32"
+                    >
+                        <div className="relative rounded-3xl overflow-hidden border border-white/10">
+                            <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/10 via-transparent to-transparent" />
+                            <div className="relative p-8 sm:p-12">
+                                <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Proven Track Record</h2>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                                    {[
+                                        { value: "90+", label: "Lighthouse Scores", sub: "Fast, optimized websites" },
+                                        { value: "30%", label: "Load Time Reduction", sub: "Faster than competitors" },
+                                        { value: "100%", label: "Client Satisfaction", sub: "Projects delivered successfully" },
+                                        { value: "11+", label: "Projects Delivered", sub: "Real businesses helped" }
+                                    ].map((metric, i) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: i * 0.1 }}
+                                        >
+                                            <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{metric.value}</div>
+                                            <p className="text-sm text-gray-300 mb-1">{metric.label}</p>
+                                            <p className="text-xs text-gray-500">{metric.sub}</p>
+                                        </motion.div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
                     <CTASection
                         headline="See what these skills can build"
@@ -256,7 +286,6 @@ export default function MasteryClient() {
                         buttonText="View my work"
                         href="/Builds"
                     />
-                </motion.div>
             </div>
         </div>
     );
