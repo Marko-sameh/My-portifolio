@@ -5,6 +5,7 @@ import CVModal from './CVModal';
 import { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import marko_img from "../../../public/MixCollage.jpg"
+import marko_img_mobile from "../../../public/MixCollage-mobile.jpg"
 import { useAnimationPreferences } from '@/hooks/useAnimationPreferences';
 import { fadeIn, slideUp, TRANSITIONS, getHoverAnimation } from '@/utils/animationConfig';
 
@@ -51,7 +52,7 @@ function HeroBanner() {
                     style={{ willChange: shouldAnimate ? "transform" : "auto" }}
                 >
                     <Image
-                        src={marko_img}
+                        src={isMobile ? marko_img_mobile : marko_img}
                         alt="Cinematic background showcasing modern web development"
                         fill
                         className="object-contain"
