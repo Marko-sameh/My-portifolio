@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { InferenceClient } from "@huggingface/inference";
 
-const client = new InferenceClient("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");
+const client = new InferenceClient(process.env.HF_TOKEN);
 
 const EMOTION_PALETTES = {
   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],

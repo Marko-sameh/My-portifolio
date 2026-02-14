@@ -62,12 +62,12 @@
     "links": [
       {
         "label": "Live",
-        "url": "https://spacetechs.markosameh.com/"
+        "url": "https://spacetechs.net"
       }
     ],
     "showOnHome": true,
     "createdAt": "2025-12-27T20:17:06.969Z",
-    "updatedAt": "2026-02-08T16:24:06.326Z"
+    "updatedAt": "2026-02-13T17:44:26.887Z"
   },
   {
     "id": 1766866627003,
@@ -248,5 +248,100 @@
     "showOnHome": true,
     "createdAt": "2025-12-27T20:17:06.969Z",
     "updatedAt": "2026-02-08T16:23:17.453Z"
+  },
+  {
+    "id": 1766866627008,
+    "title": "Food Restaurant — Online Reservation Platform",
+    "desc": "Responsive restaurant website with integrated booking system.",
+    "fullDescription": "A modern restaurant website built with a focus on user experience and online reservations. The platform allows customers to browse the menu, check availability, and book tables seamlessly.",
+    "features": [
+      "Online reservation & booking system",
+      "Interactive food menu section",
+      "Responsive design across all devices",
+      "Contact & inquiry form integration"
+    ],
+    "challenges": [
+      "Building a smooth booking flow without friction",
+      "Optimizing performance for high image usage",
+      "Ensuring mobile-first responsiveness"
+    ],
+    "results": "Increased online reservations and improved client conversion rate by 50% through a simplified booking experience.",
+    "img": "/api/uploads/1771005351823-Screenshot_2026-01-25_150034.png",
+    "images": [],
+    "tag": "Frontend",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "jQuery"
+    ],
+    "links": [
+      {
+        "label": "Live",
+        "url": "https://restaurant.markosameh.com/"
+      }
+    ],
+    "showOnHome": true,
+    "createdAt": "2026-02-13T20:00:00.000Z",
+    "updatedAt": "2026-02-13T17:57:00.873Z"
+  },
+  {
+    "id": 1766866627009,
+    "title": "Arrived Logistics — Freight Booking System",
+    "desc": "Freight booking and shipment tracking platform.",
+    "fullDescription": "A logistics website designed to streamline freight booking and shipment tracking. The system enables customers to request shipments, track deliveries in real time, and manage logistics operations efficiently.",
+    "features": [
+      "Freight booking request system",
+      "Real-time shipment tracking",
+      "Optimized user journey for service requests",
+      "Admin management dashboard"
+    ],
+    "challenges": [
+      "Designing a clear multi-step booking process",
+      "Handling dynamic tracking data updates",
+      "Improving engagement metrics through UX enhancements"
+    ],
+    "results": "Improved user flow and increased customer engagement through a structured booking and tracking experience.",
+    "img": "",
+    "images": [],
+    "tag": "Fullstack",
+    "tech": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB"
+    ],
+    "links": [],
+    "showOnHome": false,
+    "createdAt": "2026-02-13T20:05:00.000Z"
+  },
+  {
+    "id": 1766866627010,
+    "title": "Library Management System",
+    "desc": "React-based library platform with API integration.",
+    "fullDescription": "A clean and lightweight library management web application connected to a public books API. The system allows users to search books, browse categories, and view detailed information with fast rendering performance.",
+    "features": [
+      "Books API integration",
+      "Advanced search functionality",
+      "Dynamic data rendering",
+      "SEO optimization and performance tuning"
+    ],
+    "challenges": [
+      "Handling asynchronous API data efficiently",
+      "Optimizing search performance",
+      "Maintaining fast load times with dynamic content"
+    ],
+    "results": "Delivered a fast and SEO-friendly library platform with smooth data fetching and structured rendering.",
+    "img": "",
+    "images": [],
+    "tag": "Frontend",
+    "tech": [
+      "React",
+      "REST API",
+      "Tailwind CSS"
+    ],
+    "links": [],
+    "showOnHome": false,
+    "createdAt": "2026-02-13T20:10:00.000Z"
   }
 ]
