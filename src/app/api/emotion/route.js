@@ -24,6 +24,11 @@ const EMOTION_LABELS = {
 };
 
 async function analyzeEmotion(text) {
+  if (!process.env.HF_TOKEN) {
+    console.error('[EMOTION API] HF_TOKEN is missing!');
+    throw new Error('HF_TOKEN not configured');
+  }
+  
   const result = await client.textClassification({
     model: "j-hartmann/emotion-english-distilroberta-base",
     inputs: text,
