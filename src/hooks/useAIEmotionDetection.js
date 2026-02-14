@@ -51,6 +51,7 @@ export function useAIEmotionDetection() {
   const analyzeText = useCallback(async (text) => {
     if (!text) return;
 
+    console.log('[CLIENT] Analyzing text:', text.substring(0, 50));
     try {
       const response = await fetch("/api/emotion", {
         method: "POST",
@@ -60,8 +61,10 @@ export function useAIEmotionDetection() {
         body: JSON.stringify({ text }),
       });
 
+      console.log('[CLIENT] Response status:', response.status);
       if (response.ok) {
         const result = await response.json();
+        console.log('[CLIENT] Result:', result);
         setCurrentEmotion(result.emotion);
         setConfidence(result.confidence);
         
@@ -76,6 +79,7 @@ export function useAIEmotionDetection() {
         }
       }
     } catch (error) {
+      console.error('[CLIENT] Fetch error:', error);
       // Fallback to local classification if API fails
       if (classifierRef.current) {
         const result = await classifierRef.current.classifyEmotion(text);

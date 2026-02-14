@@ -50,16 +50,22 @@ function fallback() {
 }
 
 export async function POST(req) {
+  console.log('[EMOTION API] Request received');
   try {
     const { text } = await req.json();
+    console.log('[EMOTION API] Text:', text?.substring(0, 50));
 
     if (!text || text.length < 2) {
+      console.log('[EMOTION API] Text too short, returning fallback');
       return NextResponse.json(fallback());
     }
 
+    console.log('[EMOTION API] Calling HuggingFace...');
     const result = await analyzeEmotion(text);
+    console.log('[EMOTION API] Success:', result.emotion);
     return NextResponse.json(result);
   } catch (error) {
+    console.error('[EMOTION API] Error:', error.message);
     return NextResponse.json(fallback());
   }
 }
