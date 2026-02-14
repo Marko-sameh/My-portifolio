@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { InferenceClient } from "@huggingface/inference";
 
-const client = new InferenceClient(process.env.HF_TOKEN || "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");
+const HF_TOKEN = process.env.HF_TOKEN || "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";
 
 const EMOTION_PALETTES = {
   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
@@ -24,23 +23,35 @@ const EMOTION_LABELS = {
 };
 
 async function analyzeEmotion(text) {
-  console.log('[EMOTION API] Starting analysis, token exists:', !!process.env.HF_TOKEN);
+  console.log('[EMOTION API] Starting analysis, token exists:', !!HF_TOKEN);
   
-  const result = await client.textClassification({
-    model: "j-hartmann/emotion-english-distilroberta-base",
-    inputs: text,
-    provider: "hf-inference",
-  });
+  const response = await fetch(
+    "https://api-inference.huggingface.co/models/j-hartmann/emotion-english-distilroberta-base",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${HF_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ inputs: text }),
+    }
+  );
 
+  if (!response.ok) {
+    throw new Error(`HF API error: ${response.status}`);
+  }
+
+  const result = await response.json();
   console.log('[EMOTION API] HF result:', result);
-  const top = result.sort((a, b) => b.score - a.score)[0];
+  
+  const top = result[0].sort((a, b) => b.score - a.score)[0];
   const emotionKey = top.label.toLowerCase();
 
   return {
     emotion: EMOTION_LABELS[emotionKey] || "Calmness",
     confidence: Number(top.score.toFixed(3)),
     palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
-    result,
+    result: result[0],
   };
 }
 
