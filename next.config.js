@@ -124,7 +124,7 @@ const nextConfig = {
   }),
 
   // Output configuration for static export if needed
-  // output: "standalone",
+  output: "standalone",
 
   // Trailing slash configuration
   trailingSlash: false,
