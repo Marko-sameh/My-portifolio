@@ -35,7 +35,8 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api-inference.huggingface.co; frame-ancestors 'none';",
+            value:
+              "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api-inference.huggingface.co; frame-ancestors 'none';",
           },
           {
             key: "X-Frame-Options",
@@ -117,14 +118,14 @@ const nextConfig = {
       config.plugins.push(
         new (require("@next/bundle-analyzer")({
           enabled: true,
-        }))()
+        }))(),
       );
       return config;
     },
   }),
 
   // Output configuration for static export if needed
-  output: "standalone",
+  // output: "standalone",
 
   // Trailing slash configuration
   trailingSlash: false,

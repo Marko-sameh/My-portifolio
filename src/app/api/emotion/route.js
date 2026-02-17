@@ -463,7 +463,19 @@ export async function POST(req) {
       palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
     });
   } catch (error) {
-    console.error("[API-CATCH]", error.message);
-    return NextResponse.json(fallback("Server Error"));
+    // طباعة تفاصيل الخطأ كاملة
+    console.error("[API-CATCH] Full Error:", error);
+
+    // محاولة استخراج السبب الحقيقي (DNS, SSL, Connection Refused)
+    if (error.cause) {
+      console.error("[API-CATCH] Error Cause:", error.cause);
+    }
+
+    // لو الخطأ بسبب الـ token غلط
+    if (error.message.includes("401")) {
+      return NextResponse.json(fallback("Invalid API Key (401)"));
+    }
+
+    return NextResponse.json(fallback(`Fetch Failed: ${error.message}`));
   }
 }
