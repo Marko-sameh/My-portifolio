@@ -483,22 +483,56 @@
 import { NextResponse } from "next/server";
 import dns from "node:dns";
 
-// 1. إجبار السيرفر على استخدام IPv4
-// (حل سحري لمشاكل ENOTFOUND في السيرفرات)
+/* ============================================================
+   🛠️ GLOBAL DNS FIX (الحل الجذري لمشاكل الاتصال)
+   هذا الجزء يجبر الكود على استخدام سيرفرات جوجل ويتجاهل السيرفر المحلي
+   ============================================================ */
 try {
-  dns.setDefaultResultOrder("ipv4first");
+  // 1. ضبط سيرفرات DNS لاستخدام جوجل وكلاود فلير
+  dns.setServers(["8.8.8.8", "1.1.1.1"]);
+  console.log("[DNS] Forced DNS servers to 8.8.8.8");
 } catch (e) {
-  console.log("Could not set IPv4 preference");
+  console.error("[DNS] Failed to set servers:", e);
 }
 
+// 2. تعديل وظيفة البحث (Lookup) لتستخدم السيرفرات اللي حددناها فوق
+// بدلاً من استخدام ملفات النظام المعطوبة (/etc/resolv.conf)
+const originalLookup = dns.lookup;
+dns.lookup = (hostname, options, callback) => {
+  // ترتيب البارامترات (أحيانا options بتكون هي الـ callback)
+  if (typeof options === "function") {
+    callback = options;
+    options = {};
+  }
+
+  // لو الدومين هو Hugging Face، نتدخل ونحله يدوياً
+  if (hostname === "router.huggingface.co") {
+    // resolve4 بتستخدم السيرفرات اللي حددناها بـ setServers
+    dns.resolve4(hostname, (err, addresses) => {
+      if (err || !addresses || addresses.length === 0) {
+        console.error(`[DNS FAIL] Could not resolve ${hostname} manually.`);
+        // لو فشلنا، نرجع للطريقة العادية كمحاولة أخيرة
+        return originalLookup(hostname, options, callback);
+      }
+
+      const ip = addresses[0];
+      console.log(`[DNS SUCCESS] Resolved ${hostname} to ${ip}`);
+      // نرجع الـ IP لـ fetch وكأن النظام هو اللي جابه
+      callback(null, ip, 4);
+    });
+  } else {
+    // أي دومين تاني، سيبه زي ما هو
+    originalLookup(hostname, options, callback);
+  }
+};
+/* ============================================================ */
+
 export async function POST(req) {
-  // الرابط الجديد
   const MODEL_ID = "j-hartmann/emotion-english-distilroberta-base";
   const API_URL = `https://router.huggingface.co/hf-inference/models/${MODEL_ID}`;
-
   const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
 
-  // تعريف الألوان
+  // إعداد الألوان
   const EMOTION_PALETTES = {
     joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
     sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
@@ -532,10 +566,11 @@ export async function POST(req) {
 
   try {
     const { text } = await req.json();
-    if (!HF_TOKEN) return fallback("Missing HF Token");
+    if (!HF_TOKEN) return fallback("Missing Token");
 
-    console.log(`[API] Trying: ${API_URL}`);
+    console.log(`[API] Fetching: ${API_URL}`);
 
+    // Fetch العادي (الآن أصبح مدعوماً بالـ DNS Fix)
     const response = await fetch(API_URL, {
       headers: {
         Authorization: `Bearer ${HF_TOKEN}`,
@@ -548,22 +583,15 @@ export async function POST(req) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`[HF ERROR] ${response.status}: ${errorText}`);
-
-      if (response.status === 503) return fallback("Model Loading (503)");
+      if (response.status === 503) return fallback("Model Loading...");
       return fallback(`API Error ${response.status}`);
     }
 
     const result = await response.json();
+    let predictions =
+      Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
 
-    // معالجة الداتا
-    let predictions = result;
-    if (Array.isArray(result) && Array.isArray(result[0])) {
-      predictions = result[0];
-    }
-
-    if (!predictions || !predictions.length || !predictions[0]?.label) {
-      return fallback("Invalid Data Format");
-    }
+    if (!predictions?.[0]?.label) return fallback("Invalid Data");
 
     const top = predictions.sort((a, b) => b.score - a.score)[0];
     const emotionKey = top.label.toLowerCase();
@@ -574,7 +602,7 @@ export async function POST(req) {
       palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
     });
   } catch (error) {
-    console.error("[NETWORK ERROR]", error);
-    return fallback(`Network Error: ${error.message}`);
+    console.error("[CRITICAL]", error);
+    return fallback(`Network/Server Error: ${error.message}`);
   }
 }
