@@ -363,9 +363,8 @@
 // }
 
 import { NextResponse } from "next/server";
-import { HfInference } from "@huggingface/inference";
 
-// إعداد الألوان (نفس الألوان الخاصة بك)
+// إعداد الألوان
 const EMOTION_PALETTES = {
   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
   sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
@@ -386,70 +385,77 @@ const EMOTION_LABELS = {
   neutral: "Calmness",
 };
 
-// دالة النتيجة الاحتياطية (عشان الموقع ميقعش أبداً)
 function fallback(reason = "Unknown") {
-  console.log(`[API-FALLBACK] Using fallback emotion due to: ${reason}`);
+  console.log(`[API-FALLBACK] Reason: ${reason}`);
   return {
     emotion: "Calmness",
     confidence: 0.5,
     palette: EMOTION_PALETTES.neutral,
-    isFallback: true, // علامة عشان تعرف في الفرونت إن دي نتيجة احتياطية
+    isFallback: true,
   };
 }
 
 export async function POST(req) {
   const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
+  const MODEL_ID = "j-hartmann/emotion-english-distilroberta-base";
 
-  // 1. فحص وجود التوكن في بيئة السيرفر
+  // الرابط المباشر للموديل (أكثر استقراراً من المكتبة في حالتك)
+  const API_URL = `https://router.huggingface.co/hf-inference/models/${MODEL_ID}`;
+
   if (!HF_TOKEN) {
-    console.error(
-      "[API-ERROR] HF_ACCESS_TOKEN is missing in Vercel Environment Variables!",
-    );
+    console.error("Missing HF_ACCESS_TOKEN");
     return NextResponse.json(fallback("Missing API Token"));
   }
 
   try {
     const { text } = await req.json();
-    if (!text || text.trim().length < 2) {
-      return NextResponse.json(fallback("Empty Text"));
+    if (!text) return NextResponse.json(fallback("Empty Text"));
+
+    console.log(
+      `[API-START] Fetching direct API for: "${text.substring(0, 15)}..."`,
+    );
+
+    // 1. استخدام fetch المباشر بدلاً من المكتبة
+    // هذا يتخطى مشكلة router.huggingface.co
+    const response = await fetch(API_URL, {
+      headers: {
+        Authorization: `Bearer ${HF_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ inputs: text }),
+    });
+
+    // 2. التحقق من حالة الموديل
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[HF-ERROR] Status: ${response.status}`, errorText);
+
+      // لو الموديل بيحمل (503)
+      if (response.status === 503) {
+        return NextResponse.json(fallback("Model Loading (503)"));
+      }
+      throw new Error(`API Error: ${response.status}`);
     }
 
-    console.log(`[API-START] Analyzing: "${text.substring(0, 20)}..."`);
-    const inference = new HfInference(HF_TOKEN);
+    const result = await response.json();
 
-    // 2. التحكم في الوقت (Timeout Logic)
-    // Vercel Free Plan بيفصل بعد 10 ثواني. إحنا هنفصل بعد 7 ثواني عشان نلحق نرد.
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 7000);
-
-    const response = await Promise.race([
-      inference.textClassification({
-        model: "j-hartmann/emotion-english-distilroberta-base",
-        inputs: text,
-      }),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("TIMEOUT")), 7000),
-      ),
-    ]);
-
-    clearTimeout(timeoutId);
-
-    // 3. معالجة شكل البيانات (Hugging Face sometimes returns nested arrays)
-    let predictions = response;
-    if (Array.isArray(response) && Array.isArray(response[0])) {
-      predictions = response[0];
+    // 3. معالجة هيكل البيانات (Nested Arrays)
+    let predictions = result;
+    if (Array.isArray(result) && Array.isArray(result[0])) {
+      predictions = result[0]; // [[{label...}]] -> [{label...}]
     }
 
-    // التأكد من وجود نتائج
-    if (!predictions || !predictions.length) {
-      throw new Error("Empty prediction array");
+    if (!predictions || !predictions.length || !predictions[0]?.label) {
+      console.error("Invalid response format:", JSON.stringify(result));
+      return NextResponse.json(fallback("Invalid Format"));
     }
 
-    // ترتيب النتائج واختيار الأعلى
+    // ترتيب النتائج
     const top = predictions.sort((a, b) => b.score - a.score)[0];
     const emotionKey = top.label.toLowerCase();
 
-    console.log(`[API-SUCCESS] Detected: ${emotionKey} (${top.score})`);
+    console.log(`[API-SUCCESS] ${emotionKey} (${top.score})`);
 
     return NextResponse.json({
       emotion: EMOTION_LABELS[emotionKey] || "Calmness",
@@ -457,24 +463,7 @@ export async function POST(req) {
       palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
     });
   } catch (error) {
-    console.error("[API-CATCH] Error details:", error);
-
-    // لو الخطأ بسبب إن الموديل "بيحمل" (Cold Start 503)
-    if (error.message.includes("loading") || error.statusCode === 503) {
-      return NextResponse.json(
-        fallback("Model is loading... try again in 30s"),
-      );
-    }
-
-    // لو الخطأ بسبب الوقت
-    if (error.message === "TIMEOUT") {
-      return NextResponse.json(fallback("Request timed out (Model slept)"));
-    }
-
+    console.error("[API-CATCH]", error.message);
     return NextResponse.json(fallback("Server Error"));
   }
-}
-
-export function GET() {
-  return NextResponse.json({ status: "System Operational" });
 }
