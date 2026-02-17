@@ -484,46 +484,40 @@ import { NextResponse } from "next/server";
 import dns from "node:dns";
 
 /* ============================================================
-   🛠️ GLOBAL DNS FIX (الحل الجذري لمشاكل الاتصال)
-   هذا الجزء يجبر الكود على استخدام سيرفرات جوجل ويتجاهل السيرفر المحلي
+   🛠️ FINAL DNS FIX (Hardcoded Map)
+   بما أننا عرفنا الـ IP الشغال من اللوج، سنقوم بتثبيته
+   لتفادي أي مشاكل شبكة أو DNS في المستقبل.
    ============================================================ */
-try {
-  // 1. ضبط سيرفرات DNS لاستخدام جوجل وكلاود فلير
-  dns.setServers(["8.8.8.8", "1.1.1.1"]);
-  console.log("[DNS] Forced DNS servers to 8.8.8.8");
-} catch (e) {
-  console.error("[DNS] Failed to set servers:", e);
-}
 
-// 2. تعديل وظيفة البحث (Lookup) لتستخدم السيرفرات اللي حددناها فوق
-// بدلاً من استخدام ملفات النظام المعطوبة (/etc/resolv.conf)
+// 1. عناوين IP الخاصة بـ router.huggingface.co (من اللوج بتاعك)
+const HF_IPS = ["65.8.131.63", "65.8.131.110", "65.8.131.15", "65.8.131.12"];
+
 const originalLookup = dns.lookup;
+
 dns.lookup = (hostname, options, callback) => {
-  // ترتيب البارامترات (أحيانا options بتكون هي الـ callback)
+  // ضبط البارامترات لأن أحياناً options بتكون هي الـ callback
   if (typeof options === "function") {
     callback = options;
     options = {};
   }
 
-  // لو الدومين هو Hugging Face، نتدخل ونحله يدوياً
+  // إذا كان الدومين هو Hugging Face
   if (hostname === "router.huggingface.co") {
-    // resolve4 بتستخدم السيرفرات اللي حددناها بـ setServers
-    dns.resolve4(hostname, (err, addresses) => {
-      if (err || !addresses || addresses.length === 0) {
-        console.error(`[DNS FAIL] Could not resolve ${hostname} manually.`);
-        // لو فشلنا، نرجع للطريقة العادية كمحاولة أخيرة
-        return originalLookup(hostname, options, callback);
-      }
+    const selectedIP = HF_IPS[0]; // نختار أول واحد (الأكثر استقراراً)
 
-      const ip = addresses[0];
-      console.log(`[DNS SUCCESS] Resolved ${hostname} to ${ip}`);
-      // نرجع الـ IP لـ fetch وكأن النظام هو اللي جابه
-      callback(null, ip, 4);
-    });
-  } else {
-    // أي دومين تاني، سيبه زي ما هو
-    originalLookup(hostname, options, callback);
+    // الحل لمشكلة "Invalid IP address: undefined":
+    // Undici (Fetch) أحياناً بيطلب كل العناوين (all: true)
+    if (options.all) {
+      // نرجع مصفوفة كائنات
+      return callback(null, [{ address: selectedIP, family: 4 }]);
+    } else {
+      // نرجع نص عادي
+      return callback(null, selectedIP, 4);
+    }
   }
+
+  // أي دومين تاني (زي google.com أو غيره) يمشي طبيعي
+  return originalLookup(hostname, options, callback);
 };
 /* ============================================================ */
 
@@ -568,9 +562,8 @@ export async function POST(req) {
     const { text } = await req.json();
     if (!HF_TOKEN) return fallback("Missing Token");
 
-    console.log(`[API] Fetching: ${API_URL}`);
+    console.log(`[API] Fetching: ${API_URL} (Hardcoded DNS)`);
 
-    // Fetch العادي (الآن أصبح مدعوماً بالـ DNS Fix)
     const response = await fetch(API_URL, {
       headers: {
         Authorization: `Bearer ${HF_TOKEN}`,
@@ -582,16 +575,16 @@ export async function POST(req) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`[HF ERROR] ${response.status}: ${errorText}`);
+      // لو فيه مشكلة تحميل، نرجع fallback شيك
       if (response.status === 503) return fallback("Model Loading...");
-      return fallback(`API Error ${response.status}`);
+      return fallback(`API Error ${response.status}: ${errorText}`);
     }
 
     const result = await response.json();
     let predictions =
       Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
 
-    if (!predictions?.[0]?.label) return fallback("Invalid Data");
+    if (!predictions?.[0]?.label) return fallback("Invalid Data Format");
 
     const top = predictions.sort((a, b) => b.score - a.score)[0];
     const emotionKey = top.label.toLowerCase();
@@ -603,6 +596,6 @@ export async function POST(req) {
     });
   } catch (error) {
     console.error("[CRITICAL]", error);
-    return fallback(`Network/Server Error: ${error.message}`);
+    return fallback(`Network Error: ${error.message}`);
   }
 }
