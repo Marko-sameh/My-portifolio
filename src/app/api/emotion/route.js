@@ -481,9 +481,18 @@
 // }
 
 import { NextResponse } from "next/server";
+import dns from "node:dns";
+
+// 1. إجبار السيرفر على استخدام IPv4
+// (حل سحري لمشاكل ENOTFOUND في السيرفرات)
+try {
+  dns.setDefaultResultOrder("ipv4first");
+} catch (e) {
+  console.log("Could not set IPv4 preference");
+}
 
 export async function POST(req) {
-  // الرابط الجديد الإجباري (لاحظ router بدل api-inference)
+  // الرابط الجديد
   const MODEL_ID = "j-hartmann/emotion-english-distilroberta-base";
   const API_URL = `https://router.huggingface.co/hf-inference/models/${MODEL_ID}`;
 
@@ -525,7 +534,7 @@ export async function POST(req) {
     const { text } = await req.json();
     if (!HF_TOKEN) return fallback("Missing HF Token");
 
-    console.log(`[API] Targeting New Router: ${API_URL}`);
+    console.log(`[API] Trying: ${API_URL}`);
 
     const response = await fetch(API_URL, {
       headers: {
@@ -540,15 +549,13 @@ export async function POST(req) {
       const errorText = await response.text();
       console.error(`[HF ERROR] ${response.status}: ${errorText}`);
 
-      // معالجة خاصة لأخطاء التحميل
       if (response.status === 503) return fallback("Model Loading (503)");
-
       return fallback(`API Error ${response.status}`);
     }
 
     const result = await response.json();
 
-    // معالجة المصفوفات المتداخلة
+    // معالجة الداتا
     let predictions = result;
     if (Array.isArray(result) && Array.isArray(result[0])) {
       predictions = result[0];
@@ -568,7 +575,6 @@ export async function POST(req) {
     });
   } catch (error) {
     console.error("[NETWORK ERROR]", error);
-    // لو الخطأ رجع ENOTFOUND يبقى لازم تطبق الخطوة التانية
     return fallback(`Network Error: ${error.message}`);
   }
 }
