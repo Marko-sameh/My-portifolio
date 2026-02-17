@@ -362,61 +362,171 @@
 //   });
 // }
 
+// import { NextResponse } from "next/server";
+
+// // إعداد الألوان
+// const EMOTION_PALETTES = {
+//   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
+//   sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
+//   anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
+//   fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
+//   surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
+//   disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
+//   neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
+// };
+
+// const EMOTION_LABELS = {
+//   joy: "Joy",
+//   sadness: "Sadness",
+//   anger: "Anger",
+//   fear: "Mystery",
+//   surprise: "Curiosity",
+//   disgust: "Stress",
+//   neutral: "Calmness",
+// };
+
+// function fallback(reason = "Unknown") {
+//   console.log(`[API-FALLBACK] Reason: ${reason}`);
+//   return {
+//     emotion: "Calmness",
+//     confidence: 0.5,
+//     palette: EMOTION_PALETTES.neutral,
+//     isFallback: true,
+//   };
+// }
+
+// export async function POST(req) {
+//   const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
+//   const MODEL_ID = "j-hartmann/emotion-english-distilroberta-base";
+
+//   // الرابط المباشر للموديل (أكثر استقراراً من المكتبة في حالتك)
+//   const API_URL = `https://router.huggingface.co/hf-inference/models/${MODEL_ID}`;
+
+//   if (!HF_TOKEN) {
+//     console.error("Missing HF_ACCESS_TOKEN");
+//     return NextResponse.json(fallback("Missing API Token"));
+//   }
+
+//   try {
+//     const { text } = await req.json();
+//     if (!text) return NextResponse.json(fallback("Empty Text"));
+
+//     console.log(
+//       `[API-START] Fetching direct API for: "${text.substring(0, 15)}..."`,
+//     );
+
+//     // 1. استخدام fetch المباشر بدلاً من المكتبة
+//     // هذا يتخطى مشكلة router.huggingface.co
+//     const response = await fetch(API_URL, {
+//       headers: {
+//         Authorization: `Bearer ${HF_TOKEN}`,
+//         "Content-Type": "application/json",
+//       },
+//       method: "POST",
+//       body: JSON.stringify({ inputs: text }),
+//     });
+
+//     // 2. التحقق من حالة الموديل
+//     if (!response.ok) {
+//       const errorText = await response.text();
+//       console.error(`[HF-ERROR] Status: ${response.status}`, errorText);
+
+//       // لو الموديل بيحمل (503)
+//       if (response.status === 503) {
+//         return NextResponse.json(fallback("Model Loading (503)"));
+//       }
+//       throw new Error(`API Error: ${response.status}`);
+//     }
+
+//     const result = await response.json();
+
+//     // 3. معالجة هيكل البيانات (Nested Arrays)
+//     let predictions = result;
+//     if (Array.isArray(result) && Array.isArray(result[0])) {
+//       predictions = result[0]; // [[{label...}]] -> [{label...}]
+//     }
+
+//     if (!predictions || !predictions.length || !predictions[0]?.label) {
+//       console.error("Invalid response format:", JSON.stringify(result));
+//       return NextResponse.json(fallback("Invalid Format"));
+//     }
+
+//     // ترتيب النتائج
+//     const top = predictions.sort((a, b) => b.score - a.score)[0];
+//     const emotionKey = top.label.toLowerCase();
+
+//     console.log(`[API-SUCCESS] ${emotionKey} (${top.score})`);
+
+//     return NextResponse.json({
+//       emotion: EMOTION_LABELS[emotionKey] || "Calmness",
+//       confidence: Number(top.score.toFixed(3)),
+//       palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
+//     });
+//   } catch (error) {
+//     // طباعة تفاصيل الخطأ كاملة
+//     console.error("[API-CATCH] Full Error:", error);
+
+//     // محاولة استخراج السبب الحقيقي (DNS, SSL, Connection Refused)
+//     if (error.cause) {
+//       console.error("[API-CATCH] Error Cause:", error.cause);
+//     }
+
+//     // لو الخطأ بسبب الـ token غلط
+//     if (error.message.includes("401")) {
+//       return NextResponse.json(fallback("Invalid API Key (401)"));
+//     }
+
+//     return NextResponse.json(fallback(`Fetch Failed: ${error.message}`));
+//   }
+// }
+
 import { NextResponse } from "next/server";
 
-// إعداد الألوان
-const EMOTION_PALETTES = {
-  joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
-  sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
-  anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
-  fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
-  surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
-  disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
-  neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
-};
-
-const EMOTION_LABELS = {
-  joy: "Joy",
-  sadness: "Sadness",
-  anger: "Anger",
-  fear: "Mystery",
-  surprise: "Curiosity",
-  disgust: "Stress",
-  neutral: "Calmness",
-};
-
-function fallback(reason = "Unknown") {
-  console.log(`[API-FALLBACK] Reason: ${reason}`);
-  return {
-    emotion: "Calmness",
-    confidence: 0.5,
-    palette: EMOTION_PALETTES.neutral,
-    isFallback: true,
-  };
-}
-
 export async function POST(req) {
-  const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
+  // الرابط الجديد الإجباري (لاحظ router بدل api-inference)
   const MODEL_ID = "j-hartmann/emotion-english-distilroberta-base";
-
-  // الرابط المباشر للموديل (أكثر استقراراً من المكتبة في حالتك)
   const API_URL = `https://router.huggingface.co/hf-inference/models/${MODEL_ID}`;
 
-  if (!HF_TOKEN) {
-    console.error("Missing HF_ACCESS_TOKEN");
-    return NextResponse.json(fallback("Missing API Token"));
-  }
+  const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
+
+  // تعريف الألوان
+  const EMOTION_PALETTES = {
+    joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
+    sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
+    anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
+    fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
+    surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
+    disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
+    neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
+  };
+
+  const EMOTION_LABELS = {
+    joy: "Joy",
+    sadness: "Sadness",
+    anger: "Anger",
+    fear: "Mystery",
+    surprise: "Curiosity",
+    disgust: "Stress",
+    neutral: "Calmness",
+  };
+
+  const fallback = (reason) => {
+    console.error(`[FALLBACK]: ${reason}`);
+    return NextResponse.json({
+      emotion: "Calmness",
+      confidence: 0.5,
+      palette: EMOTION_PALETTES.neutral,
+      isFallback: true,
+      debugMessage: reason,
+    });
+  };
 
   try {
     const { text } = await req.json();
-    if (!text) return NextResponse.json(fallback("Empty Text"));
+    if (!HF_TOKEN) return fallback("Missing HF Token");
 
-    console.log(
-      `[API-START] Fetching direct API for: "${text.substring(0, 15)}..."`,
-    );
+    console.log(`[API] Targeting New Router: ${API_URL}`);
 
-    // 1. استخدام fetch المباشر بدلاً من المكتبة
-    // هذا يتخطى مشكلة router.huggingface.co
     const response = await fetch(API_URL, {
       headers: {
         Authorization: `Bearer ${HF_TOKEN}`,
@@ -426,36 +536,30 @@ export async function POST(req) {
       body: JSON.stringify({ inputs: text }),
     });
 
-    // 2. التحقق من حالة الموديل
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`[HF-ERROR] Status: ${response.status}`, errorText);
+      console.error(`[HF ERROR] ${response.status}: ${errorText}`);
 
-      // لو الموديل بيحمل (503)
-      if (response.status === 503) {
-        return NextResponse.json(fallback("Model Loading (503)"));
-      }
-      throw new Error(`API Error: ${response.status}`);
+      // معالجة خاصة لأخطاء التحميل
+      if (response.status === 503) return fallback("Model Loading (503)");
+
+      return fallback(`API Error ${response.status}`);
     }
 
     const result = await response.json();
 
-    // 3. معالجة هيكل البيانات (Nested Arrays)
+    // معالجة المصفوفات المتداخلة
     let predictions = result;
     if (Array.isArray(result) && Array.isArray(result[0])) {
-      predictions = result[0]; // [[{label...}]] -> [{label...}]
+      predictions = result[0];
     }
 
     if (!predictions || !predictions.length || !predictions[0]?.label) {
-      console.error("Invalid response format:", JSON.stringify(result));
-      return NextResponse.json(fallback("Invalid Format"));
+      return fallback("Invalid Data Format");
     }
 
-    // ترتيب النتائج
     const top = predictions.sort((a, b) => b.score - a.score)[0];
     const emotionKey = top.label.toLowerCase();
-
-    console.log(`[API-SUCCESS] ${emotionKey} (${top.score})`);
 
     return NextResponse.json({
       emotion: EMOTION_LABELS[emotionKey] || "Calmness",
@@ -463,19 +567,8 @@ export async function POST(req) {
       palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
     });
   } catch (error) {
-    // طباعة تفاصيل الخطأ كاملة
-    console.error("[API-CATCH] Full Error:", error);
-
-    // محاولة استخراج السبب الحقيقي (DNS, SSL, Connection Refused)
-    if (error.cause) {
-      console.error("[API-CATCH] Error Cause:", error.cause);
-    }
-
-    // لو الخطأ بسبب الـ token غلط
-    if (error.message.includes("401")) {
-      return NextResponse.json(fallback("Invalid API Key (401)"));
-    }
-
-    return NextResponse.json(fallback(`Fetch Failed: ${error.message}`));
+    console.error("[NETWORK ERROR]", error);
+    // لو الخطأ رجع ENOTFOUND يبقى لازم تطبق الخطوة التانية
+    return fallback(`Network Error: ${error.message}`);
   }
 }
