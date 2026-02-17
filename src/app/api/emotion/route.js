@@ -272,14 +272,100 @@
 //   });
 // }
 
-import { NextResponse } from "next/server";
-import { InferenceClient } from "@huggingface/inference";
-const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
-const client = new InferenceClient(HF_TOKEN);
+// import { NextResponse } from "next/server";
+// import { InferenceClient } from "@huggingface/inference";
+// const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
+// const client = new InferenceClient(HF_TOKEN);
 
-/* ===============================
-   Emotion → UI Mapping
-================================ */
+// /* ===============================
+//    Emotion → UI Mapping
+// ================================ */
+// const EMOTION_PALETTES = {
+//   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
+//   sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
+//   anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
+//   fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
+//   surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
+//   disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
+//   neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
+// };
+
+// const EMOTION_LABELS = {
+//   joy: "Joy",
+//   sadness: "Sadness",
+//   anger: "Anger",
+//   fear: "Mystery",
+//   surprise: "Curiosity",
+//   disgust: "Stress",
+//   neutral: "Calmness",
+// };
+
+// /* ===============================
+//    AI Classification
+// ================================ */
+// async function analyzeEmotion(text) {
+//   const result = await client.textClassification({
+//     model: "j-hartmann/emotion-english-distilroberta-base",
+//     inputs: text,
+//     provider: "hf-inference",
+//   });
+
+//   // if (!Array.isArray(result) || result.length === 0) {
+//   //   return fallback();
+//   // }
+
+//   const top = result.sort((a, b) => b.score - a.score)[0];
+//   const emotionKey = top.label.toLowerCase();
+
+//   return {
+//     emotion: EMOTION_LABELS[emotionKey] || "Calmness",
+//     confidence: Number(top.score.toFixed(3)),
+//     palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
+//     result,
+//   };
+// }
+
+// /* ===============================
+//    Fallback (Always Safe)
+// ================================ */
+// function fallback() {
+//   return {
+//     emotion: "Calmness",
+//     confidence: 0.4,
+//     palette: EMOTION_PALETTES.neutral,
+//   };
+// }
+
+// /* ===============================
+//    API Handler
+// ================================ */
+// export async function POST(req) {
+//   try {
+//     const { text } = await req.json();
+
+//     if (!text || text.length < 2) {
+//       return NextResponse.json(fallback());
+//     }
+
+//     const result = await analyzeEmotion(text);
+//     return NextResponse.json(result);
+//   } catch (error) {
+//     return NextResponse.json(fallback());
+//   }
+// }
+
+// export function GET() {
+//   return NextResponse.json({
+//     status: "ready",
+//     model: "emotion-english-distilroberta-base",
+//     emotions: Object.keys(EMOTION_LABELS),
+//   });
+// }
+
+import { NextResponse } from "next/server";
+import { HfInference } from "@huggingface/inference";
+
+// إعداد الألوان (نفس الألوان الخاصة بك)
 const EMOTION_PALETTES = {
   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
   sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
@@ -300,64 +386,95 @@ const EMOTION_LABELS = {
   neutral: "Calmness",
 };
 
-/* ===============================
-   AI Classification
-================================ */
-async function analyzeEmotion(text) {
-  const result = await client.textClassification({
-    model: "j-hartmann/emotion-english-distilroberta-base",
-    inputs: text,
-    provider: "hf-inference",
-  });
-
-  // if (!Array.isArray(result) || result.length === 0) {
-  //   return fallback();
-  // }
-
-  const top = result.sort((a, b) => b.score - a.score)[0];
-  const emotionKey = top.label.toLowerCase();
-
-  return {
-    emotion: EMOTION_LABELS[emotionKey] || "Calmness",
-    confidence: Number(top.score.toFixed(3)),
-    palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
-    result,
-  };
-}
-
-/* ===============================
-   Fallback (Always Safe)
-================================ */
-function fallback() {
+// دالة النتيجة الاحتياطية (عشان الموقع ميقعش أبداً)
+function fallback(reason = "Unknown") {
+  console.log(`[API-FALLBACK] Using fallback emotion due to: ${reason}`);
   return {
     emotion: "Calmness",
-    confidence: 0.4,
+    confidence: 0.5,
     palette: EMOTION_PALETTES.neutral,
+    isFallback: true, // علامة عشان تعرف في الفرونت إن دي نتيجة احتياطية
   };
 }
 
-/* ===============================
-   API Handler
-================================ */
 export async function POST(req) {
+  const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
+
+  // 1. فحص وجود التوكن في بيئة السيرفر
+  if (!HF_TOKEN) {
+    console.error(
+      "[API-ERROR] HF_ACCESS_TOKEN is missing in Vercel Environment Variables!",
+    );
+    return NextResponse.json(fallback("Missing API Token"));
+  }
+
   try {
     const { text } = await req.json();
-
-    if (!text || text.length < 2) {
-      return NextResponse.json(fallback());
+    if (!text || text.trim().length < 2) {
+      return NextResponse.json(fallback("Empty Text"));
     }
 
-    const result = await analyzeEmotion(text);
-    return NextResponse.json(result);
+    console.log(`[API-START] Analyzing: "${text.substring(0, 20)}..."`);
+    const inference = new HfInference(HF_TOKEN);
+
+    // 2. التحكم في الوقت (Timeout Logic)
+    // Vercel Free Plan بيفصل بعد 10 ثواني. إحنا هنفصل بعد 7 ثواني عشان نلحق نرد.
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+    const response = await Promise.race([
+      inference.textClassification({
+        model: "j-hartmann/emotion-english-distilroberta-base",
+        inputs: text,
+      }),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("TIMEOUT")), 7000),
+      ),
+    ]);
+
+    clearTimeout(timeoutId);
+
+    // 3. معالجة شكل البيانات (Hugging Face sometimes returns nested arrays)
+    let predictions = response;
+    if (Array.isArray(response) && Array.isArray(response[0])) {
+      predictions = response[0];
+    }
+
+    // التأكد من وجود نتائج
+    if (!predictions || !predictions.length) {
+      throw new Error("Empty prediction array");
+    }
+
+    // ترتيب النتائج واختيار الأعلى
+    const top = predictions.sort((a, b) => b.score - a.score)[0];
+    const emotionKey = top.label.toLowerCase();
+
+    console.log(`[API-SUCCESS] Detected: ${emotionKey} (${top.score})`);
+
+    return NextResponse.json({
+      emotion: EMOTION_LABELS[emotionKey] || "Calmness",
+      confidence: Number(top.score.toFixed(3)),
+      palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
+    });
   } catch (error) {
-    return NextResponse.json(fallback());
+    console.error("[API-CATCH] Error details:", error);
+
+    // لو الخطأ بسبب إن الموديل "بيحمل" (Cold Start 503)
+    if (error.message.includes("loading") || error.statusCode === 503) {
+      return NextResponse.json(
+        fallback("Model is loading... try again in 30s"),
+      );
+    }
+
+    // لو الخطأ بسبب الوقت
+    if (error.message === "TIMEOUT") {
+      return NextResponse.json(fallback("Request timed out (Model slept)"));
+    }
+
+    return NextResponse.json(fallback("Server Error"));
   }
 }
 
 export function GET() {
-  return NextResponse.json({
-    status: "ready",
-    model: "emotion-english-distilroberta-base",
-    emotions: Object.keys(EMOTION_LABELS),
-  });
+  return NextResponse.json({ status: "System Operational" });
 }
