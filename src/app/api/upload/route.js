@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
-import { checkAuth } from '@/lib/auth';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOptions";
 import { existsSync } from 'fs';
 
 export async function POST(request) {
-  if (!checkAuth(request)) {
+  const session = await getServerSession(authOptions);
+  const apiKey = request.headers.get('x-api-key');
+  
+  if (!session && apiKey !== process.env.NEXT_PUBLIC_API_KEY) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

@@ -1,57 +1,76 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
-import { checkAuth } from '@/lib/auth';
+import { PrismaClient } from '@prisma/client';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOptions";
 
-const DB_PATH = path.join(process.cwd(), 'src/data/projects-db.json');
+const prisma = new PrismaClient();
 
-async function readProjects() {
+function parseJSON(val, def) {
   try {
-    const data = await fs.readFile(DB_PATH, 'utf8');
-    return JSON.parse(data);
+    return JSON.parse(val);
   } catch {
-    return [];
+    return def;
   }
 }
 
-async function writeProjects(projects) {
-  await fs.writeFile(DB_PATH, JSON.stringify(projects, null, 2));
-}
-
-// GET - Read all projects
 export async function GET() {
-  const projects = await readProjects();
-  return NextResponse.json(projects);
+  try {
+    const projects = await prisma.project.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    const formattedProjects = projects.map(p => ({
+      ...p,
+      features: parseJSON(p.features, []),
+      challenges: parseJSON(p.challenges, []),
+      images: parseJSON(p.images, []),
+      tech: parseJSON(p.tech, []),
+      links: parseJSON(p.links, [])
+    }));
+    
+    return NextResponse.json(formattedProjects);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 });
+  }
 }
 
-// POST - Create new project
 export async function POST(request) {
-  if (!checkAuth(request)) {
+  const session = await getServerSession(authOptions);
+  const apiKey = request.headers.get('x-api-key');
+  
+  if (!session && apiKey !== process.env.NEXT_PUBLIC_API_KEY) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
-  const body = await request.json();
-  const projects = await readProjects();
-  
-  const newProject = {
-    id: Date.now(),
-    title: body.title,
-    desc: body.desc,
-    fullDescription: body.fullDescription || '',
-    features: body.features || [],
-    challenges: body.challenges || [],
-    results: body.results || '',
-    img: body.img || '',
-    images: body.images || [],
-    tag: body.tag,
-    tech: Array.isArray(body.tech) ? body.tech : body.tech?.split(',').map(t => t.trim()) || [],
-    links: body.links || [],
-    showOnHome: body.showOnHome || false,
-    createdAt: new Date().toISOString()
-  };
-  
-  projects.push(newProject);
-  await writeProjects(projects);
-  
-  return NextResponse.json(newProject, { status: 201 });
+  try {
+    const body = await request.json();
+    
+    const newProject = await prisma.project.create({
+      data: {
+        title: body.title,
+        desc: body.desc,
+        fullDescription: body.fullDescription || '',
+        features: JSON.stringify(body.features || []),
+        challenges: JSON.stringify(body.challenges || []),
+        results: body.results || '',
+        img: body.img || '',
+        images: JSON.stringify(body.images || []),
+        tag: body.tag,
+        tech: JSON.stringify(Array.isArray(body.tech) ? body.tech : body.tech?.split(',').map(t => t.trim()) || []),
+        links: JSON.stringify(body.links || []),
+        showOnHome: body.showOnHome || false,
+      }
+    });
+    
+    return NextResponse.json({
+      ...newProject,
+      features: parseJSON(newProject.features, []),
+      challenges: parseJSON(newProject.challenges, []),
+      images: parseJSON(newProject.images, []),
+      tech: parseJSON(newProject.tech, []),
+      links: parseJSON(newProject.links, [])
+    }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to create project' }, { status: 500 });
+  }
 }

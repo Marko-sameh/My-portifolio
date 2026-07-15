@@ -1,5 +1,58 @@
 [
   {
+    "id": 1766866627011,
+    "title": "Strategic KPI — AI-Powered Business Performance Platform",
+    "desc": "Enterprise SaaS platform for KPI management, audits, AI insights, and business performance tracking.",
+    "fullDescription": "Strategic KPI is a comprehensive enterprise SaaS platform designed to help organizations manage KPIs, audits, tasks, reports, and performance analytics from a centralized dashboard. The system supports multiple departments with role-based access, AI-powered insights, automated workflows, and real-time reporting to improve operational efficiency and strategic decision-making.",
+    "features": [
+      "Enterprise KPI management system",
+      "Cross-department dashboards",
+      "AI-powered KPI & audit insights",
+      "Audit management with automated workflows",
+      "Task assignment and tracking",
+      "Role-based authentication and permissions",
+      "Interactive analytics dashboards",
+      "Report generation and exports",
+      "Department and employee management",
+      "Real-time notifications",
+      "Responsive admin interface",
+      "REST API architecture"
+    ],
+    "challenges": [
+      "Designing a scalable multi-module enterprise architecture",
+      "Managing complex role-based permission systems",
+      "Building reusable dashboard components for multiple business modules",
+      "Maintaining high performance with large datasets",
+      "Integrating AI-generated business insights into existing workflows",
+      "Ensuring maintainability across frontend and backend codebases"
+    ],
+    "results": "Built a production-ready enterprise SaaS platform capable of managing organizational performance, audits, and KPI tracking through a unified system. The platform significantly reduces manual reporting efforts, centralizes business operations, and provides actionable AI-driven insights for decision makers.",
+    "img": "",
+    "images": [],
+    "tag": "Full Stack SaaS",
+    "tech": [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Tailwind CSS",
+      "JWT Authentication",
+      "REST API",
+      "Chart.js",
+      "AI Integration"
+    ],
+    "links": [
+      {
+        "label": "Live",
+        "url": "https://kpifrontend.markosameh.cloud"
+      }
+    ],
+    "showOnHome": true,
+    "createdAt": "2026-07-15T00:00:00.000Z"
+  },
+  {
     "id": 1766866627001,
     "title": "Veneficus — Luxury eCommerce Platform",
     "desc": "Luxury fashion eCommerce with immersive 3D product experience.",
@@ -89,12 +142,7 @@
     "img": "/api/uploads/1770511873089-Screenshot_2025-06-28_200531.png",
     "images": [],
     "tag": "Fullstack",
-    "tech": [
-      "React",
-      "Django",
-      "AI",
-      "PostgreSQL"
-    ],
+    "tech": ["React", "Django", "AI", "PostgreSQL"],
     "links": [
       {
         "label": "Youtube",
@@ -125,11 +173,7 @@
     "img": "/api/uploads/1770563284200-Screenshot_2025-06-28_201003.png",
     "images": [],
     "tag": "Frontend",
-    "tech": [
-      "React",
-      "Tailwind CSS",
-      "SEO"
-    ],
+    "tech": ["React", "Tailwind CSS", "SEO"],
     "links": [
       {
         "label": "Youtube",
@@ -175,11 +219,7 @@
       "/api/uploads/1770567457101-Screenshot_2026-02-08_181411.png"
     ],
     "tag": "Dashboard",
-    "tech": [
-      "React",
-      "Chart.js",
-      "Tailwind CSS"
-    ],
+    "tech": ["React", "Chart.js", "Tailwind CSS"],
     "links": [],
     "showOnHome": false,
     "createdAt": "2025-12-27T20:17:06.969Z",
@@ -204,10 +244,7 @@
     "img": "",
     "images": [],
     "tag": "Mobile",
-    "tech": [
-      "Flutter",
-      "Firebase"
-    ],
+    "tech": ["Flutter", "Firebase"],
     "links": [],
     "showOnHome": true,
     "createdAt": "2025-12-27T20:17:06.969Z"
@@ -269,12 +306,7 @@
     "img": "/api/uploads/1771005351823-Screenshot_2026-01-25_150034.png",
     "images": [],
     "tag": "Frontend",
-    "tech": [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "jQuery"
-    ],
+    "tech": ["HTML", "CSS", "JavaScript", "jQuery"],
     "links": [
       {
         "label": "Live",
@@ -305,12 +337,7 @@
     "img": "",
     "images": [],
     "tag": "Fullstack",
-    "tech": [
-      "React",
-      "Node.js",
-      "Express",
-      "MongoDB"
-    ],
+    "tech": ["React", "Node.js", "Express", "MongoDB"],
     "links": [],
     "showOnHome": false,
     "createdAt": "2026-02-13T20:05:00.000Z"
@@ -335,11 +362,7 @@
     "img": "",
     "images": [],
     "tag": "Frontend",
-    "tech": [
-      "React",
-      "REST API",
-      "Tailwind CSS"
-    ],
+    "tech": ["React", "REST API", "Tailwind CSS"],
     "links": [],
     "showOnHome": false,
     "createdAt": "2026-02-13T20:10:00.000Z"

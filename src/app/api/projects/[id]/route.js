@@ -1,90 +1,112 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
-import { checkAuth } from '@/lib/auth';
+import { PrismaClient } from '@prisma/client';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOptions";
 
-const DB_PATH = path.join(process.cwd(), 'src/data/projects-db.json');
+const prisma = new PrismaClient();
 
-async function readProjects() {
+function parseJSON(val, def) {
   try {
-    const data = await fs.readFile(DB_PATH, 'utf8');
-    return JSON.parse(data);
+    return JSON.parse(val);
   } catch {
-    return [];
+    return def;
   }
 }
 
-async function writeProjects(projects) {
-  await fs.writeFile(DB_PATH, JSON.stringify(projects, null, 2));
-}
-
-// GET - Read single project
 export async function GET(request, { params }) {
   const { id } = await params;
-  const projects = await readProjects();
-  const project = projects.find(p => p.id == id);
   
-  if (!project) {
-    return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+  try {
+    const project = await prisma.project.findUnique({
+      where: { id }
+    });
+    
+    if (!project) {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
+    
+    return NextResponse.json({
+      ...project,
+      features: parseJSON(project.features, []),
+      challenges: parseJSON(project.challenges, []),
+      images: parseJSON(project.images, []),
+      tech: parseJSON(project.tech, []),
+      links: parseJSON(project.links, [])
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch project' }, { status: 500 });
   }
-  
-  return NextResponse.json(project);
 }
 
-// PUT - Update project
 export async function PUT(request, { params }) {
-  if (!checkAuth(request)) {
+  const session = await getServerSession(authOptions);
+  const apiKey = request.headers.get('x-api-key');
+  
+  if (!session && apiKey !== process.env.NEXT_PUBLIC_API_KEY) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
   const { id } = await params;
-  const body = await request.json();
-  const projects = await readProjects();
-  const index = projects.findIndex(p => p.id == id);
   
-  if (index === -1) {
-    return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+  try {
+    const body = await request.json();
+    
+    const dataToUpdate = {};
+    if (body.title !== undefined) dataToUpdate.title = body.title;
+    if (body.desc !== undefined) dataToUpdate.desc = body.desc;
+    if (body.fullDescription !== undefined) dataToUpdate.fullDescription = body.fullDescription;
+    if (body.features !== undefined) dataToUpdate.features = JSON.stringify(body.features);
+    if (body.challenges !== undefined) dataToUpdate.challenges = JSON.stringify(body.challenges);
+    if (body.results !== undefined) dataToUpdate.results = body.results;
+    if (body.img !== undefined) dataToUpdate.img = body.img;
+    if (body.images !== undefined) dataToUpdate.images = JSON.stringify(body.images);
+    if (body.tag !== undefined) dataToUpdate.tag = body.tag;
+    if (body.tech !== undefined) {
+      dataToUpdate.tech = JSON.stringify(Array.isArray(body.tech) ? body.tech : body.tech.split(',').map(t => t.trim()));
+    }
+    if (body.links !== undefined) dataToUpdate.links = JSON.stringify(body.links);
+    if (body.showOnHome !== undefined) dataToUpdate.showOnHome = body.showOnHome;
+
+    const updatedProject = await prisma.project.update({
+      where: { id },
+      data: dataToUpdate
+    });
+    
+    return NextResponse.json({
+      ...updatedProject,
+      features: parseJSON(updatedProject.features, []),
+      challenges: parseJSON(updatedProject.challenges, []),
+      images: parseJSON(updatedProject.images, []),
+      tech: parseJSON(updatedProject.tech, []),
+      links: parseJSON(updatedProject.links, [])
+    });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
+    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
   }
-  
-  const updatedProject = {
-    ...projects[index],
-    title: body.title || projects[index].title,
-    desc: body.desc || projects[index].desc,
-    fullDescription: body.fullDescription !== undefined ? body.fullDescription : projects[index].fullDescription || '',
-    features: body.features !== undefined ? body.features : projects[index].features || [],
-    challenges: body.challenges !== undefined ? body.challenges : projects[index].challenges || [],
-    results: body.results !== undefined ? body.results : projects[index].results || '',
-    img: body.img !== undefined ? body.img : projects[index].img,
-    images: body.images || projects[index].images,
-    tag: body.tag || projects[index].tag,
-    tech: body.tech ? (Array.isArray(body.tech) ? body.tech : body.tech.split(',').map(t => t.trim())) : projects[index].tech,
-    links: body.links !== undefined ? body.links : projects[index].links || [],
-    showOnHome: body.showOnHome !== undefined ? body.showOnHome : projects[index].showOnHome,
-    updatedAt: new Date().toISOString()
-  };
-  
-  projects[index] = updatedProject;
-  await writeProjects(projects);
-  
-  return NextResponse.json(updatedProject);
 }
 
-// DELETE - Delete project
 export async function DELETE(request, { params }) {
-  if (!checkAuth(request)) {
+  const session = await getServerSession(authOptions);
+  const apiKey = request.headers.get('x-api-key');
+  
+  if (!session && apiKey !== process.env.NEXT_PUBLIC_API_KEY) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
   const { id } = await params;
-  const projects = await readProjects();
-  const index = projects.findIndex(p => p.id == id);
   
-  if (index === -1) {
-    return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+  try {
+    await prisma.project.delete({
+      where: { id }
+    });
+    return NextResponse.json({ message: 'Project deleted' });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+    }
+    return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 });
   }
-  
-  projects.splice(index, 1);
-  await writeProjects(projects);
-  
-  return NextResponse.json({ message: 'Project deleted' });
 }

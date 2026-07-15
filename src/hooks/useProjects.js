@@ -71,15 +71,13 @@ export const useProjects = () => {
   };
 
   const handleLogin = async (password) => {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
+    const { signIn } = await import("next-auth/react");
+    const res = await signIn("credentials", {
+      password,
+      redirect: false
     });
 
-    const data = await res.json();
-    if (data.success) {
-      setAuthToken(data.token);
+    if (res?.ok) {
       setIsAuthenticated(true);
       return true;
     }
@@ -216,7 +214,9 @@ export const useProjects = () => {
     setEditing(null);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const { signOut } = await import("next-auth/react");
+    await signOut({ redirect: false });
     setIsAuthenticated(false);
     setAuthToken("");
   };
