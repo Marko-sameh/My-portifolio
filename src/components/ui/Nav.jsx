@@ -114,7 +114,7 @@ export default function Nav() {
                   src={logo}
                   width={60}
                   height={60}
-                  className="relative z-10 drop-shadow-[0_10px_30px_rgba(0,0,0,0.6)] w-15 h-12 sm:w-17 sm:h-14 md:w-20 md:h-16"
+                  className="relative z-10 drop-shadow-[0_10px_30px_rgba(0,0,0,0.6)] w-auto h-12 sm:h-14 md:h-16 object-contain"
                   priority
                   sizes="(max-width: 640px) 48px, (max-width: 768px) 56px, 80px"
                 />

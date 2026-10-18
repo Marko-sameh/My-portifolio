@@ -195,6 +195,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Code, Sparkles, Target, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import CreativeCareerTimeline from "@/components/ui/CreativeCareerTimeline";
 import CTASection from "@/components/ui/CTASection";
 
 export default function IdentityClient() {
@@ -318,6 +319,7 @@ export default function IdentityClient() {
                   src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=900&q=80"
                   alt="Developer workspace"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -339,6 +341,7 @@ export default function IdentityClient() {
                   src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80"
                   alt="Code and design"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -439,47 +442,8 @@ export default function IdentityClient() {
           </div>
         </motion.div>
 
-        {/* Professional Background */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-24"
-        >
-          <div className="relative rounded-3xl overflow-hidden border border-white/10">
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent" />
-            <div className="relative p-8 sm:p-12">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-10 text-center">
-                Professional Background
-              </h2>
-              <div className="grid md:grid-cols-3 gap-8 sm:gap-12">
-                <div className="text-center space-y-3">
-                  <h3 className="text-xl font-semibold" style={{ color: 'var(--accent)' }}>
-                    Education
-                  </h3>
-                  <p className="text-gray-200">Dual Degree Program</p>
-                  <p className="text-sm text-gray-400">
-                    Future University in Egypt & University of Cincinnati
-                  </p>
-                </div>
-                <div className="text-center space-y-3">
-                  <h3 className="text-xl font-semibold" style={{ color: 'var(--accent)' }}>
-                    Experience
-                  </h3>
-                  <p className="text-gray-200">Frontend Developer</p>
-                  <p className="text-sm text-gray-400">11+ Projects Delivered</p>
-                </div>
-                <div className="text-center space-y-3">
-                  <h3 className="text-xl font-semibold" style={{ color: 'var(--accent)' }}>
-                    Location
-                  </h3>
-                  <p className="text-gray-200">Cairo, Egypt</p>
-                  <p className="text-sm text-gray-400">Working Globally</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        {/* Career Progression (data: src/data/experience.js) */}
+        <CreativeCareerTimeline />
 
         {/* CTA */}
         <CTASection

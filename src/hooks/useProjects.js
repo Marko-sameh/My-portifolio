@@ -25,6 +25,29 @@ export const useProjects = () => {
   const [uploading, setUploading] = useState(false);
   const [authToken, setAuthToken] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // Check active NextAuth session on mount to keep admin logged in on refresh
+  useEffect(() => {
+    let isMounted = true;
+    const checkActiveSession = async () => {
+      try {
+        const { getSession } = await import("next-auth/react");
+        const session = await getSession();
+        if (isMounted && session?.user) {
+          setIsAuthenticated(true);
+        }
+      } catch (err) {
+        console.error("Session verification error:", err);
+      } finally {
+        if (isMounted) setIsCheckingAuth(false);
+      }
+    };
+    checkActiveSession();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -71,17 +94,48 @@ export const useProjects = () => {
   };
 
   const handleLogin = async (password) => {
-    const { signIn } = await import("next-auth/react");
-    const res = await signIn("credentials", {
-      password,
-      redirect: false
-    });
+    try {
+      const { signIn } = await import("next-auth/react");
+      const res = await signIn("credentials", {
+        password,
+        redirect: false
+      });
 
-    if (res?.ok) {
-      setIsAuthenticated(true);
-      return true;
+      if (res?.ok) {
+        setIsAuthenticated(true);
+        return { success: true };
+      }
+
+      const errorMsg = res?.error || "";
+      if (errorMsg.startsWith("LOCKED:")) {
+        const seconds = parseInt(errorMsg.replace("LOCKED:", ""), 10) || 900;
+        return {
+          success: false,
+          isLocked: true,
+          retryAfterSeconds: seconds,
+          error: `Security lockout: Too many failed attempts. Please wait ${Math.ceil(seconds / 60)} minute(s).`
+        };
+      }
+
+      if (errorMsg.startsWith("INVALID:")) {
+        const remaining = parseInt(errorMsg.replace("INVALID:", ""), 10);
+        return {
+          success: false,
+          remainingAttempts: remaining,
+          error: `Invalid password. ${remaining} attempt${remaining === 1 ? '' : 's'} remaining before lockout.`
+        };
+      }
+
+      return {
+        success: false,
+        error: "Invalid administrator credentials. Access denied."
+      };
+    } catch (err) {
+      return {
+        success: false,
+        error: "Authentication service error. Please try again."
+      };
     }
-    return false;
   };
 
   const handleFileUpload = async (files) => {
@@ -235,6 +289,7 @@ export const useProjects = () => {
     setChallenges,
     uploading,
     isAuthenticated,
+    isCheckingAuth,
     fetchProjects,
     handleLogin,
     handleFileUpload,

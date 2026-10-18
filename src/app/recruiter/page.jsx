@@ -1,6 +1,7 @@
 
 import RecruterHero from '@/components/ui/RecruterHero';
 import RecruterProjects from '@/components/ui/RecruterProjects';
+import CareerTimeline from '@/components/ui/CareerTimeline';
 import { TrendingUp, Users, Target } from 'lucide-react';
 
 export default function RecruiterMode() {
@@ -185,121 +186,7 @@ export default function RecruiterMode() {
         </section>
 
         {/* Experience */}
-        <section id="experience" className="py-12 sm:py-16 lg:py-20 bg-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 text-center">Career progression</h2>
-            <p className="text-lg sm:text-xl text-slate-600 text-center mb-12 sm:mb-16 max-w-2xl mx-auto">My professional journey and achievements</p>
-            <div className="relative">
-              <div className="absolute left-4 sm:left-8 top-0 bottom-0 w-0.5 bg-slate-300" aria-hidden="true"></div>
-              <ol className="space-y-8 sm:space-y-12">
-                <li className="relative flex items-start gap-4 sm:gap-8">
-                  <div className="w-4 h-4 bg-blue-800 rounded-full border-4 border-white shadow-lg relative z-10" aria-hidden="true"></div>
-                  <article className="flex-1 bg-slate-50 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-sm">
-                    <header className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2">
-                      <div>
-                        <h3 className="text-lg sm:text-xl font-bold text-slate-900">Frontend Developer (Freelancer)</h3>
-                        <p className="text-blue-800 font-semibold text-sm sm:text-base">Remote</p>
-                      </div>
-                      <time className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs sm:text-sm font-medium self-start">Oct 2023 - Present</time>
-                    </header>
-                    <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-                      <ul className="space-y-2 text-slate-700">
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-blue-800 rounded-full mt-2 shrink-0"></div>
-                          <span className="text-sm sm:text-base">Delivered 11 web applications with 90+ Lighthouse scores</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-blue-800 rounded-full mt-2 shrink-0"></div>
-                          <span className="text-sm sm:text-base">Maintained 100% client satisfaction across 10 clients</span>
-                        </li>
-                      </ul>
-                      <ul className="space-y-2 text-slate-700">
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-blue-800 rounded-full mt-2 shrink-0"></div>
-                          <span className="text-sm sm:text-base">Reduced page load times by 30% through SSR optimization</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-blue-800 rounded-full mt-2 shrink-0"></div>
-                          <span className="text-sm sm:text-base">Built bilingual, accessible interfaces</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </article>
-                </li>
-
-                <li className="relative flex items-start gap-8">
-                  <div className="w-4 h-4 bg-blue-800 rounded-full border-4 border-white shadow-lg relative z-10" aria-hidden="true"></div>
-                  <article className="flex-1 bg-slate-50 p-8 rounded-2xl shadow-sm">
-                    <header className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-slate-900">AI Trainer</h3>
-                        <p className="text-blue-800 font-semibold">Outlier (Remote)</p>
-                      </div>
-                      <time className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Feb 2024 - Present</time>
-                    </header>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <ul className="space-y-2 text-slate-700">
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 shrink-0"></div>
-                          <span>Evaluate AI-generated code for quality and accuracy</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 shrink-0"></div>
-                          <span>Collaborate globally to maintain data quality standards</span>
-                        </li>
-                      </ul>
-                      <ul className="space-y-2 text-slate-700">
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 shrink-0"></div>
-                          <span>Gained expertise in prompt engineering</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 shrink-0"></div>
-                          <span>Model evaluation and AI quality assessment</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </article>
-                </li>
-
-                <li className="relative flex items-start gap-8">
-                  <div className="w-4 h-4 bg-slate-400 rounded-full border-4 border-white shadow-lg relative z-10" aria-hidden="true"></div>
-                  <article className="flex-1 bg-slate-50 p-8 rounded-2xl shadow-sm">
-                    <header className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-slate-900">Computer Science Student</h3>
-                        <p className="text-blue-800 font-semibold">Future University in Egypt & University of Cincinnati</p>
-                      </div>
-                      <time className="bg-slate-100 text-slate-800 px-3 py-1 rounded-full text-sm font-medium">2021 - 2025</time>
-                    </header>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <ul className="space-y-2 text-slate-700">
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 shrink-0"></div>
-                          <span>Dual degree program in Computer Science</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 shrink-0"></div>
-                          <span>Focus on Web Development and UI/UX Design</span>
-                        </li>
-                      </ul>
-                      <ul className="space-y-2 text-slate-700">
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 shrink-0"></div>
-                          <span>IEEE Student Branch event organizer</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 shrink-0"></div>
-                          <span>Graduating July 2025</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </article>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </section>
+        <CareerTimeline />
 
         {/* Projects */}
         <RecruterProjects></RecruterProjects>

@@ -77,14 +77,14 @@ export default function SingleProjectClient({ param }) {
 
                         <div className="relative lg:col-span-3">
                             <div className="absolute -inset-4 rounded-3xl blur-2xl" style={{ background: `linear-gradient(to right, var(--accent), var(--background))`, opacity: 0.2 }} />
-                            <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm">
+                            <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm h-[350px] sm:h-[450px]">
                                 {project.img ? (
                                     <Image
                                         src={project.img}
                                         alt={project.title}
-                                        width={800}
-                                        height={450}
-                                        className="w-full h-[350px] sm:h-[450px] lg:h-[450px] object-cover"
+                                        fill
+                                        sizes="(max-width: 1024px) 100vw, 60vw"
+                                        className="object-cover"
                                         priority
                                     />
                                 ) : (
@@ -171,15 +171,15 @@ export default function SingleProjectClient({ param }) {
                             {project.images.map((img, i) => (
                                 <div
                                     key={i}
-                                    className="relative rounded-xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm hover:border-white/20 transition-colors cursor-pointer"
+                                    className="relative h-64 rounded-xl overflow-hidden border border-white/10 bg-gray-900/50 backdrop-blur-sm hover:border-white/20 transition-colors cursor-pointer"
                                     onClick={() => setSelectedImage(img)}
                                 >
                                     <Image
                                         src={img}
                                         alt={`${project.title} screenshot ${i + 1}`}
-                                        width={400}
-                                        height={300}
-                                        className="w-full h-64 object-cover"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        className="object-cover"
                                         loading="lazy"
                                     />
                                 </div>

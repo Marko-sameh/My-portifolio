@@ -1,20 +1,22 @@
 // SEO-optimized content and metadata for all pages
 export const seoData = {
   site: {
-    name: "Marko Sameh - Frontend Developer",
+    name: "Marko Sameh - Full Stack Developer",
     url: "https://markosameh.com",
     description:
-      "Frontend developer specializing in React, Next.js, and modern web applications. Delivering high-performance, user-focused solutions for businesses worldwide.",
+      "Full stack developer specializing in React, Next.js, Node.js, PostgreSQL and Prisma. Building secure, scalable, high-performance web applications and SaaS platforms.",
     author: "Marko Sameh",
     keywords: [
+      "full stack developer",
       "frontend developer",
+      "backend developer",
       "React developer",
       "Next.js developer",
-      "web development",
-      "JavaScript",
+      "Node.js developer",
+      "PostgreSQL",
+      "Prisma",
       "TypeScript",
-      "UI/UX",
-      "performance optimization",
+      "SaaS development",
     ],
     image: "/icon.png",
     twitterHandle: "@markosameh",
@@ -22,9 +24,9 @@ export const seoData = {
 
   pages: {
     home: {
-      title: "Frontend Developer Portfolio | Marko Sameh",
+      title: "Full Stack Developer Portfolio | Marko Sameh",
       description:
-        "Transform your digital presence with expert frontend development. Specializing in React, Next.js, and performance-optimized web applications that drive business results.",
+        "Hire a full stack developer for end-to-end web products: React, Next.js, Node.js, PostgreSQL, Prisma, RBAC, multi-tenant SaaS and AI integrations.",
       keywords: [
         "frontend developer",
         "React developer",
@@ -35,7 +37,7 @@ export const seoData = {
         "performance optimization",
         "business web solutions",
       ],
-      ogTitle: "Frontend Developer - Marko Sameh",
+      ogTitle: "Full Stack Developer - Marko Sameh",
       ogDescription:
         "Professional frontend development services. React, Next.js, and modern web solutions that deliver exceptional user experiences and business growth.",
       structuredData: [
@@ -45,9 +47,9 @@ export const seoData = {
             "@context": "https://schema.org",
             "@type": "Person",
             name: "Marko Sameh",
-            jobTitle: "Frontend Developer",
+            jobTitle: "Full Stack Developer",
             description:
-              "frontend developer specializing in React, Next.js, and modern web applications",
+              "full stack developer specializing in React, Next.js, Node.js, PostgreSQL and modern web applications",
             url: "https://markosameh.com",
             sameAs: [
               "https://linkedin.com/in/marko-sameh-9971b6244",

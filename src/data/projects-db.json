@@ -3,7 +3,7 @@
     "id": 1766866627011,
     "title": "Strategic KPI — AI-Powered Business Performance Platform",
     "desc": "Enterprise SaaS platform for KPI management, audits, AI insights, and business performance tracking.",
-    "fullDescription": "Strategic KPI is a comprehensive enterprise SaaS platform designed to help organizations manage KPIs, audits, tasks, reports, and performance analytics from a centralized dashboard. The system supports multiple departments with role-based access, AI-powered insights, automated workflows, and real-time reporting to improve operational efficiency and strategic decision-making.",
+    "fullDescription": "KPI Analyzer is a production multi-tenant SaaS for organizations, departments, teams and users. It features authentication and RBAC, KPI templates, scoring workflows, auditing, management dashboards, and LLM-powered decision support with structured AI outputs. Tested with Vitest, React Testing Library and Playwright, and shipped with Docker and GitHub Actions CI/CD.",
     "features": [
       "Enterprise KPI management system",
       "Cross-department dashboards",
@@ -35,13 +35,18 @@
       "React",
       "TypeScript",
       "Node.js",
+      "PostgreSQL",
+      "Prisma",
+      "RBAC",
+      "Multi-tenancy",
+      "REST API",
       "Express.js",
-      "MongoDB",
       "Tailwind CSS",
       "JWT Authentication",
-      "REST API",
-      "Chart.js",
-      "AI Integration"
+      "Docker",
+      "GitHub Actions",
+      "Playwright",
+      "LLM APIs"
     ],
     "links": [
       {

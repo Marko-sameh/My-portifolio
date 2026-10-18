@@ -27,7 +27,7 @@ export default function RecruiterFooter() {
             </Link>
           </div>
         </div>
-        <p className='mt-4 text-center text-slate-400 '>Available for frontend opportunities</p>
+        <p className='mt-4 text-center text-slate-400 '>Available for full stack & frontend-focused opportunities</p>
         <div className="border-t border-slate-700 mt-3 pt-6 text-center text-slate-400">
           <p>&copy; 2025 Marko Sameh</p>
         </div>

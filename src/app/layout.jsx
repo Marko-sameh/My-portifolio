@@ -101,7 +101,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -135,6 +135,7 @@ export default function RootLayout({ children }) {
       </head>
       <body
         className={`${geistSans.variable} ${inter.variable} antialiased emotion-aware`}
+        suppressHydrationWarning
       >
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <WebVitals />

@@ -21,19 +21,19 @@ function MasterySection() {
                 {[
                     {
                         title: "Frontend Development",
-                        desc: "Building component-driven interfaces using React/Next,with clean state management and predictable behavior.",
+                        desc: "Building fast, accessible, component-driven interfaces with React, Next.js and TypeScript — clean state management and 90+ Lighthouse scores.",
                         img: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                         gradient: "from-[var(--background)] to-[var(--accent)]",
                     },
                     {
-                        title: "Adaptive Experiences",
-                        desc: "I build interfaces that adapt across devices —from mobile-first layouts to complex desktop systems —with performance and clarity as a priority.",
+                        title: "Backend & Databases",
+                        desc: "Designing secure REST APIs with Node.js, Express, PostgreSQL and Prisma — authentication, RBAC, multi-tenancy, and Docker/CI-CD deployments.",
                         img: "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                         gradient: "from-[var(--background)] to-[var(--accent)]",
                     },
                     {
                         title: "AI Integration",
-                        desc: "I connect AI APIs and logic-driven services to create interfaces that respond, adapt, and evolve.",
+                        desc: "Integrating LLM APIs with structured outputs to power decision support and automation inside real products.",
                         img: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
                         gradient: "from-[var(--background)] to-[var(--accent)]",
                     },

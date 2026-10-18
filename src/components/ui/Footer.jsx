@@ -43,7 +43,7 @@ function Footer({ }) {
                         priority
                     />
                 </motion.div>
-                <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-[var(--accent)] to-[var(--background)] bg-clip-text text-transparent mb-4">Frontend Developer</p>
+                <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-[var(--accent)] to-[var(--background)] bg-clip-text text-transparent mb-4">Full Stack Developer</p>
                 <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base px-4">Programming calm, scalable interfaces — where performance meets intention</p>
                 <div className="flex justify-center gap-6 sm:gap-10 mb-8 sm:mb-10 flex-wrap">
                     {FOOTER_SECTIONS.slice(1).map((section) => (

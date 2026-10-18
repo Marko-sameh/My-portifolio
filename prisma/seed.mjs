@@ -1,17 +1,20 @@
-import 'dotenv/config';
-import { PrismaClient } from '@prisma/client';
-import fs from 'fs/promises';
-import path from 'path';
+import "dotenv/config";
+import { PrismaClient } from "@prisma/client";
+import fs from "fs/promises";
+import path from "path";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const data = await fs.readFile(path.join(process.cwd(), 'src/data/projects-db.json'), 'utf8');
+  const data = await fs.readFile(
+    path.join(process.cwd(), "src/data/projects-db.json"),
+    "utf8",
+  );
   const projects = JSON.parse(data);
 
-  console.log('Clearing old projects...');
+  console.log("Clearing old projects...");
   await prisma.project.deleteMany({});
-  console.log('Inserting new projects...');
+  console.log("Inserting new projects...");
 
   for (const p of projects) {
     await prisma.project.create({
@@ -30,15 +33,41 @@ async function main() {
         links: JSON.stringify(p.links || []),
         showOnHome: p.showOnHome || false,
         createdAt: p.createdAt ? new Date(p.createdAt) : new Date(),
-        updatedAt: p.updatedAt ? new Date(p.updatedAt) : (p.createdAt ? new Date(p.createdAt) : new Date())
-      }
+        updatedAt: p.updatedAt
+          ? new Date(p.updatedAt)
+          : p.createdAt
+            ? new Date(p.createdAt)
+            : new Date(),
+      },
     });
   }
-  console.log('Database seeded successfully');
+  const expCount = await prisma.experience.count();
+  if (expCount === 0) {
+    const expData = JSON.parse(
+      await fs.readFile(
+        path.join(process.cwd(), "src/data/experience-db.json"),
+        "utf8",
+      ),
+    );
+    for (const e of expData) {
+      await prisma.experience.create({
+        data: {
+          title: e.title,
+          company: e.company,
+          period: e.period,
+          current: e.current ?? true,
+          points: JSON.stringify(e.points || []),
+          position: e.position ?? 0,
+        },
+      });
+    }
+    console.log("Seeded experience");
+  }
+  console.log("Database seeded successfully");
 }
 
 main()
-  .catch(e => {
+  .catch((e) => {
     console.error(e);
     process.exit(1);
   })

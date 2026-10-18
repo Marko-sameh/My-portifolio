@@ -33,7 +33,7 @@ export default function RecruiterNav() {
               src={logo}
               width={60}
               height={60}
-              className="relative z-10 drop-shadow-[0_10px_30px_rgba(0,0,0,0.6)] w-10 h-8 sm:w-12 sm:h-10 md:w-15 md:h-12 lg:w-20 lg:h-16"
+              className="relative z-10 drop-shadow-[0_10px_30px_rgba(0,0,0,0.6)] w-auto h-8 sm:h-10 md:h-12 lg:h-16 object-contain"
               priority
             />
           </div>

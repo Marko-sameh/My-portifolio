@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/authOptions";
+import { isAuthorizedAdmin } from "@/lib/serverAuth";
 
 const prisma = new PrismaClient();
 
@@ -35,10 +34,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const session = await getServerSession(authOptions);
-  const apiKey = request.headers.get('x-api-key');
-  
-  if (!session && apiKey !== process.env.NEXT_PUBLIC_API_KEY) {
+  if (!(await isAuthorizedAdmin(request))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   

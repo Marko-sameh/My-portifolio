@@ -122,7 +122,7 @@ export function generateOrganizationData() {
     "founder": {
       "@type": "Person",
       "name": seoData.site.author,
-      "jobTitle": "Frontend Developer",
+      "jobTitle": "Full Stack Developer",
       "email": "markosameh75@gmail.com",
       "telephone": "+201203113955"
     },
@@ -136,7 +136,7 @@ export function generateOrganizationData() {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "Frontend Development",
+            "name": "Full Stack Development",
             "description": "React and Next.js web application development"
           }
         },

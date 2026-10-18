@@ -1,6 +1,7 @@
 "use client";
 import SectionTitle from "./SectionTitle"
 import LearnMoreButton from "./LearnMoreButton";
+import CreativeCareerTimeline from "./CreativeCareerTimeline";
 
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -30,7 +31,7 @@ function IdentitySection() {
                     <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight flex flex-col sm:flex-row gap-2">
                         {"I'm Marko —"}
                         <span className="block text-transparent bg-gradient-to-r from-[var(--background)] to-[var(--accent)] bg-clip-text">
-                            Frontend Developer
+                            Full Stack Developer
                         </span>
                     </h3>
 
@@ -42,8 +43,8 @@ function IdentitySection() {
                                 How it started
                             </h4>
                             <p className="text-white/65 leading-relaxed">
-                                Curiosity drove me to understand how interfaces work
-                                and how users interact with systems.
+                                Curiosity drove me to understand how interfaces work,
+                                and what happens behind them — APIs, databases, and infrastructure.
                             </p>
                         </div>
 
@@ -52,8 +53,8 @@ function IdentitySection() {
                                 Professional journey
                             </h4>
                             <p className="text-white/65 leading-relaxed">
-                                That curiosity evolved into building real-world frontend systems,
-                                translating business goals into scalable, user-focused interfaces.
+                                That curiosity evolved into building production full stack systems —
+                                multi-tenant SaaS, dashboards, and POS platforms — owning features from requirements to release.
                             </p>
                         </div>
 
@@ -62,9 +63,9 @@ function IdentitySection() {
                                 What I do today
                             </h4>
                             <p className="text-white/65 leading-relaxed">
-                                I specialize in React and Next.js, delivering fast, accessible,
-                                production-grade applications — while contributing to AI training
-                                and exploring intelligent UX patterns.
+                                I build with React, Next.js, Node.js, PostgreSQL and Prisma,
+                                delivering fast, secure, production-grade applications — while
+                                evaluating LLMs as an AI trainer and integrating AI into products.
                             </p>
                         </div>
 
@@ -92,6 +93,7 @@ function IdentitySection() {
                                 alt="identity"
                                 className="w-full h-full object-cover"
                                 fill
+                                sizes="(max-width: 1024px) 100vw, 50vw"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                         </div>
@@ -116,6 +118,9 @@ function IdentitySection() {
                     </div>
                 </motion.div>
 
+            </div>
+            <div className="mt-16 sm:mt-24">
+                <CreativeCareerTimeline />
             </div>
             <div className="flex justify-center mt-8 sm:mt-12">
                 <LearnMoreButton sectionName="Identity" />

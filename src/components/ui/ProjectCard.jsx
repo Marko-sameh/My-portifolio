@@ -26,9 +26,9 @@ const ProjectCard = memo(function ProjectCard({ project, index }) {
                         <Image
                             src={project.img}
                             alt={project.title}
-                            width={400}
-                            height={256}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />

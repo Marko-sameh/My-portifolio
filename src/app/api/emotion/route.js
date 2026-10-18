@@ -1,601 +1,268 @@
-// // import { NextResponse } from "next/server";
-
-// // const EMOTION_PALETTES = {
-// //   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
-// //   sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
-// //   anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
-// //   fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
-// //   surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
-// //   disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
-// //   neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
-// // };
-
-// // const EMOTION_MAPPING = {
-// //   joy: "Joy",
-// //   sadness: "Sadness",
-// //   anger: "Anger",
-// //   fear: "Mystery",
-// //   surprise: "Curiosity",
-// //   disgust: "Stress",
-// //   neutral: "Calmness",
-// // };
-
-// // async function classifyWithAI(text) {
-// //   try {
-// //     const response = await fetch(
-// //       "https://router.huggingface.co/models/j-hartmann/emotion-english-distilroberta-base",
-// //       {
-// //         headers: {
-// //           Authorization: "Bearer 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",
-// //           "Content-Type": "application/json",
-// //         },
-// //         method: "POST",
-// //         body: JSON.stringify({ inputs: text }),
-// //       }
-// //     );
-
-// //     if (!response.ok) {
-// //       const errorText = await response.text();
-// //       throw new Error(`API failed: ${response.status} - ${errorText}`);
-// //     }
-
-// //     const result = await response.json();
-
-// //     if (result && Array.isArray(result) && result.length > 0) {
-// //       const predictions = result[0];
-// //       if (Array.isArray(predictions) && predictions.length > 0) {
-// //         const topPrediction = predictions[0];
-// //         const emotion = topPrediction.label.toLowerCase();
-// //         const confidence = topPrediction.score;
-
-// //         return {
-// //           emotion: EMOTION_MAPPING[emotion] || "Calmness",
-// //           confidence,
-// //           palette: EMOTION_PALETTES[emotion] || EMOTION_PALETTES.neutral,
-// //         };
-// //       }
-// //     }
-// //   } catch (error) {
-// //     console.error("Hugging Face API error:", error.message);
-// //   }
-
-// //   return fallbackClassification(text);
-// // }
-
-// // function fallbackClassification(text) {
-// //   const keywords = {
-// //     joy: [
-// //       "happy",
-// //       "excited",
-// //       "great",
-// //       "amazing",
-// //       "wonderful",
-// //       "love",
-// //       "awesome",
-// //     ],
-// //     sadness: ["sad", "down", "depressed", "lonely", "hurt", "disappointed"],
-// //     anger: ["angry", "mad", "furious", "hate", "frustrated", "annoyed"],
-// //     fear: ["scared", "afraid", "worried", "anxious", "nervous"],
-// //     surprise: ["wow", "amazing", "incredible", "unbelievable", "shocking"],
-// //     disgust: ["disgusting", "awful", "terrible", "horrible", "gross"],
-// //   };
-
-// //   let maxScore = 0;
-// //   let detectedEmotion = "neutral";
-// //   const textLower = text.toLowerCase();
-
-// //   Object.entries(keywords).forEach(([emotion, words]) => {
-// //     const score = words.filter((word) => textLower.includes(word)).length;
-// //     if (score > maxScore) {
-// //       maxScore = score;
-// //       detectedEmotion = emotion;
-// //     }
-// //   });
-
-// //   // Pattern detection
-// //   if (/!+/.test(text)) detectedEmotion = "joy";
-// //   if (/\?/.test(text)) detectedEmotion = "surprise";
-// //   if (/[A-Z]{3,}/.test(text)) detectedEmotion = "anger";
-
-// //   const confidence = Math.min(maxScore * 0.4 + 0.3, 0.9);
-
-// //   return {
-// //     emotion: EMOTION_MAPPING[detectedEmotion],
-// //     confidence,
-// //     palette: EMOTION_PALETTES[detectedEmotion],
-// //   };
-// // }
-
-// // export async function POST(request) {
-// //   try {
-// //     const { text } = await request.json();
-
-// //     if (!text || text.length < 2) {
-// //       return NextResponse.json({
-// //         emotion: "Calmness",
-// //         confidence: 0.4,
-// //         palette: EMOTION_PALETTES.neutral,
-// //       });
-// //     }
-
-// //     const result = await classifyWithAI(text);
-
-// //     // Ensure result is properly serializable
-// //     const response = {
-// //       emotion: result.emotion || "Calmness",
-// //       confidence: Number(result.confidence) || 0.4,
-// //       palette: result.palette || EMOTION_PALETTES.neutral,
-// //     };
-
-// //     return NextResponse.json(response);
-// //   } catch (error) {
-// //     // Always return fallback on any error
-// //     return NextResponse.json({
-// //       emotion: "Calmness",
-// //       confidence: 0.4,
-// //       palette: EMOTION_PALETTES.neutral,
-// //     });
-// //   }
-// // }
-
-// // export async function GET() {
-// //   return NextResponse.json({
-// //     message: "AI Emotion Analysis API",
-// //     model: "j-hartmann/emotion-english-distilroberta-base",
-// //     emotions: Object.keys(EMOTION_MAPPING),
-// //     usage: "POST with { text }",
-// //   });
-// // }
-
-// import { NextResponse } from "next/server";
-
-// const HF_API_URL =
-//   "https://router.huggingface.co/models/j-hartmann/emotion-english-distilroberta-base";
-
-// const CONFIDENCE_THRESHOLD = 0.6;
-
-// const EMOTION_PALETTES = {
-//   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
-//   sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
-//   anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
-//   fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
-//   surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
-//   disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
-//   neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
-// };
-
-// const EMOTION_MAPPING = {
-//   joy: "Joy",
-//   sadness: "Sadness",
-//   anger: "Anger",
-//   fear: "Mystery",
-//   surprise: "Curiosity",
-//   disgust: "Stress",
-//   neutral: "Calmness",
-// };
-
-// async function classifyWithAI(text) {
-//   try {
-//     const response = await fetch("https://router.huggingface.co/models/j-hartmann/emotion-english-distilroberta-base", {
-//       method: "POST",
-//       headers: {
-//         Authorization: `Bearer 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`,
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ inputs: text }),
-//     });
-
-//     if (!response.ok) throw new Error("HF API Error");
-
-//     const result = await response.json();
-//     const predictions = result && result[0];
-
-//     if (!Array.isArray(predictions)) throw new Error("Invalid response");
-
-//     const top = predictions.reduce((a, b) => (a.score > b.score ? a : b));
-
-//     if (top.score < CONFIDENCE_THRESHOLD) {
-//       return fallbackClassification(text);
-//     }
-
-//     return buildResponse(top.label.toLowerCase(), top.score);
-//   } catch (error) {
-//     console.log(error);
-//     // return fallbackClassification(text);
-//   }
-// }
-
-// function fallbackClassification(text) {
-//   const textLower = text.toLowerCase();
-
-//   const keywordMap = {
-//     joy: ["love", "happy", "great", "amazing", "awesome"],
-//     sadness: ["sad", "down", "lonely", "depressed"],
-//     anger: ["angry", "hate", "furious", "annoyed"],
-//     fear: ["worried", "scared", "anxious"],
-//     surprise: ["wow", "unbelievable", "shocking"],
-//     disgust: ["awful", "terrible", "gross"],
-//   };
-
-//   let detected = "neutral";
-//   let score = 0;
-
-//   for (const emotion in keywordMap) {
-//     const hits = keywordMap[emotion].filter((w) =>
-//       textLower.includes(w)
-//     ).length;
-
-//     if (hits > score) {
-//       score = hits;
-//       detected = emotion;
-//     }
-//   }
-
-//   if (/!{2,}/.test(text)) detected = "joy";
-//   if (/\?/.test(text)) detected = "surprise";
-//   if (/[A-Z]{3,}/.test(text)) detected = "anger";
-
-//   const confidence = Math.min(0.4 + score * 0.15, 0.7);
-
-//   return buildResponse(detected, confidence);
-// }
-
-// function buildResponse(rawEmotion, confidence) {
-//   return {
-//     emotion: EMOTION_MAPPING[rawEmotion] || "Calmness",
-//     confidence,
-//     palette: EMOTION_PALETTES[rawEmotion] || EMOTION_PALETTES.neutral,
-//   };
-// }
-
-// export async function POST(req) {
-//   try {
-//     const { text } = await req.json();
-
-//     if (!text || text.length < 2) {
-//       return NextResponse.json(buildResponse("neutral", 0.4));
-//     }
-
-//     const result = await classifyWithAI(text);
-//     return NextResponse.json(result);
-//   } catch {
-//     return NextResponse.json(buildResponse("neutral", 0.4));
-//   }
-// }
-
-// export async function GET() {
-//   return NextResponse.json({
-//     status: "OK",
-//     model: "j-hartmann/emotion-english-distilroberta-base",
-//     emotions: Object.values(EMOTION_MAPPING),
-//     usage: "POST { text }",
-//   });
-// }
-
-// import { NextResponse } from "next/server";
-// import { InferenceClient } from "@huggingface/inference";
-// const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
-// const client = new InferenceClient(HF_TOKEN);
-
-// /* ===============================
-//    Emotion → UI Mapping
-// ================================ */
-// const EMOTION_PALETTES = {
-//   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
-//   sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
-//   anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
-//   fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
-//   surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
-//   disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
-//   neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
-// };
-
-// const EMOTION_LABELS = {
-//   joy: "Joy",
-//   sadness: "Sadness",
-//   anger: "Anger",
-//   fear: "Mystery",
-//   surprise: "Curiosity",
-//   disgust: "Stress",
-//   neutral: "Calmness",
-// };
-
-// /* ===============================
-//    AI Classification
-// ================================ */
-// async function analyzeEmotion(text) {
-//   const result = await client.textClassification({
-//     model: "j-hartmann/emotion-english-distilroberta-base",
-//     inputs: text,
-//     provider: "hf-inference",
-//   });
-
-//   // if (!Array.isArray(result) || result.length === 0) {
-//   //   return fallback();
-//   // }
-
-//   const top = result.sort((a, b) => b.score - a.score)[0];
-//   const emotionKey = top.label.toLowerCase();
-
-//   return {
-//     emotion: EMOTION_LABELS[emotionKey] || "Calmness",
-//     confidence: Number(top.score.toFixed(3)),
-//     palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
-//     result,
-//   };
-// }
-
-// /* ===============================
-//    Fallback (Always Safe)
-// ================================ */
-// function fallback() {
-//   return {
-//     emotion: "Calmness",
-//     confidence: 0.4,
-//     palette: EMOTION_PALETTES.neutral,
-//   };
-// }
-
-// /* ===============================
-//    API Handler
-// ================================ */
-// export async function POST(req) {
-//   try {
-//     const { text } = await req.json();
-
-//     if (!text || text.length < 2) {
-//       return NextResponse.json(fallback());
-//     }
-
-//     const result = await analyzeEmotion(text);
-//     return NextResponse.json(result);
-//   } catch (error) {
-//     return NextResponse.json(fallback());
-//   }
-// }
-
-// export function GET() {
-//   return NextResponse.json({
-//     status: "ready",
-//     model: "emotion-english-distilroberta-base",
-//     emotions: Object.keys(EMOTION_LABELS),
-//   });
-// }
-
-// import { NextResponse } from "next/server";
-
-// // إعداد الألوان
-// const EMOTION_PALETTES = {
-//   joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
-//   sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
-//   anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
-//   fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
-//   surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
-//   disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
-//   neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
-// };
-
-// const EMOTION_LABELS = {
-//   joy: "Joy",
-//   sadness: "Sadness",
-//   anger: "Anger",
-//   fear: "Mystery",
-//   surprise: "Curiosity",
-//   disgust: "Stress",
-//   neutral: "Calmness",
-// };
-
-// function fallback(reason = "Unknown") {
-//   console.log(`[API-FALLBACK] Reason: ${reason}`);
-//   return {
-//     emotion: "Calmness",
-//     confidence: 0.5,
-//     palette: EMOTION_PALETTES.neutral,
-//     isFallback: true,
-//   };
-// }
-
-// export async function POST(req) {
-//   const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
-//   const MODEL_ID = "j-hartmann/emotion-english-distilroberta-base";
-
-//   // الرابط المباشر للموديل (أكثر استقراراً من المكتبة في حالتك)
-//   const API_URL = `https://router.huggingface.co/hf-inference/models/${MODEL_ID}`;
-
-//   if (!HF_TOKEN) {
-//     console.error("Missing HF_ACCESS_TOKEN");
-//     return NextResponse.json(fallback("Missing API Token"));
-//   }
-
-//   try {
-//     const { text } = await req.json();
-//     if (!text) return NextResponse.json(fallback("Empty Text"));
-
-//     console.log(
-//       `[API-START] Fetching direct API for: "${text.substring(0, 15)}..."`,
-//     );
-
-//     // 1. استخدام fetch المباشر بدلاً من المكتبة
-//     // هذا يتخطى مشكلة router.huggingface.co
-//     const response = await fetch(API_URL, {
-//       headers: {
-//         Authorization: `Bearer ${HF_TOKEN}`,
-//         "Content-Type": "application/json",
-//       },
-//       method: "POST",
-//       body: JSON.stringify({ inputs: text }),
-//     });
-
-//     // 2. التحقق من حالة الموديل
-//     if (!response.ok) {
-//       const errorText = await response.text();
-//       console.error(`[HF-ERROR] Status: ${response.status}`, errorText);
-
-//       // لو الموديل بيحمل (503)
-//       if (response.status === 503) {
-//         return NextResponse.json(fallback("Model Loading (503)"));
-//       }
-//       throw new Error(`API Error: ${response.status}`);
-//     }
-
-//     const result = await response.json();
-
-//     // 3. معالجة هيكل البيانات (Nested Arrays)
-//     let predictions = result;
-//     if (Array.isArray(result) && Array.isArray(result[0])) {
-//       predictions = result[0]; // [[{label...}]] -> [{label...}]
-//     }
-
-//     if (!predictions || !predictions.length || !predictions[0]?.label) {
-//       console.error("Invalid response format:", JSON.stringify(result));
-//       return NextResponse.json(fallback("Invalid Format"));
-//     }
-
-//     // ترتيب النتائج
-//     const top = predictions.sort((a, b) => b.score - a.score)[0];
-//     const emotionKey = top.label.toLowerCase();
-
-//     console.log(`[API-SUCCESS] ${emotionKey} (${top.score})`);
-
-//     return NextResponse.json({
-//       emotion: EMOTION_LABELS[emotionKey] || "Calmness",
-//       confidence: Number(top.score.toFixed(3)),
-//       palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
-//     });
-//   } catch (error) {
-//     // طباعة تفاصيل الخطأ كاملة
-//     console.error("[API-CATCH] Full Error:", error);
-
-//     // محاولة استخراج السبب الحقيقي (DNS, SSL, Connection Refused)
-//     if (error.cause) {
-//       console.error("[API-CATCH] Error Cause:", error.cause);
-//     }
-
-//     // لو الخطأ بسبب الـ token غلط
-//     if (error.message.includes("401")) {
-//       return NextResponse.json(fallback("Invalid API Key (401)"));
-//     }
-
-//     return NextResponse.json(fallback(`Fetch Failed: ${error.message}`));
-//   }
-// }
-
 import { NextResponse } from "next/server";
-import dns from "node:dns";
 
-/* ============================================================
-   🛠️ FINAL DNS FIX (Hardcoded Map)
-   بما أننا عرفنا الـ IP الشغال من اللوج، سنقوم بتثبيته
-   لتفادي أي مشاكل شبكة أو DNS في المستقبل.
-   ============================================================ */
+// Curated UI color palettes for each emotion
+const EMOTION_PALETTES = {
+  joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
+  sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
+  anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
+  mystery: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
+  fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
+  curiosity: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
+  surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
+  stress: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
+  disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
+  calmness: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
+  neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
+};
 
-// 1. عناوين IP الخاصة بـ router.huggingface.co (من اللوج بتاعك)
-const HF_IPS = ["65.8.131.63", "65.8.131.110", "65.8.131.15", "65.8.131.12"];
+const EMOTION_LABELS = {
+  joy: "Joy",
+  sadness: "Sadness",
+  anger: "Anger",
+  mystery: "Mystery",
+  fear: "Mystery",
+  curiosity: "Curiosity",
+  surprise: "Curiosity",
+  stress: "Stress",
+  disgust: "Stress",
+  calmness: "Calmness",
+  neutral: "Calmness",
+};
 
-const originalLookup = dns.lookup;
+// Local heuristic fallback in case of network interruption or rate limits
+function heuristicFallback(text) {
+  const textLower = (text || "").toLowerCase();
+  const keywords = {
+    joy: [
+      "happy",
+      "excited",
+      "great",
+      "amazing",
+      "wonderful",
+      "love",
+      "awesome",
+      "good",
+      "best",
+      "brilliant",
+      "proud",
+      "fun",
+    ],
+    sadness: [
+      "sad",
+      "down",
+      "depressed",
+      "lonely",
+      "hurt",
+      "disappointed",
+      "unhappy",
+      "cry",
+      "grief",
+      "miserable",
+    ],
+    anger: [
+      "angry",
+      "mad",
+      "furious",
+      "hate",
+      "frustrated",
+      "annoyed",
+      "pissed",
+      "irritated",
+      "rage",
+    ],
+    fear: [
+      "scared",
+      "afraid",
+      "worried",
+      "anxious",
+      "nervous",
+      "secret",
+      "dark",
+      "unknown",
+      "creepy",
+      "mystery",
+    ],
+    surprise: [
+      "wow",
+      "amazing",
+      "incredible",
+      "unbelievable",
+      "shocking",
+      "wonder",
+      "curious",
+      "interesting",
+      "why",
+      "how",
+    ],
+    disgust: [
+      "disgusting",
+      "awful",
+      "terrible",
+      "horrible",
+      "gross",
+      "stressed",
+      "exhausted",
+      "burnout",
+      "tired",
+      "deadline",
+    ],
+  };
 
-dns.lookup = (hostname, options, callback) => {
-  // ضبط البارامترات لأن أحياناً options بتكون هي الـ callback
-  if (typeof options === "function") {
-    callback = options;
-    options = {};
-  }
+  let maxScore = 0;
+  let detectedEmotion = "neutral";
 
-  // إذا كان الدومين هو Hugging Face
-  if (hostname === "router.huggingface.co") {
-    const selectedIP = HF_IPS[0]; // نختار أول واحد (الأكثر استقراراً)
+  Object.entries(keywords).forEach(([emotion, words]) => {
+    const score = words.filter((word) => textLower.includes(word)).length;
+    if (score > maxScore) {
+      maxScore = score;
+      detectedEmotion = emotion;
+    }
+  });
 
-    // الحل لمشكلة "Invalid IP address: undefined":
-    // Undici (Fetch) أحياناً بيطلب كل العناوين (all: true)
-    if (options.all) {
-      // نرجع مصفوفة كائنات
-      return callback(null, [{ address: selectedIP, family: 4 }]);
-    } else {
-      // نرجع نص عادي
-      return callback(null, selectedIP, 4);
+  if (/!{2,}/.test(text)) detectedEmotion = "joy";
+  if (/\?{2,}/.test(text)) detectedEmotion = "surprise";
+  if (/[A-Z]{4,}/.test(text)) detectedEmotion = "anger";
+
+  const emotionKey = detectedEmotion.toLowerCase();
+  const finalEmotion = EMOTION_LABELS[emotionKey] || "Calmness";
+  const palette = EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral;
+
+  return {
+    emotion: finalEmotion,
+    confidence: maxScore > 0 ? Math.min(0.5 + maxScore * 0.15, 0.9) : 0.5,
+    palette,
+    source: "heuristic",
+  };
+}
+
+async function classifyWithGemini(text, apiKey) {
+  const models = [
+    "gemini-2.5-flash",
+    "gemini-flash-latest",
+    "gemini-2.5-flash-lite",
+  ];
+
+  const prompt = `You are an AI emotion classifier for an interactive web portfolio.
+Classify the user's input text into EXACTLY ONE of the following 7 emotions:
+- Joy (happy, enthusiastic, loving, positive, pleased)
+- Sadness (down, upset, melancholy, disappointed, sorrowful)
+- Anger (frustrated, irritated, furious, hateful, enraged)
+- Mystery (intrigued, suspenseful, apprehensive, curious about secrets)
+- Curiosity (inquisitive, astonished, surprised, fascinated)
+- Stress (overwhelmed, disgusted, burned out, anxious about work/deadlines)
+- Calmness (peaceful, neutral, balanced, steady, relaxed)
+
+Text to classify: "${text.replace(/"/g, '\\"')}"
+
+Respond ONLY with a valid JSON object matching this schema:
+{"emotion": "Joy|Sadness|Anger|Mystery|Curiosity|Stress|Calmness", "confidence": 0.0 to 1.0}`;
+
+  for (const model of models) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json",
+            temperature: 0.2,
+          },
+        }),
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.warn(
+          `[Gemini API - ${model}] HTTP ${response.status}: ${errorText.substring(0, 150)}`,
+        );
+        continue;
+      }
+
+      const data = await response.json();
+      const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) continue;
+
+      const parsed = JSON.parse(rawText.trim());
+      const normalizedKey = (parsed.emotion || "").trim().toLowerCase();
+      const matchedEmotion = EMOTION_LABELS[normalizedKey] || "Calmness";
+      const palette =
+        EMOTION_PALETTES[normalizedKey] || EMOTION_PALETTES.neutral;
+      const confidence =
+        typeof parsed.confidence === "number"
+          ? Number(parsed.confidence.toFixed(2))
+          : 0.9;
+
+      return {
+        emotion: matchedEmotion,
+        confidence,
+        palette,
+        source: `gemini-${model}`,
+      };
+    } catch (err) {
+      console.warn(`[Gemini API - ${model}] request error: ${err.message}`);
     }
   }
 
-  // أي دومين تاني (زي google.com أو غيره) يمشي طبيعي
-  return originalLookup(hostname, options, callback);
-};
-/* ============================================================ */
+  // If all Gemini models failed, fallback cleanly
+  return heuristicFallback(text);
+}
 
 export async function POST(req) {
-  const MODEL_ID = "j-hartmann/emotion-english-distilroberta-base";
-  const API_URL = `https://router.huggingface.co/hf-inference/models/${MODEL_ID}`;
-  const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
-
-  // إعداد الألوان
-  const EMOTION_PALETTES = {
-    joy: ["#FFD93D", "#FFB200", "#FF6B00", "#FFF7D1"],
-    sadness: ["#4F5D75", "#B0C4DE", "#AEC6CF", "#2F3E46"],
-    anger: ["#5E0000", "#A30000", "#D60000", "#FF5E5E"],
-    fear: ["#1B1B2F", "#16213E", "#0F3460", "#533483"],
-    surprise: ["#FFE66D", "#FFB86C", "#E07A5F", "#3D405B"],
-    disgust: ["#D7263D", "#F46060", "#FF9E9E", "#FFEAEA"],
-    neutral: ["#6ECFF6", "#9FF0E9", "#C6FFF9", "#3AA7C5"],
-  };
-
-  const EMOTION_LABELS = {
-    joy: "Joy",
-    sadness: "Sadness",
-    anger: "Anger",
-    fear: "Mystery",
-    surprise: "Curiosity",
-    disgust: "Stress",
-    neutral: "Calmness",
-  };
-
-  const fallback = (reason) => {
-    console.error(`[FALLBACK]: ${reason}`);
-    return NextResponse.json({
-      emotion: "Calmness",
-      confidence: 0.5,
-      palette: EMOTION_PALETTES.neutral,
-      isFallback: true,
-      debugMessage: reason,
-    });
-  };
-
   try {
-    const { text } = await req.json();
-    if (!HF_TOKEN) return fallback("Missing Token");
+    const body = await req.json().catch(() => ({}));
+    const text = (body?.text || "").trim();
 
-    console.log(`[API] Fetching: ${API_URL} (Hardcoded DNS)`);
-
-    const response = await fetch(API_URL, {
-      headers: {
-        Authorization: `Bearer ${HF_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ inputs: text }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      // لو فيه مشكلة تحميل، نرجع fallback شيك
-      if (response.status === 503) return fallback("Model Loading...");
-      return fallback(`API Error ${response.status}: ${errorText}`);
+    // Default response for blank/short input
+    if (!text || text.length < 2) {
+      return NextResponse.json({
+        emotion: "Calmness",
+        confidence: 0.5,
+        palette: EMOTION_PALETTES.neutral,
+      });
     }
 
-    const result = await response.json();
-    let predictions =
-      Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
+    const apiKey =
+      process.env.GEMINI_API_KEY ||
+      "AQ.Ab8RN6IFwWLl_wHG46iTp1M7JP90gz4O6fDFI9RFuDIY-RogZw";
 
-    if (!predictions?.[0]?.label) return fallback("Invalid Data Format");
-
-    const top = predictions.sort((a, b) => b.score - a.score)[0];
-    const emotionKey = top.label.toLowerCase();
+    const result = await classifyWithGemini(text, apiKey);
 
     return NextResponse.json({
-      emotion: EMOTION_LABELS[emotionKey] || "Calmness",
-      confidence: Number(top.score.toFixed(3)),
-      palette: EMOTION_PALETTES[emotionKey] || EMOTION_PALETTES.neutral,
+      emotion: result.emotion || "Calmness",
+      confidence: result.confidence || 0.5,
+      palette: result.palette || EMOTION_PALETTES.neutral,
     });
   } catch (error) {
-    console.error("[CRITICAL]", error);
-    return fallback(`Network Error: ${error.message}`);
+    console.error("[CRITICAL] Emotion route error:", error);
+    return NextResponse.json({
+      emotion: "Calmness",
+      confidence: 0.4,
+      palette: EMOTION_PALETTES.neutral,
+    });
   }
+}
+
+export async function GET() {
+  return NextResponse.json({
+    status: "online",
+    engine: "Google Gemini (Free Flash Tier)",
+    emotions: [
+      "Joy",
+      "Sadness",
+      "Anger",
+      "Mystery",
+      "Curiosity",
+      "Stress",
+      "Calmness",
+    ],
+    model: "gemini-2.5-flash",
+  });
 }
