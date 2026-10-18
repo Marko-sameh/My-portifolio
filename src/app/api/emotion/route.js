@@ -229,9 +229,16 @@ export async function POST(req) {
       });
     }
 
-    const apiKey =
-      process.env.GEMINI_API_KEY ||
-      "AQ.Ab8RN6IFwWLl_wHG46iTp1M7JP90gz4O6fDFI9RFuDIY-RogZw";
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.warn("[Emotion API] Missing GEMINI_API_KEY, using heuristic fallback");
+      const fallbackResult = heuristicFallback(text);
+      return NextResponse.json({
+        emotion: fallbackResult.emotion,
+        confidence: fallbackResult.confidence,
+        palette: fallbackResult.palette,
+      });
+    }
 
     const result = await classifyWithGemini(text, apiKey);
 
