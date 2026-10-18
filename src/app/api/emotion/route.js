@@ -137,9 +137,10 @@ function heuristicFallback(text) {
 
 async function classifyWithGemini(text, apiKey) {
   const models = [
-    "gemini-2.5-flash",
     "gemini-flash-latest",
-    "gemini-2.5-flash-lite",
+    "gemini-3.5-flash",
+    "gemini-flash-lite-latest",
+    "gemini-3.5-flash-lite",
   ];
 
   const prompt = `You are an AI emotion classifier for an interactive web portfolio.
@@ -231,7 +232,9 @@ export async function POST(req) {
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      console.warn("[Emotion API] Missing GEMINI_API_KEY, using heuristic fallback");
+      console.warn(
+        "[Emotion API] Missing GEMINI_API_KEY, using heuristic fallback",
+      );
       const fallbackResult = heuristicFallback(text);
       return NextResponse.json({
         emotion: fallbackResult.emotion,
@@ -270,6 +273,6 @@ export async function GET() {
       "Stress",
       "Calmness",
     ],
-    model: "gemini-2.5-flash",
+    model: "gemini-flash-latest",
   });
 }
