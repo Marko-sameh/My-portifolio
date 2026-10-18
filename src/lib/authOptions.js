@@ -14,7 +14,14 @@ function safeCompare(a, b) {
   return crypto.timingSafeEqual(hashA, hashB);
 }
 
+const secretKey = process.env.NEXTAUTH_SECRET || process.env.API_SECRET_KEY;
+
+if (!process.env.NEXTAUTH_SECRET) {
+  process.env.NEXTAUTH_SECRET = secretKey;
+}
+
 export const authOptions = {
+  secret: secretKey,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -68,5 +75,5 @@ export const authOptions = {
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: secretKey,
 };
