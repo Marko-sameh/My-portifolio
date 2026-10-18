@@ -59,7 +59,9 @@ export const useProjects = () => {
           signal: abortController.signal
         });
         const data = await res.json();
-        setProjects(data);
+        if (Array.isArray(data)) {
+          setProjects(data);
+        }
       } catch (error) {
         if (error.name !== 'AbortError') {
           console.error('Failed to fetch projects:', error);
@@ -85,9 +87,11 @@ export const useProjects = () => {
         headers: { "X-API-Key": API_KEY },
       });
       const data = await res.json();
-      setProjects(data);
-      // Update cache
-      cacheRef.current = { data, timestamp: now };
+      if (Array.isArray(data)) {
+        setProjects(data);
+        // Update cache
+        cacheRef.current = { data, timestamp: now };
+      }
     } catch (error) {
       console.error('Failed to fetch projects:', error);
     }

@@ -32,7 +32,8 @@ export const authOptions = {
         const inputPassword = credentials?.password || "";
         const targetPassword = process.env.ADMIN_PASSWORD || "";
 
-        const isValid = Boolean(targetPassword) && safeCompare(inputPassword, targetPassword);
+        const isValid =
+          Boolean(targetPassword) && safeCompare(inputPassword, targetPassword);
 
         if (!isValid) {
           // Add artificial delay against brute force automation

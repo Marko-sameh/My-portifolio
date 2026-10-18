@@ -58,7 +58,7 @@ export default function CreativeCareerTimeline() {
                     </time>
                   </header>
                   <ul className="space-y-3">
-                    {item.points.map((p) => (
+                    {(Array.isArray(item.points) ? item.points : []).map((p) => (
                       <li key={p} className="flex items-start gap-3 text-gray-300">
                         <div className="w-1.5 h-1.5 rounded-full mt-2.5 shrink-0" style={{ backgroundColor: "var(--accent)" }} />
                         <span>{p}</span>

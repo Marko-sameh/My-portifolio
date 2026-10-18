@@ -14,8 +14,9 @@ export default function CareerTimeline() {
           <div className="absolute left-4 sm:left-8 top-0 bottom-0 w-0.5 bg-slate-300" aria-hidden="true"></div>
           <ol className="space-y-8 sm:space-y-12">
             {experience.map((item, i) => {
-              const half = Math.ceil(item.points.length / 2);
-              const columns = [item.points.slice(0, half), item.points.slice(half)].filter((c) => c.length);
+              const pts = Array.isArray(item.points) ? item.points : [];
+              const half = Math.ceil(pts.length / 2);
+              const columns = [pts.slice(0, half), pts.slice(half)].filter((c) => c.length);
               return (
                 <li key={`${item.title}-${item.period}-${i}`} className="relative flex items-start gap-4 sm:gap-8">
                   <div className={`w-4 h-4 ${item.current ? "bg-blue-800" : "bg-slate-400"} rounded-full border-4 border-white shadow-lg relative z-10 shrink-0`} aria-hidden="true"></div>

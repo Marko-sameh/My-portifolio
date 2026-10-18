@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "@/lib/prisma";
 import { isAuthorizedAdmin } from "@/lib/serverAuth";
-
-const prisma = new PrismaClient();
 
 function parseJSON(val, def) {
   try {
@@ -29,6 +27,7 @@ export async function GET() {
     
     return NextResponse.json(formattedProjects);
   } catch (error) {
+    console.error("[Projects API GET Error]:", error);
     return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 });
   }
 }

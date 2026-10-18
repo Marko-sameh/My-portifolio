@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "@/lib/prisma";
 import { isAuthorizedAdmin } from "@/lib/serverAuth";
-
-const prisma = new PrismaClient();
 
 function parseJSON(val, def) {
   try {
@@ -23,6 +21,7 @@ export async function GET() {
     });
     return NextResponse.json(items.map(formatExperience));
   } catch (error) {
+    console.error("[Experience API GET Error]:", error);
     return NextResponse.json({ error: 'Failed to fetch experience' }, { status: 500 });
   }
 }
@@ -46,6 +45,7 @@ export async function POST(request) {
     });
     return NextResponse.json(formatExperience(created), { status: 201 });
   } catch (error) {
+    console.error("[Experience API POST Error]:", error);
     return NextResponse.json({ error: 'Failed to create experience' }, { status: 500 });
   }
 }
